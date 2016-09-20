@@ -1,0 +1,86 @@
+header{
+    width: 100%;
+    padding-left: 5px;
+    box-shadow: 0 3px 1px #606060;
+    background-color: #3F4050;
+    position: fixed;
+    margin-top: -5px;
+    z-index: 1;
+}
+h1{
+    color: white;
+}
+.navigation-ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100px;
+    background-color: honeydew;
+    height: 100%;
+    position: fixed;
+    margin-top: 95px;
+    z-index: 0;
+}
+div.navigation{
+    margin-top: 5px;
+}
+main{
+    margin-left: 100px;
+    padding: 1px 16px;
+}
+
+li.navigation-li a {
+    display: block;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li.navigation-li a.active {
+    background-color: darkcyan;
+    color: white;
+}
+
+li.navigation-li a:hover:not(.active) {
+    background-color: #606060;
+    color: white;
+}
+
+.form-control{
+    width: 100%;
+}
+.control-label{
+
+}
+.form{
+    box-shadow: 0px 1px 2px #606060;
+    padding: 5px;
+    margin-top: 110px;
+}
+
+
+.accounts-dialog{
+    right: 5px;
+    left: auto;
+}
+
+.task{
+    box-shadow: 0px 1px 2px #606060;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+.content{
+    margin-top: 110px;
+}
+#__blaze-root{
+    font-family: sans-serif;
+}
+
+ul.list-group{
+    list-style-type: none;
+}
+
+.delete-task{
+    position: relative;
+
+}

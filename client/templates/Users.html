@@ -1,0 +1,24 @@
+<template name="Users">
+    <div class="users">
+        <span>Select User</span>
+        <select class="selUser">
+            {{#each users}}
+                {{#each emails}}
+                    <option value="{{../_id}}">{{address}}</option>
+                {{/each}}
+            {{/each}}
+        </select>
+        {{>User}}
+    </div>
+</template>
+
+<template name="User">
+    <h2>_id</h2>
+    <p>{{_id}}</p>
+    <strong>Attached Tasks:</strong>
+    <ul>
+        {{#each tasks}}
+            <li>{{name}}</li>
+        {{/each}}
+    </ul>
+</template>

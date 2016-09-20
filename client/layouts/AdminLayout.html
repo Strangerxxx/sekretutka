@@ -1,0 +1,20 @@
+<template name="AdminLayout">
+    {{#if isInRole 'admin'}}
+        <header>
+            <h1>Admin Panel</h1>
+            {{> loginButtons }}
+        </header>
+
+        <div class="navigation">
+            {{> Navigation }}
+        </div>
+
+        <main>
+            <div class="content">
+                {{> Template.dynamic template=main}}
+            </div>
+        </main>
+    {{else}}
+        <strong>GO AWAY FILTHY PEASANT</strong>
+    {{/if}}
+</template>

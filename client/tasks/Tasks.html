@@ -1,0 +1,61 @@
+<template name="Tasks">
+    {{#if currentUser}}
+        {{#each tasks}}
+            {{>Task}}
+        {{/each}}
+    {{/if}}
+</template>
+
+<template name="Task">
+        <div class="task">
+
+            <h2>{{name}}</h2>
+            {{description}}
+
+            {{#if isInRole 'admin'}}
+                <h3>Steps</h3>
+                <ul>
+                    {{#each steps}}
+                        <li>
+                            <p><h4>{{name}}</h4></p>
+                            <p>{{description}}</p>
+                            <p>Progress:</p>
+                                <ul>
+                                {{#each progress ../_id _id}}
+                                    <li>{{email}} : {{result}}</li>
+                                {{/each}}
+                                </ul>
+                        </li>
+                    {{/each}}
+                </ul>
+                <input type="button" class="delete-task" value="Delete">
+                <form class="attach-users">
+                    <select class="form-select">
+                        {{#each users}}
+                            {{#each emails}}
+                                <option value="{{address}}">{{address}}</option>
+                            {{/each}}
+                        {{/each}}
+                    </select>
+                    <input type="submit" value="Attach">
+                </form>
+
+                <strong>Users Attached:</strong>
+                <ul>
+                    {{#each user}}
+                        <li>
+                            {{#each emails}}{{address}}{{/each}}
+                            <input type="button" data-user="{{_id}}" class="delete-user" value="x" data-task="{{../_id}}">
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <h3>Active step</h3>
+                {{#with step _id}}
+                    <h4>{{name}}</h4>
+                    {{description}}
+                    {{{userInput completionType _id}}}
+                {{/with}}
+            {{/if}}
+        </div>
+</template>
