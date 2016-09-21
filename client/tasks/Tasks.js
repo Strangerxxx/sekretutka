@@ -2,6 +2,7 @@ Meteor.subscribe('tasks');
 Meteor.subscribe('dictionary');
 Meteor.subscribe('usertask');
 
+var completionType = new ReactiveVar();
 
 Template.Task.helpers({
    users: ()=> {
@@ -22,21 +23,21 @@ Template.Task.helpers({
             if(element._id == userTask['activeStepId'])
                 Step = element;
         });
+        if(userTask['activeStepId'] == 1)
+            Step = { name: 'Completed'};
         return Step;
     },
-    userInput: (par, _id)=> {
+    userInput: (par, _id) => {
         switch(par){
             case 'Text':
-                return  '<form class="completion-text" data-id="'+_id+'">' +
-                            '<input type="text" name="text" class="completionString">' +
-                            '<input type="submit" value="Submit">' +
-                        '</form>';
+                return 'textTemplate';
                 break;
             case 'Button':
-                return '<input type="button" class="completion-button" value="Next">';
+                return 'buttonTemplate';
                 break;
             case 'Image':
-                return 'tbd';
+                return 'uploadTemplate';
+                break;
             default:
                 break;
         }
@@ -53,20 +54,20 @@ Template.Task.helpers({
         });
         var result = '';
         var data = [];
-        for(var i=0; i<utArray.length; i++){
+        for(var i=0; i<utArray.length; i++) {
             utArray[i].progress.forEach(function (element) {
-                if(element.stepId == stepId)
+                if (element.stepId == stepId)
                     result = element.result;
             });
+            if(result.search(/.jpg/i)!= -1)
+                result = '<a href="/.uploads/' + result + '">Image</a>';
             data.push({
                 email: emails[i],
                 result: result
             });
         }
-        console.log(utArray.length)
         return data;
-    }
-
+    },
 });
 
 Template.Task.events({
@@ -87,6 +88,10 @@ Template.Task.events({
         event.preventDefault();
         Meteor.call('usertask.progress', $(event.target).data('id'), event.target.text.value);
         event.target.text.value = '';
+    },
+    'click .completion-button': function (event) {
+        console.log($(event.target).data('id'));
+        Meteor.call('usertask.progress', $(event.target).data('id'), 'Completed');
     }
 });
 
@@ -103,4 +108,14 @@ Template.Tasks.helpers({
             return tasks.find({_id: {$in: dict}});
         }
     },
+});
+
+Template.uploadTemplate.helpers({
+   completionCallback: (stepId)=> {
+        return{
+            finished: function (index, fileInfo, context) {
+                Meteor.call('usertask.progress', stepId, fileInfo.name);
+            }
+        }
+   },
 });

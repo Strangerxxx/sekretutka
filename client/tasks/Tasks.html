@@ -22,7 +22,7 @@
                             <p>Progress:</p>
                                 <ul>
                                 {{#each progress ../_id _id}}
-                                    <li>{{email}} : {{result}}</li>
+                                    <li>{{email}} : {{{result}}}</li>
                                 {{/each}}
                                 </ul>
                         </li>
@@ -54,8 +54,23 @@
                 {{#with step _id}}
                     <h4>{{name}}</h4>
                     {{description}}
-                    {{{userInput completionType _id}}}
+                    {{> Template.dynamic template=(userInput completionType)}}
                 {{/with}}
             {{/if}}
         </div>
+</template>
+
+<template name="uploadTemplate">
+    {{> upload_bootstrap fileTypes='.jpg' callbacks=(completionCallback _id)}}
+</template>
+
+<template name="textTemplate">
+    <form class="completion-text" data-id="{{_id}}">
+    <input type="text" name="text" class="completionString">
+    <input type="submit" value="Submit">
+    </form>
+</template>
+
+<template name="buttonTemplate">
+    <input type="button" class="completion-button" data-id="{{_id}}" value="Next">
 </template>

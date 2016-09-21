@@ -39,3 +39,7 @@ alanning:roles
 manuel:reactivearray
 accounts-base
 random
+tomi:upload-server
+tomi:upload-jquery
+cfs:standard-packages
+cfs:filesystem
