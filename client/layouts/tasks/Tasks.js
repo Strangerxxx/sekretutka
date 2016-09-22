@@ -84,7 +84,7 @@ Template.Task.events({
     'click .delete-user': function (event) {
         Meteor.call('usertask.remove', $(event.target).data('task'), $(event.target).data('user'));
     },
-    'submit.completion-text': function (event, tmpl) {
+    'submit .completion-text': function (event, tmpl) {
         event.preventDefault();
         Meteor.call('usertask.progress', $(event.target).data('id'), event.target.text.value);
         event.target.text.value = '';

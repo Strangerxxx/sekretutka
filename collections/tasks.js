@@ -1,14 +1,3 @@
-tasks = new Mongo.Collection('tasks');
-
-tasks.allow({
-   insert: function (userId, doc) {
-       return !!userId;
-   },
-   remove: function (userId, doc) {
-       return !!userId;
-   }
-});
-
 Steps = new SimpleSchema({
     _id: {
         type: String,
@@ -52,5 +41,14 @@ TaskSchema = new SimpleSchema({
         type: [Steps],
     }
 });
+tasks = new Mongo.Collection('tasks');
 
+tasks.allow({
+    insert: function (userId, doc) {
+        return !!userId;
+    },
+    remove: function (userId, doc) {
+        return !!userId;
+    }
+});
 tasks.attachSchema(TaskSchema);
