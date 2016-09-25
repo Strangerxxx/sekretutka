@@ -1,77 +1,13 @@
 <template name="Tasks">
     {{#if currentUser}}
         {{#each tasks}}
-            {{>Task}}
+            <div class="task">
+                {{#if isInRole 'admin'}}
+                    {{> AdminTask}}
+                {{else}}
+                    {{>UserTask}}
+                {{/if}}
+            </div>
         {{/each}}
     {{/if}}
-</template>
-
-<template name="Task">
-        <div class="task">
-
-            <h2>{{name}}</h2>
-            {{description}}
-            // till
-
-            {{#if isInRole 'admin'}}
-                <h3>Steps</h3>
-                <ul>
-                    {{#each steps}}
-                        <li>
-                            <p><h4>{{name}}</h4></p>
-                            <p>{{description}}</p>
-                            <p>Progress:</p>
-                                <ul>
-                                {{#each progress ../_id _id}}
-                                    <li>{{email}} : {{{result}}}</li>
-                                {{/each}}
-                                </ul>
-                        </li>
-                    {{/each}}
-                </ul>
-                <input type="button" class="delete-task" value="Delete">
-                <form class="attach-users">
-                    <select class="form-select">
-                        {{#each users}}
-                            {{#each emails}}
-                                <option value="{{address}}">{{address}}</option>
-                            {{/each}}
-                        {{/each}}
-                    </select>
-                    <input type="submit" value="Attach">
-                </form>
-
-                <strong>Users Attached:</strong>
-                <ul>
-                    {{#each user}}
-                        <li>
-                            {{#each emails}}{{address}}{{/each}}
-                            <input type="button" data-user="{{_id}}" class="delete-user" value="x" data-task="{{../_id}}">
-                        </li>
-                    {{/each}}
-                </ul>
-            {{else}}
-                <h3>Active step</h3>
-                {{#with step _id}}
-                    <h4>{{name}}</h4>
-                    {{description}}
-                    {{> Template.dynamic template=(userInput completionType)}}
-                {{/with}}
-            {{/if}}
-        </div>
-</template>
-
-<template name="uploadTemplate">
-    {{> upload_bootstrap fileTypes='.jpg' callbacks=(completionCallback _id)}}
-</template>
-
-<template name="textTemplate">
-    <form class="completion-text" data-id="{{_id}}">
-    <input type="text" name="text" class="completionString">
-    <input type="submit" value="Submit">
-    </form>
-</template>
-
-<template name="buttonTemplate">
-    <input type="button" class="completion-button" data-id="{{_id}}" value="Next">
 </template>

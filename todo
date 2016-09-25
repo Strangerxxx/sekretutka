@@ -1,3 +1,8 @@
-TODO: attach files to step completions
-
-todo: step completion: upload image
+TODO: first logged in user to become admin
+TODO: divide user and admin tasks DONE
+TODO: possibility to edit everything
+TODO: remove user submissions (saved anyways, but return user to step)
+TODO: flowrouter admin redirect
+TODO: check for unneeded stuff, tidy up
+TODO: remove collision with stepid
+TODO: fix uploads
