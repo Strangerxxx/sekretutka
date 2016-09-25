@@ -1,0 +1,28 @@
+<template name="UserTask">
+    <h2>{{name}}</h2>
+    {{description}}
+
+    <h3>Active step</h3>
+    {{#with step _id}}
+        <h4>{{name}}</h4>
+        {{description}}
+        {{> Template.dynamic template=(userInput completionType)}}
+    {{/with}}
+</template>
+
+
+
+<template name="uploadTemplate">
+    {{> upload_bootstrap fileTypes='.jpg' callbacks=(completionCallback _id)}}
+</template>
+
+<template name="textTemplate">
+    <form class="completion-text" data-id="{{_id}}">
+        <input type="text" name="text" class="completionString">
+        <input type="submit" value="Submit">
+    </form>
+</template>
+
+<template name="buttonTemplate">
+    <input type="button" class="completion-button" data-id="{{_id}}" value="Next">
+</template>

@@ -1,0 +1,57 @@
+<template name="AdminTask">
+    <label class="enableEdit">
+        <input type="checkbox"> Edit Mode
+    </label>
+
+    {{#unless editEnabled}}
+        <h2>{{name}}</h2>
+        {{description}}
+
+        <h3>Steps</h3>
+        <ul>
+            {{#each steps}}
+                <li>
+                    <p><h4>{{name}}</h4></p>
+                    <p>{{description}}</p>
+                    <p>Progress:</p>
+                    <ul>
+                        {{#each progress ../_id _id}}
+                            <li>{{email}} : {{{result}}}</li>
+                        {{/each}}
+                    </ul>
+                </li>
+            {{/each}}
+        </ul>
+        <input type="button" class="delete-task" value="Delete">
+        <form class="attach-users">
+            <select class="form-select">
+                {{#each users}}
+                    {{#each emails}}
+                        <option value="{{address}}">{{address}}</option>
+                    {{/each}}
+                {{/each}}
+            </select>
+            <input type="submit" value="Attach">
+        </form>
+
+        <strong>Users Attached:</strong>
+        <ul>
+            {{#each user}}
+                <li>
+                    {{#each emails}}{{address}}{{/each}}
+                    <input type="button" data-user="{{_id}}" class="delete-user" value="x" data-task="{{../_id}}">
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        {{#autoForm id="updateTask" type="update" collection="tasks" doc=(thisTask _id)}}
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="description"}}
+            {{> afQuickField name="steps"}}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-default">Reset Form</button>
+            </div>
+        {{/autoForm}}
+    {{/unless}}
+</template>
