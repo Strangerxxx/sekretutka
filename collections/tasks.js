@@ -13,7 +13,7 @@ tasks.allow({
 });
 
 
-Steps = new SimpleSchema({
+StepsSchema = new SimpleSchema({
     _id: {
         type: String,
         label: '_id',
@@ -53,7 +53,7 @@ TaskSchema = new SimpleSchema({
         label: "Description"
     },
     steps: {
-        type: [Steps],
+        type: [StepsSchema],
     }
 });
 

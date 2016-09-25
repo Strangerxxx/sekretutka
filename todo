@@ -1,8 +1,7 @@
-TODO: first logged in user to become admin
-TODO: divide user and admin tasks DONE
-TODO: possibility to edit everything
+TODO: first logged in user to become admin DONE
+TODO: possibility to edit everything TASKS AND STEPS DONE
 TODO: remove user submissions (saved anyways, but return user to step)
-TODO: flowrouter admin redirect
+TODO: flowrouter admin redirect WORKING BUT NOT ALWAYS
 TODO: check for unneeded stuff, tidy up
 TODO: remove collision with stepid
 TODO: fix uploads

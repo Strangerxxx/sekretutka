@@ -1,6 +1,6 @@
 <template name="AdminTask">
     <label class="enableEdit">
-        <input type="checkbox"> Edit Mode
+        <input type="checkbox" checked="{{editEnabled}}"> Edit Mode
     </label>
 
     {{#unless editEnabled}}
@@ -22,7 +22,9 @@
                 </li>
             {{/each}}
         </ul>
+
         <input type="button" class="delete-task" value="Delete">
+
         <form class="attach-users">
             <select class="form-select">
                 {{#each users}}

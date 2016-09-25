@@ -1,7 +1,6 @@
 //Todo: many2many rel. see https://github.com/aldeed/meteor-collection2/issues/31
 
 usertask = new Mongo.Collection('usertask');
-
 Meteor.methods({
     'usertask.add'(taskId, userId){
         const check = usertask.find({'taskId': taskId, 'userId': userId}).count();
@@ -9,9 +8,9 @@ Meteor.methods({
         const activeStepId = task.steps[0]._id;
         if(check == 0){
             usertask.insert({
-                userId,
                 taskId,
-                activeStepId
+                userId,
+                //activeStepId
             });
         }
     },
@@ -32,15 +31,37 @@ Meteor.methods({
             'stepId': stepId,
             'result': result
         };
-        task = usertask.findOne({'activeStepId': stepId});
-        usertask.update({'activeStepId': stepId}, {$push:  { 'progress': progress } });
-        var nextStep = 0;
-        tasks.findOne( { steps: {$elemMatch: {_id: stepId}}}).steps.forEach(function (step) {
-            if(nextStep==1)
-                nextStep = step._id;
-            if(step._id == stepId)
-                nextStep++;
-        });
-        usertask.update({'activeStepId': stepId}, {$set: {'activeStepId': nextStep} });
+        const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
+        var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
+        usertask.update(UserTask._id, {$push:  { 'progress': progress } });
     }
 });
+
+ProgressSchema = new SimpleSchema({
+    stepId: {
+        type: tasks.steps,
+    },
+    result: {
+        type: String,
+    },
+    ignore: {
+        type: Boolean,
+        optional: true,
+    }
+});
+
+UserTaskSchema = new SimpleSchema({
+    taskId: {
+       type: tasks,
+    },
+    userId: {
+        type: Meteor.users,
+    },
+    progress: {
+        type: [ProgressSchema],
+        optional: true
+    }
+});
+
+
+usertask.attachSchema(UserTaskSchema);
