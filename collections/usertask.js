@@ -1,6 +1,7 @@
 //Todo: many2many rel. see https://github.com/aldeed/meteor-collection2/issues/31
 
 usertask = new Mongo.Collection('usertask');
+
 Meteor.methods({
     'usertask.add'(taskId, userId){
         const check = usertask.find({'taskId': taskId, 'userId': userId}).count();

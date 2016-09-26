@@ -2,13 +2,16 @@ tasks = new Mongo.Collection('tasks');
 
 tasks.allow({
     insert: function (userId, doc) {
-        return !!userId;
+        if(Roles.userIsInRole(userId, 'admin'))
+            return !!userId;
     },
     remove: function (userId, doc) {
-        return !!userId;
+        if(Roles.userIsInRole(userId, 'admin'))
+            return !!userId;
     },
     update: function (userId, doc) {
-        return !!userId;
+        if(Roles.userIsInRole(userId, 'admin'))
+            return !!userId;
     }
 });
 

@@ -1,6 +1,6 @@
 Meteor.subscribe('tasks');
 Meteor.subscribe('users');
-Meteor.subscribe('usertask');
+Meteor.subscribe('usertask', Meteor.userId());
 
 var editMode = new ReactiveVar();
 editMode.set(false);

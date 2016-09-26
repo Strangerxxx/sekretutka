@@ -7,8 +7,11 @@ import { Meteor } from 'meteor/meteor';
 //     }
 // })
 
-if(Meteor.users.find().fetch().length == 1){  // Makes 1st registered user amin
-    const user = Meteor.users.findOne();
+Accounts.onCreateUser(function (options, user) {
+
+    if(Meteor.users.find().fetch().length == 0){  // Makes 1st registered user admin
+        user.roles = ['admin'];
+    }
     console.log(user);
-    Roles.addUsersToRoles(user, 'admin');
-}
+    return user;
+});

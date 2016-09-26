@@ -1,4 +1,4 @@
-Meteor.subscribe('directory');
+Meteor.subscribe('users');
 Meteor.subscribe('usertask');
 Meteor.subscribe('tasks');
 
@@ -21,9 +21,7 @@ Template.Users.events({
 });
 
 Template.User.helpers({
-    _id() {
-        return email.get();
-    },
+
     tasks: ()=> {
 
         var task = usertask.find({'userId' : email.get()}).map(function (doc) {

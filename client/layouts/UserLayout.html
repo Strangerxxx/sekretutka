@@ -1,6 +1,10 @@
 <template name="UserLayout">
     <header>
-        <h1>Hello, {{username}}</h1>
+        {{#if currentUser}}
+            <h1>Hello, {{username}}</h1>
+        {{else}}
+            <h1>Please Login</h1>
+        {{/if}}
         {{>loginButtons}}
     </header>
     <main>

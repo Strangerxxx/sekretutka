@@ -1,24 +1,23 @@
 Meteor.subscribe('tasks');
-Meteor.subscribe('usertask');
+Meteor.subscribe('usertask', Meteor.userId());
 
 Template.UserTask.helpers({
     step: (par)=> {
         var Step = null;
-        var userTask = usertask.findOne({'userId' : Meteor.userId(), 'taskId': par});
+        var userTask = usertask.findOne({'userId': Meteor.userId(), 'taskId': par});
         var task = tasks.findOne({'_id': par});
+        if (userTask){
+            if (userTask.progress == undefined)
+                return task.steps[0];
+            else {
+                for (var i = 0; i < task['steps'].length; i++) {
+                    for (var t = 0; t < userTask.progress.length; t++) {
+                        if (task.steps[i]._id == userTask.progress[t].stepId)
+                            break;
 
-        if(userTask.progress == undefined)
-            return task.steps[0];
-        else{
-            for(var i = 0; i < task['steps'].length; i++)
-            {
-                for(var t = 0; t < userTask.progress.length; t++)
-                {
-                    if(task.steps[i]._id == userTask.progress[t].stepId)
-                        break;
-
-                    if(t == (userTask.progress.length - 1) )
-                        return task.steps[i];
+                        if (t == (userTask.progress.length - 1))
+                            return task.steps[i];
+                    }
                 }
             }
         }
