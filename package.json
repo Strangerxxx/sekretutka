@@ -1,5 +1,5 @@
 {
-  "name": "User",
+  "name": "sekretutka",
   "private": true,
   "scripts": {
     "start": "meteor run"
