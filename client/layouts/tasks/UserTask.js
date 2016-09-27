@@ -39,6 +39,9 @@ Template.UserTask.helpers({
                 break;
         }
     },
+    task: () => {
+        return tasks.findOne({_id: FlowRouter.getParam('taskId')});
+    }
 });
 
 Template.UserTask.events({

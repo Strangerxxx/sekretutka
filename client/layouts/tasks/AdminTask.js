@@ -45,8 +45,8 @@ Template.AdminTask.helpers({
     editEnabled: ()=> {
         return editMode.get();
     },
-    thisTask: (par)=> {
-        return tasks.findOne(par);
+    task: ()=> {
+        return tasks.findOne({_id: FlowRouter.getParam('taskId')});
     }
 });
 
@@ -61,10 +61,19 @@ Template.AdminTask.events({
         user = Meteor.users.find({ "emails.address" : email }).fetch();
         Meteor.call('usertask.add', this._id, user[0]._id);
     },
-    'click .delete-user': function (event) {
+    'click .unassign-user': function (event) {
         Meteor.call('usertask.remove', $(event.target).data('task'), $(event.target).data('user'));
     },
-    'change .enableEdit': ()=> {
-        editMode.set(!editMode.get());
+    'click .enableEdit': ()=> {
+        editMode.set(true);
+    },
+    'click .remove-submission': (event)=> {
+        Meteor.call('usertask.remove-progress', $(event.target).data('taskid'), $(event.target).data('stepid'));
+    },
+    'click #submitEdit': ()=> {
+        editMode.set(false);
+    },
+    'click .cancel': ()=> {
+        editMode.set(false);
     }
 });

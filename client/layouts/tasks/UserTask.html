@@ -1,13 +1,15 @@
 <template name="UserTask">
-    <h2>{{name}}</h2>
-    {{description}}
-
-    <h3>Active step</h3>
-    {{#with step _id}}
-        <h4>{{name}}</h4>
+    <div class="task">
+        <h2>{{name}}</h2>
         {{description}}
-        {{> Template.dynamic template=(userInput completionType)}}
-    {{/with}}
+
+        <h3>Active step</h3>
+        {{#with step _id}}
+            <h4>{{name}}</h4>
+            {{description}}
+            {{> Template.dynamic template=(userInput completionType)}}
+        {{/with}}
+    </div>
 </template>
 
 

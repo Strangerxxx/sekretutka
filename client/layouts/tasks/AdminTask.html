@@ -1,59 +1,66 @@
 <template name="AdminTask">
-    <label class="enableEdit">
-        <input type="checkbox" checked="{{editEnabled}}"> Edit Mode
-    </label>
+    <div class="task">
+        {{#with task}}
+            {{#unless editEnabled}}
+                <label class="enableEdit">
+                    <a>Edit</a>
+                </label>
+                <h2>{{name}}</h2>
+                {{description}}
 
-    {{#unless editEnabled}}
-        <h2>{{name}}</h2>
-        {{description}}
-
-        <h3>Steps</h3>
-        <ul>
-            {{#each steps}}
-                <li>
-                    <p><h4>{{name}}</h4></p>
-                    <p>{{description}}</p>
-                    <p>Progress:</p>
-                    <ul>
-                        {{#each progress ../_id _id}}
-                            <li>{{email}} : {{{result}}}</li>
-                        {{/each}}
-                    </ul>
-                </li>
-            {{/each}}
-        </ul>
-
-        <input type="button" class="delete-task" value="Delete">
-
-        <form class="attach-users">
-            <select class="form-select">
-                {{#each users}}
-                    {{#each emails}}
-                        <option value="{{address}}">{{address}}</option>
+                <h3>Steps</h3>
+                <ul>
+                    {{#each steps}}
+                        <li>
+                            <p><h4>{{name}}</h4></p>
+                            <p>{{description}}</p>
+                            <p>Progress:</p>
+                            <ul>
+                                {{#each progress ../_id _id}}
+                                    <li>
+                                        {{email}} : {{{result}}}
+                                        <input type="button" class="remove-submission" value="x" data-taskId="{{../../_id}}" data-stepId="{{../_id}}">
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
                     {{/each}}
-                {{/each}}
-            </select>
-            <input type="submit" value="Attach">
-        </form>
+                </ul>
 
-        <strong>Users Attached:</strong>
-        <ul>
-            {{#each user}}
-                <li>
-                    {{#each emails}}{{address}}{{/each}}
-                    <input type="button" data-user="{{_id}}" class="delete-user" value="x" data-task="{{../_id}}">
-                </li>
-            {{/each}}
-        </ul>
-    {{else}}
-        {{#autoForm id="updateTask" type="update" collection="tasks" doc=(thisTask _id)}}
-            {{> afQuickField name="name"}}
-            {{> afQuickField name="description"}}
-            {{> afQuickField name="steps"}}
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-default">Reset Form</button>
-            </div>
-        {{/autoForm}}
-    {{/unless}}
+                <input type="button" class="delete-task" value="Delete">
+
+                <form class="attach-users">
+                    <select class="form-select">
+                        {{#each users}}
+                            {{#each emails}}
+                                <option value="{{address}}">{{address}}</option>
+                            {{/each}}
+                        {{/each}}
+                    </select>
+                    <input type="submit" value="Attach">
+                </form>
+
+                <strong>Users Attached:</strong>
+                <ul>
+                    {{#each user}}
+                        <li>
+                            {{#each emails}}{{address}}{{/each}}
+                            <input type="button" data-user="{{_id}}" class="unassign-user" value="x" data-task="{{../_id}}">
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                {{#autoForm id="updateTask" type="update" collection="tasks" doc=(task _id)}}
+                    {{> afQuickField name="name"}}
+                    {{> afQuickField name="description"}}
+                    {{> afQuickField name="steps"}}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="submitEdit">Submit</button>
+                        <button type="reset" class="btn btn-default">Reset Form</button>
+                    </div>
+                    <button class="cancel">Cancel</button>
+                {{/autoForm}}
+            {{/unless}}
+        {{/with}}
+    </div>
 </template>
