@@ -39,7 +39,6 @@ alanning:roles
 manuel:reactivearray
 accounts-base
 random
-tomi:upload-server
-tomi:upload-jquery
-cfs:standard-packages
-cfs:filesystem
+ostrio:files
+twbs:bootstrap
+peppelg:bootstrap-3-modal

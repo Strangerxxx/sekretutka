@@ -84,3 +84,9 @@ ul.list-group{
     position: relative;
 
 }
+
+img{
+    height: 70%;
+    width: 70%;
+    vertical-align: middle;
+}

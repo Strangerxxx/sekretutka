@@ -64,3 +64,10 @@
         {{/with}}
     </div>
 </template>
+
+<template name="imageModal">
+    <div class="modal">
+        <img src="{{imageFile.link}}" alt="{{imageFile.name}}" />
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</template>

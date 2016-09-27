@@ -10,3 +10,6 @@ Meteor.publish('usertask', function (userId) {
 Meteor.publish(null, function (){
     return Meteor.roles.find({})
 });
+Meteor.publish('files', function () {
+    return Images.find({}).cursor;
+});

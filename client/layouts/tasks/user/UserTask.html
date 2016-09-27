@@ -7,6 +7,7 @@
         {{#with step _id}}
             <h4>{{name}}</h4>
             {{description}}
+            <hr>
             {{> Template.dynamic template=(userInput completionType)}}
         {{/with}}
     </div>
@@ -15,7 +16,13 @@
 
 
 <template name="uploadTemplate">
-    {{> upload_bootstrap fileTypes='.jpg' callbacks=(completionCallback _id)}}
+    {{#with currentUpload}}
+        Uploading <b>{{file.name}}</b>
+        <span id="progress">{{progress.get}}%</span>
+    {{else}}
+        <input class="fileInput" id="{{_id}}" type="file" >
+        <p><small>Upload file in <code>jpeg</code> or <code>png</code> format</small></p>
+    {{/with}}
 </template>
 
 <template name="textTemplate">

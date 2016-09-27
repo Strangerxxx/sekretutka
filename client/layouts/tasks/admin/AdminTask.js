@@ -1,9 +1,12 @@
 Meteor.subscribe('tasks');
 Meteor.subscribe('users');
 Meteor.subscribe('usertask', Meteor.userId());
+Meteor.subscribe('files');
 
 var editMode = new ReactiveVar();
 editMode.set(false);
+
+var imageToShow = new ReactiveVar();
 
 Template.AdminTask.helpers({
     users: ()=> {
@@ -33,8 +36,9 @@ Template.AdminTask.helpers({
                 if (element.stepId == stepId)
                     result = element.result;
             });
-            if(result.search(/.jpg/i)!= -1)
-                result = '<a href="/.uploads/' + result + '">Image</a>';
+
+            if(Images.find({_id: result}).fetch().length == 1)
+                result = '<a class="showImage" id="' + result + '">Image</a>';
             data.push({
                 email: emails[i],
                 result: result
@@ -75,5 +79,20 @@ Template.AdminTask.events({
     },
     'click .cancel': ()=> {
         editMode.set(false);
+    },
+    'click .showImage': (event, tmpl) => {
+        imageToShow.set(event.target.id);
+        Modal.show('imageModal');
     }
+});
+
+Template.imageModal.helpers({
+    imageFile: function () {
+        console.log(imageToShow.get())
+        return Images.findOne({_id: imageToShow.get()});
+    },
+});
+
+Template.imageModal.events({
+
 });
