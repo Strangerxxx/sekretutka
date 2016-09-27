@@ -1,5 +1,3 @@
-//Todo: many2many rel. see https://github.com/aldeed/meteor-collection2/issues/31
-
 usertask = new Mongo.Collection('usertask');
 
 Meteor.methods({
@@ -35,6 +33,18 @@ Meteor.methods({
         const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
         var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });
+    },
+    'usertask.remove-progress'(taskId, stepId){
+        const thisUserTask = usertask.findOne({'taskId': taskId, 'progress': {$elemMatch: {stepId: stepId}}});
+
+        var count=0;
+        for(var i=0; i < thisUserTask.progress.length; i++){
+            if(thisUserTask.progress[0].stepId == stepId)
+                break;
+            count++;
+        }
+        console.log();
+        usertask.update({_id: thisUserTask._id, 'progress.stepId': stepId}, {$set: {'progress.$.ignore': true}});
     }
 });
 
