@@ -21,7 +21,8 @@ StepsSchema = new SimpleSchema({
         type: String,
         label: '_id',
         autoValue: function () {
-            return Random.id();
+            if(!this.isSet)
+                return Random.id();
         },
         autoform: {
             type: 'hidden'

@@ -14,15 +14,6 @@
                         <li>
                             <p><h4>{{name}}</h4></p>
                             <p>{{description}}</p>
-                            <p>Progress:</p>
-                            <ul>
-                                {{#each progress ../_id _id}}
-                                    <li>
-                                        {{email}} : {{{result}}}
-                                        <input type="button" class="remove-submission" value="x" data-taskId="{{../../_id}}" data-stepId="{{../_id}}">
-                                    </li>
-                                {{/each}}
-                            </ul>
                         </li>
                     {{/each}}
                 </ul>
@@ -65,9 +56,3 @@
     </div>
 </template>
 
-<template name="imageModal">
-    <div class="modal">
-        <img src="{{imageFile.link}}" alt="{{imageFile.name}}" />
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    </div>
-</template>

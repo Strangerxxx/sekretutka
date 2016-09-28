@@ -1,9 +1,28 @@
 <template name="Results">
-    <div class="task">
-        <ul>
-            {{#each results}}
-                <li>{{createdAt}} {{name}} {{result}}</li>
-            {{/each}}
-        </ul>
+    {{#if subscriptionsReady}}
+        <div class="task">
+            <h2>Displaying results for {{userName}} in task: {{taskName}}</h2>
+            <ul>
+                {{#each results}}
+                    <li>
+                        {{createdAt}}
+                        {{name}}
+                        {{#if completionType='Image'}}
+                            {{{image result}}}
+                        {{else}}
+                            {{result}}
+                        {{/if}}
+                        <input type="button" class="remove-submission" value="x" data-stepId="{{stepId}}">
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    {{/if}}
+</template>
+
+<template name="imageModal">
+    <div class="modal">
+        <img src="{{imageFile.link}}" alt="{{imageFile.name}}" />
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     </div>
 </template>

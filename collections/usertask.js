@@ -9,7 +9,7 @@ Meteor.methods({
             usertask.insert({
                 taskId,
                 userId,
-                //activeStepId
+                activeStepId
             });
         }
     },
@@ -37,8 +37,9 @@ Meteor.methods({
             'result': result,
             'completionType': completionType,
         };
-
+        var nextStep;
         var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
+        
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });
     },
     'usertask.remove-progress'(taskId, stepId){
@@ -51,7 +52,7 @@ Meteor.methods({
             count++;
         }
         console.log();
-        usertask.update({_id: thisUserTask._id, 'progress.stepId': stepId}, {$set: {'progress.$.ignore': true}});
+        usertask.update({_id: thisUserTask._id, 'progress.stepId': stepId}, {$set: {'progress.$.ignored': true}});
     }
 });
 
@@ -66,9 +67,12 @@ ProgressSchema = new SimpleSchema({
         type: String,
         allowedValues: ['Text', 'Image', 'Button'],
     },
-    ignore: {
+    ignored: {
         type: Boolean,
-        optional: true,
+        autoValue: function () {
+            if(!this.isSet)
+                return false;
+        },
     },
     createdAt: {
         type: Date,
@@ -87,6 +91,9 @@ UserTaskSchema = new SimpleSchema({
     },
     userId: {
         type: Meteor.users,
+    },
+    activeStepId: {
+        type: tasks.steps,
     },
     progress: {
         type: [ProgressSchema],

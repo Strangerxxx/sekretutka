@@ -11,23 +11,30 @@ Template.UserTask.helpers({
         var Step = null;
         var userTask = usertask.findOne({'userId': Meteor.userId(), 'taskId': par});
         var task = tasks.findOne({'_id': par});
-        if (userTask){
-            if (userTask.progress == undefined)
-                return task.steps[0];
-            else {
-                for (var i = 0; i < task['steps'].length; i++) {
-                    for (var t = 0; t < userTask.progress.length; t++) {
-                        if (task.steps[i]._id == userTask.progress[t].stepId)
-                            break;
-
-                        if (t == (userTask.progress.length - 1))
-                            return task.steps[i];
-                    }
-                }
-            }
-        }
-
-        return { name: 'Completed'};
+        // if (userTask){
+        //     if (userTask.progress == undefined)
+        //         return task.steps[0];
+        //     else {
+        //         for (var i = 0; i < task['steps'].length; i++) {
+        //             for (var t = 0; t < userTask.progress.length; t++) {
+        //                 if(userTask.progress[t].ignored)
+        //                     return task.steps[i];
+        //                 if (task.steps[i]._id == userTask.progress[t].stepId)
+        //                     break;
+        //
+        //                 if (t == (userTask.progress.length - 1))
+        //                     return task.steps[i];
+        //             }
+        //         }
+        //     }
+        // }
+        task['steps'].forEach( function (element) {
+            if(element._id == userTask['activeStepId'])
+                Step = element;
+        });
+        if(userTask['activeStepId'] == 1)
+            Step = { name: 'Completed'};
+        return Step;
     },
     userInput: (par, _id) => {
         switch(par){
@@ -58,7 +65,8 @@ Template.UserTask.events({
     'click .completion-button': function (event) {
         console.log($(event.target).data('id'));
         Meteor.call('usertask.progress', $(event.target).data('id'), 'Completed');
-    }
+    },
+
 });
 
 Template.uploadTemplate.helpers({

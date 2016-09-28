@@ -79,27 +79,16 @@ Template.AdminTask.events({
     'click .enableEdit': ()=> {
         editMode.set(true);
     },
-    'click .remove-submission': (event)=> {
-        Meteor.call('usertask.remove-progress', $(event.target).data('taskid'), $(event.target).data('stepid'));
-    },
     'click #submitEdit': ()=> {
         editMode.set(false);
     },
     'click .cancel': ()=> {
         editMode.set(false);
     },
-    'click .showImage': (event, tmpl) => {
-        event.preventDefault();
-        imageToShow.set(event.target.id);
-        Modal.show('imageModal');
-    }
+
 });
 
-Template.imageModal.helpers({
-    imageFile: function () {
-        return Images.findOne({_id: imageToShow.get()});
-    },
-});
+
 
 Template.imageModal.events({
 
