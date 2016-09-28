@@ -32,7 +32,6 @@ Meteor.methods({
             if(element._id == stepId)
                 completionType = element.completionType;
         });
-        console.log(completionType)
         var progress = {
             'stepId': stepId,
             'result': result,
@@ -65,11 +64,20 @@ ProgressSchema = new SimpleSchema({
     },
     completionType: {
         type: String,
-        allowedValues: ['Text', 'Image', 'Button']
+        allowedValues: ['Text', 'Image', 'Button'],
     },
     ignore: {
         type: Boolean,
         optional: true,
+    },
+    createdAt: {
+        type: Date,
+        autoValue: function () {
+            return new Date();
+        },
+        autoform: {
+            type: 'hidden'
+        }
     }
 });
 

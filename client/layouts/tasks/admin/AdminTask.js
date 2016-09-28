@@ -40,7 +40,6 @@ Template.AdminTask.helpers({
                 if (element.stepId == stepId){
                     if(element.completionType == 'Image'){
                         var image = Images.findOne({_id: element.result});
-                        console.log(image.link());
                         result = '<a href="'+image.link()+'" class="showImage" id="' + element.result + '">Image</a>';
                     }
                     else
@@ -98,7 +97,6 @@ Template.AdminTask.events({
 
 Template.imageModal.helpers({
     imageFile: function () {
-        console.log(imageToShow.get()); //эта штука вроде одна на страницу, зачем оно?
         return Images.findOne({_id: imageToShow.get()});
     },
 });

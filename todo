@@ -1,6 +1,5 @@
 TODO: possibility to edit everything TASKS AND STEPS DONE
 TODO: remove user submissions (saved anyways, but return user to step)
-TODO: flowrouter admin redirect WORKING BUT NOT ALWAYS
 TODO: check for unneeded stuff, tidy up
 TODO: remove collision with stepid
 TODO: admin user creation https://github.com/alanning/meteor-roles/blob/master/examples/flow-router/server/server.js#L60

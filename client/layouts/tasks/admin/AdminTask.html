@@ -44,7 +44,7 @@
                 <ul>
                     {{#each user}}
                         <li>
-                            {{#each emails}}{{address}}{{/each}}
+                            {{#each emails}}<a href="/admin/tasks/{{../../_id}}/results/{{../_id}}">{{address}}</a>{{/each}}
                             <input type="button" data-user="{{_id}}" class="unassign-user" value="x" data-task="{{../_id}}">
                         </li>
                     {{/each}}

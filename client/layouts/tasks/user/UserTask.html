@@ -20,7 +20,7 @@
         Uploading <b>{{file.name}}</b>
         <span id="progress">{{progress.get}}%</span>
     {{else}}
-        <input class="fileInput" id="{{_id}}" type="file" >
+        <input class="fileInput" data-stepId="{{../_id}}" type="file" >
         <p><small>Upload file in <code>jpeg</code> or <code>png</code> format</small></p>
     {{/with}}
 </template>
