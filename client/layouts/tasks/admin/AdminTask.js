@@ -6,7 +6,7 @@ Meteor.subscribe('files');
 var editMode = new ReactiveVar();
 editMode.set(false);
 
-var imageToShow = new ReactiveVar();
+var imageToShow = new ReactiveVar(); //не нужен тут реактиввар
 
 Template.AdminTask.helpers({
     users: ()=> {
@@ -36,9 +36,10 @@ Template.AdminTask.helpers({
                 if (element.stepId == stepId)
                     result = element.result;
             });
-
-            if(Images.find({_id: result}).fetch().length == 1)
-                result = '<a class="showImage" id="' + result + '">Image</a>';
+            var image = Images.findOne({_id: result});
+            console.log(image.link());
+            if(image.link() != "")
+                result = '<a href="'+image.link()+'" class="showImage" id="' + result + '">Image</a>';
             data.push({
                 email: emails[i],
                 result: result
@@ -81,6 +82,7 @@ Template.AdminTask.events({
         editMode.set(false);
     },
     'click .showImage': (event, tmpl) => {
+        event.preventDefault();
         imageToShow.set(event.target.id);
         Modal.show('imageModal');
     }
@@ -88,7 +90,7 @@ Template.AdminTask.events({
 
 Template.imageModal.helpers({
     imageFile: function () {
-        console.log(imageToShow.get())
+        console.log(imageToShow.get()); //эта штука вроде одна на страницу, зачем оно?
         return Images.findOne({_id: imageToShow.get()});
     },
 });
