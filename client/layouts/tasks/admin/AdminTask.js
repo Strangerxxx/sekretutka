@@ -22,24 +22,32 @@ Template.AdminTask.helpers({
     progress: (taskId, stepId)=>{
         var utArray = usertask.find({'taskId': taskId, 'progress': {$elemMatch: {stepId: stepId}}}).fetch();
         var users = [];
+
         utArray.forEach(function (element) {
             users.push(element.userId);
         });
+
         var emails = [];
         users.forEach(function (element) {
             emails.push(Meteor.users.findOne({_id: element}).emails[0].address);
         });
+
         var result = '';
         var data = [];
+
         for(var i=0; i<utArray.length; i++) {
             utArray[i].progress.forEach(function (element) {
-                if (element.stepId == stepId)
-                    result = element.result;
+                if (element.stepId == stepId){
+                    if(element.completionType == 'Image'){
+                        var image = Images.findOne({_id: element.result});
+                        console.log(image.link());
+                        result = '<a href="'+image.link()+'" class="showImage" id="' + element.result + '">Image</a>';
+                    }
+                    else
+                        result = element.result;
+                }
             });
-            var image = Images.findOne({_id: result});
-            console.log(image.link());
-            if(image.link() != "")
-                result = '<a href="'+image.link()+'" class="showImage" id="' + result + '">Image</a>';
+
             data.push({
                 email: emails[i],
                 result: result

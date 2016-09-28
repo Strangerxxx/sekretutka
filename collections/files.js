@@ -1,5 +1,5 @@
 this.Images = new Meteor.Files({
-    debug: true,
+    debug: false,
     collectionName: 'Images',
     allowClientCode: false,
     onBeforeUpload: function (file) {

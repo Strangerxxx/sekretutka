@@ -26,11 +26,19 @@ Meteor.methods({
         });
     },
     'usertask.progress'(stepId, result){
+        const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
+        var completionType;
+        task.steps.forEach(function (element) {
+            if(element._id == stepId)
+                completionType = element.completionType;
+        });
+        console.log(completionType)
         var progress = {
             'stepId': stepId,
-            'result': result
+            'result': result,
+            'completionType': completionType,
         };
-        const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
+
         var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });
     },
@@ -54,6 +62,10 @@ ProgressSchema = new SimpleSchema({
     },
     result: {
         type: String,
+    },
+    completionType: {
+        type: String,
+        allowedValues: ['Text', 'Image', 'Button']
     },
     ignore: {
         type: Boolean,
