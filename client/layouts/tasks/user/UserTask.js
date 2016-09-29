@@ -11,32 +11,25 @@ Template.UserTask.helpers({
         var Step = null;
         var userTask = usertask.findOne({'userId': Meteor.userId(), 'taskId': par});
         var task = tasks.findOne({'_id': par});
-        // if (userTask){
-        //     if (userTask.progress == undefined)
-        //         return task.steps[0];
-        //     else {
-        //         for (var i = 0; i < task['steps'].length; i++) {
-        //             for (var t = 0; t < userTask.progress.length; t++) {
-        //                 if(userTask.progress[t].ignored)
-        //                     return task.steps[i];
-        //                 if (task.steps[i]._id == userTask.progress[t].stepId)
-        //                     break;
-        //
-        //                 if (t == (userTask.progress.length - 1))
-        //                     return task.steps[i];
-        //             }
-        //         }
-        //     }
-        // }
-        task['steps'].forEach( function (element) {
-            if(element._id == userTask['activeStepId'])
-                Step = element;
-        });
-        if(userTask['activeStepId'] == 1)
-            Step = { name: 'Completed'};
-        return Step;
+        if (userTask){
+            if (userTask.progress == undefined)
+                return task.steps[0];
+            else {
+                for (var i = 0; i < task['steps'].length; i++) {
+                    for (var t = 0; t < userTask.progress.length; t++) {
+                        if (task.steps[i]._id == userTask.progress[t].stepId && userTask.progress[t].ignored == false){
+                            break;
+                        }
+
+                        if (t == (userTask.progress.length - 1))
+                            return task.steps[i];
+                    }
+                }
+            }
+        }
+        return { name: 'Completed'};
     },
-    userInput: (par, _id) => {
+    userInput: (par) => {
         switch(par){
             case 'Text':
                 return 'textTemplate';
@@ -59,15 +52,17 @@ Template.UserTask.helpers({
 Template.UserTask.events({
     'submit .completion-text': function (event, tmpl) {
         event.preventDefault();
-        Meteor.call('usertask.progress', $(event.target).data('id'), event.target.text.value);
+        Meteor.call('usertask.progress', event.target.id, event.target.text.value);
         event.target.text.value = '';
     },
     'click .completion-button': function (event) {
         console.log($(event.target).data('id'));
-        Meteor.call('usertask.progress', $(event.target).data('id'), 'Completed');
+        Meteor.call('usertask.progress', event.target.id, 'Completed');
     },
 
 });
+
+
 
 Template.uploadTemplate.helpers({
    currentUpload: function () {
@@ -89,14 +84,16 @@ Template.uploadTemplate.events({
 
                uploadInstance.on('start', function () {
                    template.currentUpload.set(this);
-                   console.log('test')
                });
 
                uploadInstance.on('end', function (error, fileObj) {
                    if(error)
                        alert('Error during upload' + error.reason);
-                   else
+                   else{
                        Meteor.call('usertask.progress', event.target.id, fileObj._id);
+                       template.currentUpload.set(false);
+                   }
+
                });
 
                uploadInstance.start();

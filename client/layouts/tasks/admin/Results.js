@@ -28,13 +28,17 @@ Template.Results.helpers({
                     result.name = element.name;
             });
        });
-
-
        return userTask.progress;
    },
     image: (result) => {
         var image = Images.findOne({_id: result});
         return '<a href="'+image.link()+'" class="showImage" id="' + result + '">Image</a>';
+    },
+    isImage: (completionType) => {
+        if(completionType == 'Image')
+            return true;
+        else
+            return false;
     }
 });
 

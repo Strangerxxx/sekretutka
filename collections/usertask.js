@@ -4,12 +4,12 @@ Meteor.methods({
     'usertask.add'(taskId, userId){
         const check = usertask.find({'taskId': taskId, 'userId': userId}).count();
         const task = tasks.findOne({ "_id" : taskId});
-        const activeStepId = task.steps[0]._id;
+        //const activeStepId = task.steps[0]._id;
         if(check == 0){
             usertask.insert({
                 taskId,
                 userId,
-                activeStepId
+                //activeStepId
             });
         }
     },
@@ -51,7 +51,6 @@ Meteor.methods({
                 break;
             count++;
         }
-        console.log();
         usertask.update({_id: thisUserTask._id, 'progress.stepId': stepId}, {$set: {'progress.$.ignored': true}});
     }
 });
@@ -91,9 +90,6 @@ UserTaskSchema = new SimpleSchema({
     },
     userId: {
         type: Meteor.users,
-    },
-    activeStepId: {
-        type: tasks.steps,
     },
     progress: {
         type: [ProgressSchema],
