@@ -1,9 +1,14 @@
 <template name="Register">
-    <header>
-        <h1>Please register</h1>
-        {{#if valid}}
-            {{> loginButtons}}
-        {{/if}}
-    </header>
-
+    {{#if Template.subscriptionsReady}}
+        {{#with valid}}
+            {{#if claimed}}
+                <strong>Invite was claimed</strong> <a href="/">Go Home</a>
+            {{else}}
+            <header>
+                <h1>Please register</h1>
+                {{> loginButtons}}
+            </header>
+            {{/if}}
+        {{/with}}
+    {{/if}}
 </template>

@@ -4,7 +4,7 @@ AccountsInvite.register({
 });
 
 function validateToken(token){
-    if(InvitesCollection.findOne({"token":token})) return true;
+    if(InvitesCollection.findOne({"token":token}) || !Meteor.users.findOne()) return true;
     else return false;
 }
 
