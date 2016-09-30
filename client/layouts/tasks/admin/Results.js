@@ -23,10 +23,12 @@ Template.Results.helpers({
        const userId = Template.instance().userId;
        var userTask = usertask.findOne({'taskId': taskId, 'userId': userId});
        tasks.findOne({_id: taskId}).steps.forEach(function (element) {
-            userTask.progress.forEach(function (result) {
-                if(result.stepId == element._id)
-                    result.name = element.name;
-            });
+           if(userTask.progress) {
+               userTask.progress.forEach(function (result) {
+                   if (result.stepId == element._id)
+                       result.name = element.name;
+               });
+           }
        });
        return userTask.progress;
    },

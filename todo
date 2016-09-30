@@ -1,7 +1,0 @@
-TODO: possibility to edit everything TASKS AND STEPS DONE
-TODO: remove user submissions (saved anyways, but return user to step)
-TODO: check for unneeded stuff, tidy up
-TODO: remove collision with stepid
-TODO: admin user creation https://github.com/alanning/meteor-roles/blob/master/examples/flow-router/server/server.js#L60
-TODO: show all results on separate page
-TODO: invite users to register by link

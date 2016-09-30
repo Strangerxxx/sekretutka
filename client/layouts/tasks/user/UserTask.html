@@ -7,7 +7,7 @@
         {{#with step _id}}
             <h4>{{name}}</h4>
             {{description}}
-            <hr>
+
             {{> Template.dynamic template=(userInput completionType)}}
         {{/with}}
     </div>
@@ -16,6 +16,7 @@
 
 
 <template name="uploadTemplate">
+    <hr>
     {{#with currentUpload}}
         Uploading <b>{{file.name}}</b>
         <span id="progress">{{progress.get}}%</span>
@@ -26,6 +27,7 @@
 </template>
 
 <template name="textTemplate">
+    <hr>
     <form class="completion-text" id="{{_id}}">
         <input type="text" name="text" class="completionString">
         <input type="submit" value="Submit">
@@ -33,5 +35,6 @@
 </template>
 
 <template name="buttonTemplate">
+    <hr>
     <input type="button" class="completion-button" id="{{_id}}" value="Next">
 </template>

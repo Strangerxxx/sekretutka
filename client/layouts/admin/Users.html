@@ -1,22 +1,60 @@
 <template name="Users">
-    <div class="users">
-        <span>Select User</span>
-        <select class="selUser">
-            {{#each users}}
-                {{#each emails}}
-                    <option value="{{../_id}}">{{address}}</option>
-                {{/each}}
-            {{/each}}
-        </select>
-        {{>User}}
-    </div>
-</template>
+    <h2>Invitations</h2>
 
-<template name="User">
-    <strong>Attached Tasks:</strong>
-    <ul>
-        {{#each tasks}}
-            <li>{{name}}</li>
+    <form class="inviteCreate">
+        <label>Create an Invitation</label>
+        <input id="inviteEmail" type="text" name="email" placeholder="Email address" />
+        <input type="submit" value="Invite">
+    </form>
+    <br/>
+    <table class="invites-table">
+        <thead>
+        <tr>
+            <th>Created At</th>
+            <th>Email</th>
+            <th>Token</th>
+            <th>Status</th>
+            <th>Reset</th>
+            <th>Revoke</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+
+        {{#each invites}}
+            <tr>
+                <td>{{datetime}}</td>
+                <td>{{email}}</td>
+                <td>{{token}}</td>
+                <td>{{status}}</td>
+                <td><a class="invite-reset" data-id="{{_id}}" href="#">Reset</a></td>
+                <td><a class="invite-revoke" data-id="{{_id}}" href="#">Revoke</a></td>
+                <td><a class="invite-delete" data-id="{{_id}}" href="#">Delete</a></td>
+            </tr>
         {{/each}}
-    </ul>
+    </table>
+
+    <h2>Users</h2>
+    <table class="invites-table">
+        <thead>
+        <tr>
+            <th>Created At</th>
+            <th>ID</th>
+            <th>profile.name</th>
+            <th>Token</th>
+            <th>Services</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+
+        {{#each users}}
+            <tr>
+                <td>{{datetime}}</td>
+                <td>{{_id}}</td>
+                <td>{{profile.name}}</td>
+                <td>{{inviteToken}} ({{inviteType}})</td>
+                <td>{{services}}</td>
+                <td><a class="user-delete" data-id="{{_id}}" href="#">Delete</a></td>
+            </tr>
+        {{/each}}
+    </table>
 </template>
