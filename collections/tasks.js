@@ -32,10 +32,6 @@ StepsSchema = new SimpleSchema({
         type: String,
         label: "Name",
     },
-    description: {
-        type: String,
-        label: "Description"
-    },
     completionType: {
         type: String,
         allowedValues: ['Text', 'Image', 'Button'],
@@ -45,6 +41,14 @@ StepsSchema = new SimpleSchema({
             }
         }
     },
+    description: {
+        type: String,
+        label: "Description",
+        autoform:{
+            type: "textarea",
+            rows: 8,
+        }
+    }
 });
 
 TaskSchema = new SimpleSchema({
