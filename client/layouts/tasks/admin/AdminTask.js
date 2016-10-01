@@ -63,26 +63,26 @@ Template.AdminTask.helpers({
 });
 
 Template.AdminTask.events({
-    'click .delete-task': function () {
+    'click #delete-task': function () {
         tasks.remove(this._id);
         Meteor.call('usertask.removeTask', this._id); //delete all connections with users from usertask
     },
     'submit .attach-users': function (event, tmpl) {
         event.preventDefault();
-        var email = tmpl.find('.form-select :selected').text;
+        var email = tmpl.find('.user-selected :selected').text;
         user = Meteor.users.find({ "emails.address" : email }).fetch();
         Meteor.call('usertask.add', this._id, user[0]._id);
     },
     'click .unassign-user': function (event) {
         Meteor.call('usertask.remove', $(event.target).data('task'), $(event.target).data('user'));
     },
-    'click .enableEdit': ()=> {
+    'click #enableEdit': ()=> {
         editMode.set(true);
     },
     'click #submitEdit': ()=> {
         editMode.set(false);
     },
-    'click .cancel': ()=> {
+    'click #cancel': ()=> {
         editMode.set(false);
     },
 

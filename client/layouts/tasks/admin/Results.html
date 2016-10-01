@@ -5,7 +5,7 @@
             <ul>
                 {{#each results}}
                     <li>
-                        {{createdAt}}
+                        {{formatDate createdAt}}
                         {{name}}
                         {{#if isImage completionType}}
                             {{{image result}}}

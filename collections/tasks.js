@@ -62,6 +62,16 @@ TaskSchema = new SimpleSchema({
     },
     steps: {
         type: [StepsSchema],
+    },
+    createdAt: {
+        type: Date,
+        autoValue: function () {
+            if(!this.isSet)
+                return new Date();
+        },
+        autoform: {
+            type: 'hidden'
+        }
     }
 });
 

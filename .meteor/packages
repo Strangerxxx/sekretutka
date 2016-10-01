@@ -42,3 +42,5 @@ peppelg:bootstrap-3-modal
 t3db0t:accounts-invite
 blaze-html-templates@1.0.4
 t3db0t:invites
+jesperwe:bootstrap-select
+momentjs:moment
