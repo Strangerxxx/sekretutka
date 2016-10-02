@@ -44,3 +44,5 @@ blaze-html-templates@1.0.4
 t3db0t:invites
 jesperwe:bootstrap-select
 momentjs:moment
+xvendo:clipboardjs
+fourquet:jquery-toast

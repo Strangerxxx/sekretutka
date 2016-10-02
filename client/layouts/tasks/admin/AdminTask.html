@@ -15,14 +15,19 @@
 
 
                 <h3>Steps</h3>
-                <ul>
-                    {{#each steps}}
-                        <li>
-                            <p><h4>{{name}}</h4></p>
-                            <p>{{description}}</p>
-                        </li>
-                    {{/each}}
-                </ul>
+                <div class="faq">
+                    <dl>
+                        {{#each steps}}
+                            <dt>
+                                <p><h4>{{name}}</h4></p>
+                            </dt>
+                            <dd>
+                                <p>{{description}}</p>
+                            </dd>
+                        {{/each}}
+                    </dl>
+                </div>
+
 
                 <hr>
 

@@ -5,6 +5,7 @@ Template.Users.onCreated(function() {
         self.subscribe('requests-all');
         self.subscribe('users-all');
     });
+    var clipboard = new Clipboard('.get-link')
 });
 
 Template.Users.helpers({
@@ -45,6 +46,9 @@ Template.Users.helpers({
             .filter(function(k){ return k != "resume"})
             .value()
             .join(", ");
+    },
+    url: () => {
+        return Meteor.absoluteUrl() + 'acceptInvite/';
     }
 });
 
@@ -66,7 +70,10 @@ Template.Users.events = {
     'click a.invite-delete': function(e,t) {
         Meteor.call("invitesDelete", $(e.currentTarget).attr('data-id'));
     },
-    'click a.user-delete':function(e,t){
+    'click a.user-delete':function(e,t) {
         Meteor.call("deleteUser", $(e.currentTarget).attr('data-id'));
+    },
+    'click .get-link': () => {
+        Toast.success('Copied to clipboard');
     }
 };

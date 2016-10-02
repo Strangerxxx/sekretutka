@@ -18,7 +18,7 @@ h1{
     background-color: honeydew;
     height: 100%;
     position: fixed;
-    margin-top: 95px;
+    margin-top: 88px;
     z-index: 0;
 }
 div.navigation{
@@ -111,6 +111,8 @@ img{
     border-radius: 4px;
     padding: 5px;
     background-color: #f0f0f0 ;
+    word-break: break-all;
+    margin: 5px;
 }
 
 .unassign-user {
@@ -122,4 +124,28 @@ img{
 }
 .createdAt{
     color: #b4b4b4
+}
+
+
+.faq {
+    counter-reset: my-badass-counter;
+}
+.faq dt {
+    position: relative;
+}
+.faq dt:before {
+    content: counter(my-badass-counter);
+    counter-increment: my-badass-counter;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font: bold 30px/1 Sans-Serif;
+}
+.faq dd {
+    padding: 5px 10px 1px 10px;
+    margin: 0 0 10px 20px;
+    word-break: break-all;
+}
+.faq dt {
+    padding-left: 30px;
 }

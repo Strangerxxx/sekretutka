@@ -1,7 +1,9 @@
 <template name="UserTask">
     <div class="task">
         <h2>{{name}}</h2>
-        {{description}}
+        <div class="description">
+            {{description}}
+        </div>
 
         <h3>Active step</h3>
         {{#with step _id}}

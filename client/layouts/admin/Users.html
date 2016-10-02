@@ -12,7 +12,7 @@
         <tr>
             <th>Created At</th>
             <th>Email</th>
-            <th>Token</th>
+            <th>Registration Link</th>
             <th>Status</th>
             <th>Reset</th>
             <th>Revoke</th>
@@ -24,7 +24,7 @@
             <tr>
                 <td>{{datetime}}</td>
                 <td>{{email}}</td>
-                <td>{{token}}</td>
+                <td><a href="#" class="get-link" data-clipboard-text="{{url}}{{token}}">Click to copy</a></td>
                 <td>{{status}}</td>
                 <td><a class="invite-reset" data-id="{{_id}}" href="#">Reset</a></td>
                 <td><a class="invite-revoke" data-id="{{_id}}" href="#">Revoke</a></td>
