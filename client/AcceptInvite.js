@@ -1,12 +1,12 @@
 
-Template.Register.onCreated(function () {
+Template.AcceptInvite.onCreated(function () {
     Template.instance().token = FlowRouter.getParam('token');
     var self = this;
     self.subscribe('invites-status', Template.instance().token);
     self.subscribe('users');
 });
 
-Template.Register.helpers({
+Template.AcceptInvite.helpers({
    valid: () => {
        if(InvitesCollection.findOne()){
            const token = Template.instance().token;
