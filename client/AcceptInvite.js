@@ -27,3 +27,13 @@ Template.AcceptInvite.helpers({
        return true;
    }
 });
+
+Template.AcceptInvite.events({
+    'submit form': function(event) {
+        event.preventDefault();
+        Accounts.createUser({
+            email: event.target.email.value,
+            password: event.target.password.value
+        });
+    }
+});

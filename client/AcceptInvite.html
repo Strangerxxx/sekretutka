@@ -4,10 +4,39 @@
             {{#if claimed}}
                 <strong>Invite was claimed</strong> <a href="/">Go Home</a>
             {{else}}
-            <header>
-                <h1>Please register</h1>
-                {{> loginButtons}}
-            </header>
+                <div class="container">
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <!-- Form Name -->
+                            <legend>Register</legend>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="email">Email</label>
+                                <div class="col-md-4">
+                                    <input id="email" name="email" placeholder="your@email.com" class="form-control input-md" type="email">
+                                    <span class="help-block">Enter your email</span>
+                                </div>
+                            </div>
+
+                            <!-- Password input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="password">Password</label>
+                                <div class="col-md-4">
+                                    <input id="password" name="password" placeholder="********" class="form-control input-md" type="password">
+                                    <span class="help-block">Create strong password</span>
+                                </div>
+                            </div>
+
+                            <!-- Button -->
+                            <div class="form-group">
+                                <div class="col-md-offset-4 col-md-4">
+                                    <input id="register" type="submit" value="Sign Up" class="btn btn-primary">
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
             {{/if}}
         {{/with}}
     {{/if}}
