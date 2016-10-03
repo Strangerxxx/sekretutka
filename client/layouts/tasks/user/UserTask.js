@@ -45,6 +45,7 @@ Template.UserTask.helpers({
         }
     },
     task: () => {
+        console.log(FlowRouter.getParam('taskId'));
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
     }
 });

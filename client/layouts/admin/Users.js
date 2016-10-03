@@ -5,7 +5,7 @@ Template.Users.onCreated(function() {
         self.subscribe('requests-all');
         self.subscribe('users-all');
     });
-    var clipboard = new Clipboard('.get-link')
+    var clipboard = new Clipboard('.get-link');
 });
 
 Template.Users.helpers({

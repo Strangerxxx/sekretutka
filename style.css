@@ -128,18 +128,18 @@ img{
 
 
 .faq {
-    counter-reset: my-badass-counter;
+    counter-reset: counter;
 }
 .faq dt {
     position: relative;
 }
 .faq dt:before {
-    content: counter(my-badass-counter);
-    counter-increment: my-badass-counter;
+    content: counter(counter);
+    counter-increment:  counter;
     position: absolute;
     left: 0;
     top: 0;
-    font: bold 30px/1 Sans-Serif;
+    font: 30px/1 Sans-Serif;
 }
 .faq dd {
     padding: 5px 10px 1px 10px;

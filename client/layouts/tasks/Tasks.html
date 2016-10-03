@@ -5,7 +5,7 @@
                 {{#if isInRole 'admin'}}
                     <li><a href="/admin/tasks/{{_id}}">{{name}}</a></li>
                 {{else}}
-                    {{> UserTask}}
+                    <li><a href="/tasks/{{_id}}">{{name}}</a></li>
                 {{/if}}
             </ul>
         {{/each}}
