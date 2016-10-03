@@ -1,3 +1,4 @@
+/*
 Template.Navigation.onCreated(function naviOnCreated() {
     this.currentTab = new ReactiveVar();
 });
@@ -14,3 +15,4 @@ Template.Navigation.events({
        $(".navigation li").not(currentTab).removeClass("active");
    },
 });
+*/

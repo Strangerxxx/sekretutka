@@ -1,4 +1,4 @@
-header{
+/*header{
     width: 100%;
     padding-left: 5px;
     box-shadow: 0 3px 1px #606060;
@@ -6,7 +6,7 @@ header{
     position: fixed;
     margin-top: -5px;
     z-index: 1;
-}
+}*/
 h1{
     color: white;
 }
@@ -18,7 +18,7 @@ h1{
     background-color: honeydew;
     height: 100%;
     position: fixed;
-    margin-top: 88px;
+    /*margin-top: 88px;*/
     z-index: 0;
 }
 div.navigation{
@@ -65,13 +65,13 @@ li.navigation-li a:hover:not(.active) {
 }
 
 .task{
-    box-shadow: 0px 1px 2px #606060;
+    /*box-shadow: 0px 1px 2px #606060;*/
     padding-left: 5px;
     padding-bottom: 5px;
 }
-.content{
+/*.content{
     margin-top: 110px;
-}
+}*/
 #__blaze-root{
     font-family: sans-serif;
 }
