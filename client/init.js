@@ -1,6 +1,4 @@
-Template.registerHelper( 'formatDate', (date) => {
-    return moment(date).format('MMMM do YYYY, HH:mm');
-});
+Template.registerHelper( 'formatDate', (date) => moment(date).format('MMMM Do YYYY, HH:mm'));
 
 Toast.options = {
     closeButton: false,
