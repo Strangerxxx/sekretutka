@@ -27,7 +27,6 @@ fastclick
 raix:handlebar-helpers
 aldeed:collection2
 aldeed:autoform
-accounts-ui
 accounts-password
 matb33:bootstrap-glyphicons
 msavin:jetsetter
@@ -46,3 +45,5 @@ jesperwe:bootstrap-select
 xvendo:clipboardjs
 fourquet:jquery-toast
 momentjs:moment
+stylus
+ian:accounts-ui-bootstrap-3

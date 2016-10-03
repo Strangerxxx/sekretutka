@@ -8,7 +8,9 @@
         <h3>Active step</h3>
         {{#with step _id}}
             <h4>{{name}}</h4>
-            {{description}}
+            <div class="description">
+                {{description}}
+            </div>
 
             {{> Template.dynamic template=(userInput completionType)}}
         {{/with}}
