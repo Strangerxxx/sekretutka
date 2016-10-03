@@ -64,11 +64,12 @@ li.navigation-li a:hover:not(.active) {
     left: auto;
 }
 
-.task{
-    /*box-shadow: 0px 1px 2px #606060;*/
+/*.task{
+    !*box-shadow: 0px 1px 2px #606060;*!
     padding-left: 5px;
     padding-bottom: 5px;
-}
+}*/
+.task{ margin-top: -20px; }
 /*.content{
     margin-top: 110px;
 }*/

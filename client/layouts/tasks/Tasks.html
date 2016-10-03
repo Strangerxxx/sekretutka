@@ -1,7 +1,7 @@
 <template name="Tasks">
     {{#if currentUser}}
         {{#each tasks}}
-            <ul>
+            <ul class="nav nav-pills nav-stacked">
                 {{#if isInRole 'admin'}}
                     <li><a href="/admin/tasks/{{_id}}">{{name}}</a></li>
                 {{else}}
