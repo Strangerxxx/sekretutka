@@ -1,5 +1,8 @@
 Template.registerHelper( 'formatDate', (date) => moment(date).format('MMMM Do YYYY, HH:mm'));
 
+Accounts.config({
+    forbidClientAccountCreation: true
+});
 
 Toast.options = {
     closeButton: false,

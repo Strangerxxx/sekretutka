@@ -1,7 +1,7 @@
 Template.Results.onCreated(function () {
     Meteor.subscribe('usertask');
     Meteor.subscribe('tasks');
-    Meteor.subscribe('users');
+    Meteor.subscribe('users', Meteor.userId());
     Template.instance().taskId = FlowRouter.getParam('taskId');
     Template.instance().userId = FlowRouter.getParam('userId');
 

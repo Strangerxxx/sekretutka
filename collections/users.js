@@ -1,5 +1,26 @@
 Schema = {};
 
+Schema.UserProfile = new SimpleSchema({
+    firstName: {
+        type: String,
+        label: "First Name",
+        optional: true
+    },
+    lastName: {
+        type: String,
+        optional: true
+    },
+    birthday: {
+        type: Date,
+        optional: true
+    },
+    gender: {
+        type: String,
+        allowedValues: ['Male', 'Female'],
+        optional: true
+    },
+});
+
 Schema.User = new SimpleSchema({
     username: {
         type: String,
@@ -77,4 +98,11 @@ Schema.User = new SimpleSchema({
     }
 });
 
-//Meteor.users.attachSchema(Schema.User);
+Meteor.users.attachSchema(Schema.User);
+
+Meteor.methods({
+   'users.count': function () {
+       count = Meteor.users.find().fetch().length;
+       return count;
+   },
+});

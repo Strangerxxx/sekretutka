@@ -4,6 +4,7 @@ Template.Users.onCreated(function() {
         self.subscribe('invites-all');
         self.subscribe('requests-all');
         self.subscribe('users-all');
+        self.subscribe('invites2', null, Meteor.userId());
     });
     var clipboard = new Clipboard('.get-link');
 });
@@ -14,7 +15,7 @@ Template.Users.helpers({
         return d.toLocaleString();
     },
     "invites":function(){
-        return InvitesCollection.find();
+        return invites2.find();
     },
     "users":function(){
         return Meteor.users.find();
@@ -55,8 +56,7 @@ Template.Users.helpers({
 Template.Users.events = {
     'submit form.inviteCreate': function (event, template) {
         event.preventDefault();
-        var inviteEmail = template.find('#inviteEmail').value;
-        Meteor.call('invitesCreate', inviteEmail, true);
+        Meteor.call('invites.create', Meteor.userId());
     },
     'click a.invite-reset': function(e,t) {
         Meteor.call("invitesReset", $(e.currentTarget).attr('data-id'));
@@ -68,12 +68,15 @@ Template.Users.events = {
         Meteor.call("requestsDelete", $(e.currentTarget).attr('data-id'));
     },
     'click a.invite-delete': function(e,t) {
-        Meteor.call("invitesDelete", $(e.currentTarget).attr('data-id'));
+        Meteor.call("invites.delete", Meteor.userId(), $(e.currentTarget).attr('data-id'));
     },
     'click a.user-delete':function(e,t) {
         Meteor.call("deleteUser", $(e.currentTarget).attr('data-id'));
     },
     'click .get-link': () => {
         Toast.success('Copied to clipboard');
+    },
+    'click .createInvite': () => {
+        Meteor.call('invites.create', Meteor.userId());
     }
 };

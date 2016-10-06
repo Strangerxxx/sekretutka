@@ -1,17 +1,15 @@
 <template name="Users">
     <h2>Invitations</h2>
 
-    <form class="inviteCreate">
+    <form class="inviteCreate ">
         <label>Create an Invitation</label>
-        <input id="inviteEmail" type="text" name="email" placeholder="Email address" />
-        <input type="submit" value="Invite">
+        <input type="submit" value="Invite" class="btn btn-default">
     </form>
     <br/>
-    <table class="invites-table">
+    <table class="table">
         <thead>
         <tr>
             <th>Created At</th>
-            <th>Email</th>
             <th>Registration Link</th>
             <th>Status</th>
             <th>Reset</th>
@@ -19,42 +17,41 @@
             <th>Delete</th>
         </tr>
         </thead>
-
-        {{#each invites}}
-            <tr>
-                <td>{{datetime}}</td>
-                <td>{{email}}</td>
-                <td><a href="#" class="get-link" data-clipboard-text="{{url}}{{token}}">Click to copy</a></td>
-                <td>{{status}}</td>
-                <td><a class="invite-reset" data-id="{{_id}}" href="#">Reset</a></td>
-                <td><a class="invite-revoke" data-id="{{_id}}" href="#">Revoke</a></td>
-                <td><a class="invite-delete" data-id="{{_id}}" href="#">Delete</a></td>
-            </tr>
-        {{/each}}
+        <tbody>
+            {{#each invites}}
+                <tr>
+                    <td>{{datetime}}</td>
+                    <td><a href="#" class="get-link" data-clipboard-text="{{url}}{{_id}}">Click to copy</a></td>
+                    <td>{{status}}</td>
+                    <td><a class="invite-reset" data-id="{{_id}}" href="#">Reset</a></td>
+                    <td><a class="invite-revoke" data-id="{{_id}}" href="#">Revoke</a></td>
+                    <td><a class="invite-delete" data-id="{{_id}}" href="#">Delete</a></td>
+                </tr>
+            {{/each}}
+        </tbody>
     </table>
 
     <h2>Users</h2>
-    <table class="invites-table">
+    <table class="table">
         <thead>
         <tr>
             <th>Created At</th>
             <th>ID</th>
-            <th>profile.name</th>
-            <th>Token</th>
-            <th>Services</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Delete</th>
         </tr>
         </thead>
-
-        {{#each users}}
-            <tr>
-                <td>{{datetime}}</td>
-                <td>{{_id}}</td>
-                <td>{{profile.name}}</td>
-                <td>{{inviteToken}} ({{inviteType}})</td>
-                <td>{{services}}</td>
-                <td><a class="user-delete" data-id="{{_id}}" href="#">Delete</a></td>
-            </tr>
-        {{/each}}
+        <tbody>
+            {{#each users}}
+                <tr>
+                    <td>{{datetime}}</td>
+                    <td>{{_id}}</td>
+                    <td>{{profile.firstName}}</td>
+                    <td>{{profile.lastName}}</td>
+                    <td><a class="user-delete" data-id="{{_id}}" href="#">Delete</a></td>
+                </tr>
+            {{/each}}
+        </tbody>
     </table>
 </template>

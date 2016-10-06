@@ -1,5 +1,4 @@
 Meteor.subscribe('tasks');
-Meteor.subscribe('dictionary');
 Meteor.subscribe('usertask');
 
 var completionType = new ReactiveVar();

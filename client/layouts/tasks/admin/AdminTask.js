@@ -1,5 +1,5 @@
 Meteor.subscribe('tasks');
-Meteor.subscribe('users');
+Meteor.subscribe('users', Meteor.userId());
 Meteor.subscribe('usertask', Meteor.userId());
 Meteor.subscribe('files');
 
