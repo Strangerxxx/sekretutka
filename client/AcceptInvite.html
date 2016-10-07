@@ -5,7 +5,7 @@
                 <strong>Invite was claimed</strong> <a href="/">Go Home</a>
             {{else}}
                 <div class="container">
-                    <form class="form-horizontal">
+                    {{#autoForm class='form-horizontal' id='profile' collection='Meteor.users'}}
                         <fieldset>
                             <!-- Form Name -->
                             <legend>Register</legend>
@@ -27,16 +27,15 @@
                                     <span class="help-block">Create strong password</span>
                                 </div>
                             </div>
-
+                            {{> afQuickFields name="profile"}}
                             <!-- Button -->
                             <div class="form-group">
                                 <div class="col-md-offset-4 col-md-4">
                                     <input id="register" type="submit" value="Sign Up" class="btn btn-primary">
                                 </div>
                             </div>
-
                         </fieldset>
-                    </form>
+                    {{/autoForm}}
                 </div>
             {{/if}}
 
