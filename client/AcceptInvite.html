@@ -1,43 +1,52 @@
 <template name="AcceptInvite">
     {{#if Template.subscriptionsReady}}
 
-            {{#if claimed}}
-                <strong>Invite was claimed</strong> <a href="/">Go Home</a>
-            {{else}}
-                <div class="container">
-                    {{#autoForm class='form-horizontal' id='profile' collection='Meteor.users'}}
-                        <fieldset>
-                            <!-- Form Name -->
-                            <legend>Register</legend>
+        {{#if claimed}}
+            <strong>Invite was claimed</strong> <a href="/">Go Home</a>
+        {{else}}
+        <div class="container">
+            <form class="register">
+            {{#autoForm class='form-horizontal' id='profile' collection='Meteor.users'}}
+                <fieldset>
+                    <legend>Register</legend>
+                    <div class="row">
+                        <div class="col-md-6">
 
                             <!-- Email-->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="email">Email</label>
-                                <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <label for="email">Email</label>
                                     <input id="email" name="email" placeholder="your@email.com" class="form-control input-md" type="email" required>
-                                    <span class="help-block">Enter your email</span>
                                 </div>
                             </div>
 
                             <!-- Password input-->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="password">Password</label>
-                                <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <label for="password">Password</label>
                                     <input id="password" name="password" placeholder="********" class="form-control input-md" type="password" required>
-                                    <span class="help-block">Create strong password</span>
                                 </div>
                             </div>
-                            {{> afQuickFields name="profile"}}
-                            <!-- Button -->
-                            <div class="form-group">
-                                <div class="col-md-offset-4 col-md-4">
-                                    <input id="register" type="submit" value="Sign Up" class="btn btn-primary">
-                                </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                              <div class="col-md-12">
+                                  {{> afQuickFields name="profile"}}
+                             </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="form-group">
+                            <div class="col-md-offset-5 col-md-1">
+                                <input id="register" type="submit" value="Sing Up" class="btn btn-primary">
                             </div>
-                        </fieldset>
-                    {{/autoForm}}
-                </div>
-            {{/if}}
+                        </div>
+                    </div>
+                </fieldset>
+            {{/autoForm}}
+            </form>
+        </div>
+        {{/if}}
 
     {{/if}}
 </template>
