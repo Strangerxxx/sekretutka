@@ -35,7 +35,7 @@
                 <ul>
                     {{#each user}}
                         <li style="list-style: none">
-                            {{#each emails}}<a href="/admin/tasks/{{../../_id}}/results/{{../_id}}">{{address}}</a>{{/each}}
+                            {{#with profile}}<a href="/admin/tasks/{{../../_id}}/results/{{../_id}}">{{firstName}} {{lastName}}</a>{{/with}}
                             <input type="button" data-user="{{_id}}" class="unassign-user" value="x" data-task="{{../_id}}">
                         </li>
                     {{/each}}
@@ -47,9 +47,9 @@
                     <select class="user-selected">
                         <option disabled selected>(Select user to attach)</option>
                         {{#each users}}
-                            {{#each emails}}
-                                <option value="{{address}}">{{address}}</option>
-                            {{/each}}
+                            {{#with profile}}
+                                <option value="{{../_id}}">{{firstName}} {{lastName}}</option>
+                            {{/with}}
                         {{/each}}
                     </select>
                     <input type="submit" class="btn btn-default" value="Attach">

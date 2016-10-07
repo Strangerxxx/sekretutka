@@ -32,9 +32,13 @@
 
 <template name="textTemplate">
     <hr>
+
     <form class="completion-text" id="{{_id}}">
-        <input type="text" name="text" class="completionString">
-        <input type="submit" value="Submit">
+        <textarea name="text" rows="6" class="completionString form-control input-md"></textarea>
+        <div class="col-md-12">
+            <input type="submit" value="Submit" class="btn btn-default">
+        </div>
+
     </form>
 </template>
 

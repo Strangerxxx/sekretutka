@@ -1,0 +1,6 @@
+<template name="EditUser">
+    {{#with user.profile}}
+        <legend>Edit User: {{firstName}} {{lastName}}</legend>
+    {{/with}}
+    {{> quickForm collection='Meteor.users' doc=(user) type="update" id="updateUserForm" omitFields="emails, createdAt, services"}}
+</template>

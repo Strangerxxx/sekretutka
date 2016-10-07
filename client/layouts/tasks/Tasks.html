@@ -1,5 +1,6 @@
 <template name="Tasks">
     {{#if currentUser}}
+        <legend>Task List</legend>
         {{#each tasks}}
             <ul class="nav nav-pills nav-stacked">
                 {{#if isInRole 'admin'}}

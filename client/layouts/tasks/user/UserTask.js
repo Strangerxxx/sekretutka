@@ -53,8 +53,12 @@ Template.UserTask.helpers({
 Template.UserTask.events({
     'submit .completion-text': function (event, tmpl) {
         event.preventDefault();
-        Meteor.call('usertask.progress', event.target.id, event.target.text.value);
-        event.target.text.value = '';
+        if(event.target.text.value){
+            Meteor.call('usertask.progress', event.target.id, event.target.text.value);
+            event.target.text.value = '';
+        }
+        else
+            Toast.warning('Message is empty');
     },
     'click .completion-button': function (event) {
         console.log($(event.target).data('id'));

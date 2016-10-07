@@ -1,5 +1,5 @@
 <template name="Users">
-    <h2>Invitations</h2>
+    <legend>Invitations</legend>
 
     <form class="inviteCreate ">
         <label>Create an Invitation</label>
@@ -12,8 +12,6 @@
             <th>Created At</th>
             <th>Registration Link</th>
             <th>Status</th>
-            <th>Reset</th>
-            <th>Revoke</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -23,15 +21,13 @@
                     <td>{{datetime}}</td>
                     <td><a href="#" class="get-link" data-clipboard-text="{{url}}{{_id}}">Click to copy</a></td>
                     <td>{{status}}</td>
-                    <td><a class="invite-reset" data-id="{{_id}}" href="#">Reset</a></td>
-                    <td><a class="invite-revoke" data-id="{{_id}}" href="#">Revoke</a></td>
                     <td><a class="invite-delete" data-id="{{_id}}" href="#">Delete</a></td>
                 </tr>
             {{/each}}
         </tbody>
     </table>
 
-    <h2>Users</h2>
+    <legend>Users</legend>
     <table class="table">
         <thead>
         <tr>
@@ -39,6 +35,7 @@
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Edit</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -49,6 +46,7 @@
                     <td>{{_id}}</td>
                     <td>{{profile.firstName}}</td>
                     <td>{{profile.lastName}}</td>
+                    <td><a class="user-edit" href="/admin/users/edit/{{_id}}" >Edit</a></td>
                     <td><a class="user-delete" data-id="{{_id}}" href="#">Delete</a></td>
                 </tr>
             {{/each}}

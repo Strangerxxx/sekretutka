@@ -2,48 +2,54 @@
 Template.AcceptInvite.onCreated(function () {
     Template.instance().token = FlowRouter.getParam('token');
     var self = this;
-    //self.subscribe('invites-status', Template.instance().token);
     self.subscribe('users', Meteor.userId());
     self.subscribe('invites2', FlowRouter.getParam('token'), Meteor.userId());
 });
 
-Template.AcceptInvite.helpers({
+Template.AcceptInvite.onRendered(function () {
+    Meteor.call('invites.set-visited', Template.instance().token);
+});
 
+Template.AcceptInvite.helpers({
+    claimed: () => {
+        var invite = invites2.findOne();
+        if(invite.status == 'invited' || invite.status == 'visited')
+            return false;
+        return true;
+    }
 });
 
 Template.AcceptInvite.events({
-    'submit form': function(event, tmpl) {
+    'submit form': function(event) {
         event.preventDefault();
         var email = event.target.email.value,
-            password = event.target.password.value,
-            profile = {
-                firstName: event.target.firstName.value,
-                lastName: event.target.lastName.value,
-                gender: tmpl.find('#gender :selected').text
-            };
-        var usersCount;
+            password = event.target.password.value;
+        var profile = {};
+           // profile = {
+             //   firstName: event.target.firstName.value,
+               // lastName: event.target.lastName.value,
+                //gender: event.target.gender.value
+           // };
+
         Meteor.call('users.count', function (error, count) {
-            usersCount = count;
+            if((invites2.findOne() || count == 0) && password.length >= 6 )
+                Accounts.createUser({
+                    email: email,
+                    password: password,
+                    profile: profile,
+                }, function (err) {
+                    if(err)
+                        Toast.error(err.reason);
+                    else{
+                        Meteor.call('invites.set-claimed', invites2.findOne()._id);
+                        FlowRouter.go('/');
+                    }
+
+                });
+            else if(password.length < 6)
+                Toast.error('Password must be at least 6 characters long');
+            else if(!invites2.findOne())
+                Toast.error('Invite is not valid')
         });
-        //console.log(usersCount);
-        // if((invites2.findOne() || usersCount == undefined) && password.length >= 6 )
-        //      Accounts.createUser({
-        //          email: event.target.email.value,
-        //          password: event.target.password.value,
-        //          profile: {
-        //              firstName: event.target.firstName.value,
-        //              lastName: event.target.lastName.value,
-        //              gender: tmpl.find('#gender :selected').text
-        //          }
-        //      }, function (err) {
-        //          if(err)
-        //              Toast.error(err.reason);
-        //
-        //             //FlowRouter.go('/');
-        //      });
-        // else
-        //     Toast.error('Password must be at least 6 characters long')
-
-
     }
 });

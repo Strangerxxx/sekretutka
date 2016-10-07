@@ -69,9 +69,9 @@ Template.AdminTask.events({
     },
     'submit .attach-users': function (event, tmpl) {
         event.preventDefault();
-        var email = tmpl.find('.user-selected :selected').text;
-        user = Meteor.users.find({ "emails.address" : email }).fetch();
-        Meteor.call('usertask.add', this._id, user[0]._id);
+        var userId = tmpl.find('.user-selected :selected').value;
+
+        Meteor.call('usertask.add', this._id, userId);
     },
     'click .unassign-user': function (event) {
         Meteor.call('usertask.remove', $(event.target).data('task'), $(event.target).data('user'));

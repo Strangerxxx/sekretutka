@@ -22,6 +22,13 @@ Meteor.methods({
     'invites.delete'(userId, token){
         if(Roles.userIsInRole(userId, 'admin'))
             invites2.remove({_id: token});
+    },
+    'invites.set-visited'(token){
+        if(!(invites2.findOne({_id: token}).status == 'claimed'))
+            invites2.update({_id: token}, {$set: {status: 'visited'}});
+    },
+    'invites.set-claimed'(token){
+        invites2.update({_id: token}, {$set: {status: 'claimed'}});
     }
 });
 

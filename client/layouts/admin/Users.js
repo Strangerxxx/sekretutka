@@ -1,8 +1,6 @@
 Template.Users.onCreated(function() {
     var self = this;
     self.autorun(function() {
-        self.subscribe('invites-all');
-        self.subscribe('requests-all');
         self.subscribe('users-all');
         self.subscribe('invites2', null, Meteor.userId());
     });
@@ -71,7 +69,7 @@ Template.Users.events = {
         Meteor.call("invites.delete", Meteor.userId(), $(e.currentTarget).attr('data-id'));
     },
     'click a.user-delete':function(e,t) {
-        Meteor.call("deleteUser", $(e.currentTarget).attr('data-id'));
+        Meteor.call("users.delete", $(e.currentTarget).attr('data-id'));
     },
     'click .get-link': () => {
         Toast.success('Copied to clipboard');

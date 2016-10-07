@@ -1,5 +1,12 @@
 Schema = {};
 
+Meteor.users.allow({
+   update: (userId) => {
+        if(Roles.userIsInRole(userId , 'admin'))
+            return !!userId;
+   }
+});
+
 Schema.UserProfile = new SimpleSchema({
     firstName: {
         type: String,
@@ -27,14 +34,20 @@ Schema.User = new SimpleSchema({
         // For accounts-password, either emails or username is required, but not both. It is OK to make this
         // optional here because the accounts-password package does its own validation.
         // Third-party login packages may not require either. Adjust this schema as necessary for your usage.
-        optional: true
+        optional: true,
+        autoform: {
+            type: 'hidden'
+        }
     },
     emails: {
         type: Array,
         // For accounts-password, either emails or username is required, but not both. It is OK to make this
         // optional here because the accounts-password package does its own validation.
         // Third-party login packages may not require either. Adjust this schema as necessary for your usage.
-        optional: true
+        optional: true,
+        autoform: {
+            type: 'hidden'
+        }
     },
     "emails.$": {
         type: Object
@@ -49,14 +62,20 @@ Schema.User = new SimpleSchema({
     // Use this registered_emails field if you are using splendido:meteor-accounts-emails-field / splendido:meteor-accounts-meld
     registered_emails: {
         type: Array,
-        optional: true
+        optional: true,
+        autoform: {
+            type: 'hidden'
+        }
     },
     'registered_emails.$': {
         type: Object,
         blackbox: true
     },
     createdAt: {
-        type: Date
+        type: Date,
+        autoform: {
+            type: 'hidden'
+        }
     },
     profile: {
         type: Schema.UserProfile,
@@ -66,7 +85,10 @@ Schema.User = new SimpleSchema({
     services: {
         type: Object,
         optional: true,
-        blackbox: true
+        blackbox: true,
+        autoform: {
+            type: 'hidden'
+        }
     },
     // Add `roles` to your schema if you use the meteor-roles package.
     // Option 1: Object type
@@ -86,7 +108,10 @@ Schema.User = new SimpleSchema({
     // you can specify [String] as the type
     roles: {
         type: Array,
-        optional: true
+        optional: true,
+        autoform: {
+            type: 'hidden'
+        }
     },
     'roles.$': {
         type: String
@@ -94,7 +119,10 @@ Schema.User = new SimpleSchema({
     // In order to avoid an 'Exception in setInterval callback' from Meteor
     heartbeat: {
         type: Date,
-        optional: true
+        optional: true,
+        autoform: {
+            type: 'hidden'
+        }
     }
 });
 
@@ -105,4 +133,7 @@ Meteor.methods({
        count = Meteor.users.find().fetch().length;
        return count;
    },
+    'users.delete': function (userId) {
+        Meteor.users.remove({_id: userId});
+    }
 });

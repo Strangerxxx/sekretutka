@@ -1,21 +1,31 @@
 <template name="Results">
     {{#if subscriptionsReady}}
         <div class="task">
-            <h2>Displaying results for {{userName}} in task: {{taskName}}</h2>
-            <ul>
-                {{#each results}}
-                    <li>
-                        {{formatDate createdAt}}
-                        {{name}}
-                        {{#if isImage completionType}}
-                            {{{image result}}}
-                        {{else}}
-                            {{result}}
-                        {{/if}}
-                        <input type="button" class="remove-submission" value="x" data-stepId="{{stepId}}">
-                    </li>
-                {{/each}}
-            </ul>
+            <legend>Results for {{userName}} in : {{taskName}}</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Created At</th>
+                        <th>Step Name</th>
+                        <th>Result</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each results}}
+                        <tr>
+                            <td>{{formatDate createdAt}}</td>
+                            <td>{{name}}</td>
+                            {{#if isImage completionType}}
+                                <td>{{{image result}}}</td>
+                            {{else}}
+                                <td>{{result}}</td>
+                            {{/if}}
+                            <td><a href="#" class="remove-submission" data-stepId="{{stepId}}">Return</a></td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
         </div>
     {{/if}}
 </template>

@@ -38,12 +38,13 @@ random
 ostrio:files
 twbs:bootstrap
 peppelg:bootstrap-3-modal
-t3db0t:accounts-invite
+#t3db0t:accounts-invite
 blaze-html-templates@1.0.4
-t3db0t:invites
+#t3db0t:invites
 jesperwe:bootstrap-select
 xvendo:clipboardjs
 fourquet:jquery-toast
 momentjs:moment
 stylus
 ian:accounts-ui-bootstrap-3
+rajit:bootstrap3-datepicker

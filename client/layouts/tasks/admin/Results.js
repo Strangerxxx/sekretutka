@@ -13,7 +13,7 @@ Template.Results.helpers({
     subscriptionsReady: () => Meteor.users.find().count() && tasks.find().count() && usertask.find().count(),
     userName: () => {
         const user = Meteor.users.findOne({_id: Template.instance().userId});
-        return user.emails[0].address;
+        return user.profile.firstName + " " + user.profile.lastName;
     },
     taskName: () => {
         return tasks.findOne({_id: Template.instance().taskId}).name;
@@ -51,7 +51,6 @@ Template.Results.events({
         Modal.show('imageModal');
     },
     'click .remove-submission': (event)=> {
-        console.log(event)
         Meteor.call('usertask.remove-progress', Template.instance().taskId, $(event.target).data('stepid'));
     },
 });
