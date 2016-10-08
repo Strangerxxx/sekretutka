@@ -1,52 +1,25 @@
 <template name="AcceptInvite">
     {{#if Template.subscriptionsReady}}
-
-        {{#if claimed}}
-            <strong>Invite was claimed</strong> <a href="/">Go Home</a>
-        {{else}}
         <div class="container">
-            <form class="register">
-            {{#autoForm class='form-horizontal' id='profile' collection='Meteor.users'}}
-                <fieldset>
-                    <legend>Register</legend>
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <!-- Email-->
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label for="email">Email</label>
-                                    <input id="email" name="email" placeholder="your@email.com" class="form-control input-md" type="email" required>
-                                </div>
+            {{#if claimed}}
+                <p class="text-center"><strong>Invite was claimed</strong> <a href="/">Go Home</a></p>
+            {{else}}
+                {{#autoForm id='register' schema=newUserSchema type='method' meteormethod='users.create'}}
+                    <fieldset>
+                        <legend>Register</legend>
+                        {{>afQuickField name='invite' type='hidden' value=token}}
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{>afQuickField name='email' type='email'}}
+                                {{>afQuickField name='password' type='password'}}
                             </div>
-
-                            <!-- Password input-->
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <label for="password">Password</label>
-                                    <input id="password" name="password" placeholder="********" class="form-control input-md" type="password" required>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-6">
-                              <div class="col-md-12">
-                                  {{> afQuickFields name="profile"}}
-                             </div>
-                        </div>
-                        <!-- Button -->
-                        <div class="form-group">
-                            <div class="col-md-offset-5 col-md-1">
-                                <input id="register" type="submit" value="Sing Up" class="btn btn-primary">
+                            <div class="col-md-6">
+                                {{>afQuickFields name='profile'}}
                             </div>
                         </div>
-                    </div>
-                </fieldset>
-            {{/autoForm}}
-            </form>
+                    </fieldset>
+                {{/autoForm}}
+            {{/if}}
         </div>
-        {{/if}}
-
     {{/if}}
 </template>

@@ -1,6 +1,6 @@
-invites2 = new Mongo.Collection('invites2');
+invites = new Mongo.Collection('invites');
 
-invites2.allow({
+invites.allow({
     insert: function (userId) {
         if(Roles.userIsInRole(userId, 'admin'))
             return !!userId;
@@ -17,18 +17,18 @@ invites2.allow({
 Meteor.methods({
     'invites.create'(userId){
         if (Roles.userIsInRole(userId, 'admin'))
-            invites2.insert({});
+            invites.insert({});
     },
     'invites.delete'(userId, token){
         if(Roles.userIsInRole(userId, 'admin'))
-            invites2.remove({_id: token});
+            invites.remove({_id: token});
     },
     'invites.set-visited'(token){
-        if(!(invites2.findOne({_id: token}).status == 'claimed'))
-            invites2.update({_id: token}, {$set: {status: 'visited'}});
+        if(!(invites.findOne({_id: token}).status == 'claimed'))
+            invites.update({_id: token}, {$set: {status: 'visited'}});
     },
     'invites.set-claimed'(token){
-        invites2.update({_id: token}, {$set: {status: 'claimed'}});
+        invites.update({_id: token}, {$set: {status: 'claimed'}});
     }
 });
 
@@ -49,4 +49,4 @@ InvitesSchema = new SimpleSchema({
     }
 });
 
-invites2.attachSchema(InvitesSchema);
+invites.attachSchema(InvitesSchema);

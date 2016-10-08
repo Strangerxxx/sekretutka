@@ -1,10 +1,10 @@
 Schema = {};
 
 Meteor.users.allow({
-   update: (userId) => {
+    update: (userId) => {
         if(Roles.userIsInRole(userId , 'admin'))
             return !!userId;
-   }
+    }
 });
 
 Schema.UserProfile = new SimpleSchema({
@@ -126,13 +126,37 @@ Schema.User = new SimpleSchema({
     }
 });
 
+Schema.newUser = new SimpleSchema({
+    email: {
+        type: String
+    },
+    password: {
+        type: String
+    },
+    invite: {
+        type: String
+    },
+    profile: {
+        type: Schema.UserProfile
+    }
+});
+
 Meteor.users.attachSchema(Schema.User);
 
 Meteor.methods({
-   'users.count': function () {
-       count = Meteor.users.find().fetch().length;
-       return count;
-   },
+    'users.create': (doc) => {
+        check(doc, Schema.newUser);
+        return Accounts.createUser({
+            email: email,
+            password: password,
+            profile: profile,
+        });
+        // console.log(doc);
+    },
+    'users.count': function () {
+        count = Meteor.users.find().fetch().length;
+        return count;
+    },
     'users.delete': function (userId) {
         Meteor.users.remove({_id: userId});
     }

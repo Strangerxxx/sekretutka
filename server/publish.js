@@ -16,9 +16,9 @@ Meteor.publish(null, function (){
 Meteor.publish('files', function () {
     return Images.find({}).cursor;
 });
-Meteor.publish('invites2', function (token, userId) {
+Meteor.publish('invites', function (token, userId) {
     if(userId == null)
-        return invites2.find(token);
+        return invites.find(token);
     else if(Roles.userIsInRole(userId, 'admin'))
-        return invites2.find();
-})
+        return invites.find();
+});

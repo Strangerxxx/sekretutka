@@ -2,7 +2,7 @@ Template.Users.onCreated(function() {
     var self = this;
     self.autorun(function() {
         self.subscribe('users-all');
-        self.subscribe('invites2', null, Meteor.userId());
+        self.subscribe('invites', null, Meteor.userId());
     });
     var clipboard = new Clipboard('.get-link');
 });
@@ -13,7 +13,7 @@ Template.Users.helpers({
         return d.toLocaleString();
     },
     "invites":function(){
-        return invites2.find();
+        return invites.find();
     },
     "users":function(){
         return Meteor.users.find();
