@@ -9,10 +9,11 @@ Template.AcceptInvite.onCreated(function () {
 
 Template.AcceptInvite.helpers({
     claimed: () => {
-        if(invites.findOne())
-            Meteor.call('invites.set-visited', Template.instance().token);
         var invite = invites.findOne();
-        return !(invite.status == 'invited' || invite.status == 'visited');
+        if(invite) {
+            Meteor.call('invites.set-visited', Template.instance().token);
+            return !(invite.status == 'invited' || invite.status == 'visited');
+        } else return true;
     },
     token: () => Template.instance().token,
     newUserSchema: () => Schema.newUser

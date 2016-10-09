@@ -2,7 +2,7 @@
     {{#if Template.subscriptionsReady}}
         <div class="container">
             {{#if claimed}}
-                <p class="text-center"><strong>Invite was claimed</strong> <a href="/">Go Home</a></p>
+                <p class="text-center"><strong>Invite is invalid</strong> <a href="/">Go Home</a></p>
             {{else}}
                 {{#autoForm id='register' schema=newUserSchema type='method' meteormethod='users.create'}}
                     <fieldset>
