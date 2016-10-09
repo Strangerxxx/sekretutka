@@ -123,6 +123,10 @@ Schema.User = new SimpleSchema({
         autoform: {
             type: 'hidden'
         }
+    },
+    invite: {
+        type: String,
+        unique: true
     }
 });
 
@@ -146,12 +150,16 @@ Meteor.users.attachSchema(Schema.User);
 Meteor.methods({
     'users.create': (doc) => {
         check(doc, Schema.newUser);
-        return Accounts.createUser({
-            email: email,
-            password: password,
-            profile: profile,
-        });
-        // console.log(doc);
+        if(invites.findOne({_id: doc.invite})){
+            return Accounts.createUser({
+                invite: doc.invite,
+                email: doc.email,
+                password: doc.password,
+                profile: doc.profile,
+            });
+        }
+        else
+            return Meteor.Error('Invite not found');
     },
     'users.count': function () {
         count = Meteor.users.find().fetch().length;
