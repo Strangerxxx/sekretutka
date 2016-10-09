@@ -8,3 +8,11 @@ Accounts.onCreateUser(function (options, user) {
     user.profile = options.profile;
     return user;
 });
+Accounts.validateNewUser(function(user) {
+    var invite = invites.findOne({_id: user.profile.invite});
+    if(invite && invite.status != 'claimed') {
+        Meteor.call('invites.set-claimed', user.profile.invite);
+        return true;
+    }
+    else throw new Meteor.Error(403, 'Invite not found or claimed');
+});

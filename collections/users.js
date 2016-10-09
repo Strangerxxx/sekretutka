@@ -26,6 +26,10 @@ Schema.UserProfile = new SimpleSchema({
         allowedValues: ['Male', 'Female'],
         optional: true
     },
+    invite: {
+        type: String,
+        unique: true
+    }
 });
 
 Schema.User = new SimpleSchema({
@@ -123,10 +127,6 @@ Schema.User = new SimpleSchema({
         autoform: {
             type: 'hidden'
         }
-    },
-    invite: {
-        type: String,
-        unique: true
     }
 });
 
@@ -135,9 +135,6 @@ Schema.newUser = new SimpleSchema({
         type: String
     },
     password: {
-        type: String
-    },
-    invite: {
         type: String
     },
     profile: {
@@ -150,16 +147,15 @@ Meteor.users.attachSchema(Schema.User);
 Meteor.methods({
     'users.create': (doc) => {
         check(doc, Schema.newUser);
-        if(invites.findOne({_id: doc.invite})){
-            return Accounts.createUser({
-                invite: doc.invite,
-                email: doc.email,
-                password: doc.password,
-                profile: doc.profile,
-            });
-        }
-        else
-            return Meteor.Error('Invite not found');
+        var userId = Accounts.createUser({
+            email: doc.email,
+            password: doc.password,
+            profile: doc.profile
+        });
+        if(userId === undefined) throw new Meteor.Error(403, 'Access denied!');
+        var stampedLoginToken = Accounts._generateStampedLoginToken();
+        Accounts._insertLoginToken(userId, stampedLoginToken);
+        return stampedLoginToken.token;
     },
     'users.count': function () {
         count = Meteor.users.find().fetch().length;

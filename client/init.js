@@ -10,3 +10,4 @@ Toast.options = {
     showMethod: 'slideDown',
     timeOut: 1200,
 };
+AutoForm.debug();

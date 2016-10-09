@@ -7,14 +7,14 @@
                 {{#autoForm id='register' schema=newUserSchema type='method' meteormethod='users.create'}}
                     <fieldset>
                         <legend>Register</legend>
-                        {{>afQuickField name='invite' type='hidden' value=token}}
+                        {{>afQuickField name='profile.invite' type='hidden' value=token}}
                         <div class="row">
                             <div class="col-md-6">
                                 {{>afQuickField name='email' type='email'}}
                                 {{>afQuickField name='password' type='password'}}
                             </div>
                             <div class="col-md-6">
-                                {{>afQuickFields name='profile'}}
+                                {{>afQuickFields name='profile' omitFields='profile.invite'}}
                             </div>
                             <div class="text-center">
                                 {{>afFieldInput type="submit" class="btn btn-primary"}}
