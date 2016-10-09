@@ -9,6 +9,7 @@ Accounts.onCreateUser(function (options, user) {
     return user;
 });
 Accounts.validateNewUser(function(user) {
+    if(Meteor.users.find().fetch().length == 0) return true;
     var invite = invites.findOne({_id: user.profile.invite});
     if(invite && invite.status != 'claimed') {
         Meteor.call('invites.set-claimed', user.profile.invite);

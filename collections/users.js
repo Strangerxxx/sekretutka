@@ -152,7 +152,7 @@ Meteor.methods({
             password: doc.password,
             profile: doc.profile
         });
-        if(userId === undefined) throw new Meteor.Error(403, 'Access denied!');
+        // if(userId === undefined) throw new Meteor.Error(403, 'Access denied!');
         var stampedLoginToken = Accounts._generateStampedLoginToken();
         Accounts._insertLoginToken(userId, stampedLoginToken);
         return stampedLoginToken.token;
