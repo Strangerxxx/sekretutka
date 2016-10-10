@@ -13,13 +13,13 @@
                 </thead>
                 <tbody>
                     {{#each results}}
-                        <tr>
+                        <tr class="crossed-{{ignored}}">
                             <td>{{formatDate createdAt}}</td>
                             <td>{{name}}</td>
                             {{#if isImage completionType}}
                                 <td>{{{image result}}}</td>
                             {{else}}
-                                <td>{{result}}</td>
+                                <td >{{result}}</td>
                             {{/if}}
                             <td><a href="#" class="remove-submission" data-stepId="{{stepId}}">Return</a></td>
                         </tr>

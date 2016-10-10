@@ -150,3 +150,7 @@ img{
 .faq dt {
     padding-left: 30px;
 }
+
+tr.crossed-true{
+    text-decoration: line-through;
+}
