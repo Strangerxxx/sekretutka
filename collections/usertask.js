@@ -42,16 +42,15 @@ Meteor.methods({
         
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });
     },
-    'usertask.remove-progress'(taskId, stepId){
-        const thisUserTask = usertask.findOne({'taskId': taskId, 'progress': {$elemMatch: {stepId: stepId}}});
+    'usertask.remove-progress'(taskId, stepId, userId){
+        const thisUserTask = usertask.findOne({'taskId': taskId, userId: userId});
 
-        var count=0;
-        for(var i=0; i < thisUserTask.progress.length; i++){
-            if(thisUserTask.progress[0].stepId == stepId)
-                break;
-            count++;
-        }
-        usertask.update({_id: thisUserTask._id, 'progress.stepId': stepId}, {$set: {'progress.$.ignored': true}});
+        usertask.update({
+            _id: thisUserTask._id,
+            progress: {$elemMatch: {stepId: stepId, ignored: false}}
+            },
+            { $set: {'progress.$.ignored': true } }
+        );
     }
 });
 

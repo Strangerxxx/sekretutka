@@ -51,7 +51,7 @@ Template.Results.events({
         Modal.show('imageModal');
     },
     'click .remove-submission': (event)=> {
-        Meteor.call('usertask.remove-progress', Template.instance().taskId, $(event.target).data('stepid'));
+        Meteor.call('usertask.remove-progress', Template.instance().taskId, $(event.target).data('stepid'), Template.instance().userId);
     },
 });
 

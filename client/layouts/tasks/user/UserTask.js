@@ -61,7 +61,6 @@ Template.UserTask.events({
             Toast.warning('Message is empty');
     },
     'click .completion-button': function (event) {
-        console.log($(event.target).data('id'));
         Meteor.call('usertask.progress', event.target.id, 'Completed');
     },
 
