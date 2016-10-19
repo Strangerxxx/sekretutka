@@ -51,11 +51,13 @@ Template.Results.events({
         Modal.show('imageModal');
     },
     'click .remove-submission': (event)=> {
-        console.log(event.target)
         Meteor.call('usertask.remove-progress', Template.instance().taskId, $(event.target).data('progressid'), Template.instance().userId);
     },
     'click .showResult': () => {
         Modal.show('ResultModal');
+    },
+    'click .set-checked': (event) => {
+        Meteor.call('usertask.set-checked', $(event.target).data('progressid'));
     }
 });
 

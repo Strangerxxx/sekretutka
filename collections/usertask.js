@@ -27,12 +27,13 @@ Meteor.methods({
     },
     'usertask.progress'(stepId, result){
         const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
-        var completionType, checked;
+        const user = Meteor.users.findOne(Meteor.userId());
+
+        var step;
 
         task.steps.forEach(function (element) {
             if(element._id == stepId){
-                completionType = element.completionType;
-                checked = !element.notify;
+                step = element;
             }
         });
 
@@ -40,12 +41,13 @@ Meteor.methods({
             '_id': Random.id(),
             'stepId': stepId,
             'result': result,
-            'completionType': completionType,
-            'checked': checked,
+            'completionType': step.completionType,
+            'checked': !step.notify,
         };
+        if(step.notify)
+            notifications.insert({text: user.profile.firstName + " " + user.profile.lastName + " has completed step " + step.name + " in task " + task.name});
 
         var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
-        
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });
     },
     'usertask.remove-progress'(taskId, progressId, userId){
@@ -60,6 +62,17 @@ Meteor.methods({
                 'progress.$.checked': true,
                 }
             }
+        );
+    },
+    'usertask.set-checked'(progressId){
+        console.log(progressId);
+        usertask.update({
+                progress: {$elemMatch: {_id: progressId}}
+            },
+            { $set: {
+                'progress.$.checked': true,
+                }
+            },
         );
     }
 });
