@@ -9,9 +9,18 @@
             <h3>Active step</h3>
             {{#with step _id}}
                 <h4>{{name}}</h4>
+
                 {{description}}
 
-                {{> Template.dynamic template=(userInput completionType)}}
+                <hr>
+                {{#if notify}}
+                    <p class="text-danger">Admin will be notified upon completion of this step.</p>
+                {{/if}}
+                {{#if completionType}}
+                    {{> Template.dynamic template=(userInput completionType)}}
+                {{else}}
+                    <p class="text-info">Admin was notified, please wait for approval</p>
+                {{/if}}
             {{/with}}
         {{/with}}
     </div>
@@ -20,7 +29,7 @@
 
 
 <template name="uploadTemplate">
-    <hr>
+
     {{#with currentUpload}}
         Uploading <b>{{file.name}}</b>
         <span id="progress">{{progress.get}}%</span>
@@ -31,7 +40,7 @@
 </template>
 
 <template name="textTemplate">
-    <hr>
+
 
     <form class="completion-text" id="{{_id}}">
         <textarea name="text" rows="6" class="completionString form-control input-md"></textarea>
@@ -43,6 +52,6 @@
 </template>
 
 <template name="buttonTemplate">
-    <hr>
+
     <input type="button" class="completion-button btn btn-success" id="{{_id}}" value="Next">
 </template>

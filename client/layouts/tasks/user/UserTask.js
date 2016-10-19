@@ -1,4 +1,4 @@
-Meteor.subscribe('tasks');
+Meteor.subscribe('tasks', Meteor.userId());
 Meteor.subscribe('usertask', Meteor.userId());
 Meteor.subscribe('files');
 
@@ -18,7 +18,15 @@ Template.UserTask.helpers({
                 for (var i = 0; i < task['steps'].length; i++) {
                     for (var t = 0; t < userTask.progress.length; t++) {
                         if (task.steps[i]._id == userTask.progress[t].stepId && userTask.progress[t].ignored == false){
-                            break;
+                            if(userTask.progress[t].checked == false) {
+                                return {
+                                    _id: task.steps[i]._id,
+                                    name: task.steps[i].name,
+                                    description: task.steps[i].description,
+                                };
+                            }
+                            else
+                                break;
                         }
 
                         if (t == (userTask.progress.length - 1))
@@ -65,7 +73,6 @@ Template.UserTask.events({
     },
 
 });
-
 
 
 Template.uploadTemplate.helpers({

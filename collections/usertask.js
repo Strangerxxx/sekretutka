@@ -27,34 +27,51 @@ Meteor.methods({
     },
     'usertask.progress'(stepId, result){
         const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
-        var completionType;
+        var completionType, checked;
+
         task.steps.forEach(function (element) {
-            if(element._id == stepId)
+            if(element._id == stepId){
                 completionType = element.completionType;
+                checked = !element.notify;
+            }
         });
+
         var progress = {
+            '_id': Random.id(),
             'stepId': stepId,
             'result': result,
             'completionType': completionType,
+            'checked': checked,
         };
-        var nextStep;
+
         var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
         
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });
     },
-    'usertask.remove-progress'(taskId, stepId, userId){
-        const thisUserTask = usertask.findOne({'taskId': taskId, userId: userId});
+    'usertask.remove-progress'(taskId, progressId, userId){
+        const thisUserTask = usertask.findOne({'taskId': taskId, userId: userId}, { fields: {progress: 1}});
 
         usertask.update({
             _id: thisUserTask._id,
-            progress: {$elemMatch: {stepId: stepId, ignored: false}}
+            progress: {$elemMatch: {_id: progressId, ignored: false}}
             },
-            { $set: {'progress.$.ignored': true } }
+            { $set: {
+                'progress.$.ignored': true,
+                'progress.$.checked': true,
+                }
+            }
         );
     }
 });
 
 ProgressSchema = new SimpleSchema({
+    _id: {
+        type: String,
+        autoValue: () => {
+            if(this.isInsert)
+                return Random.id();
+        },
+    },
     stepId: {
         type: tasks.steps,
     },
@@ -80,6 +97,9 @@ ProgressSchema = new SimpleSchema({
         autoform: {
             type: 'hidden'
         }
+    },
+    checked: {
+        type: Boolean,
     }
 });
 

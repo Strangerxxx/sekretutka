@@ -8,7 +8,7 @@
                         <th>Created At</th>
                         <th>Step Name</th>
                         <th>Result</th>
-                        <th>Return</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,9 +19,17 @@
                             {{#if isImage completionType}}
                                 <td>{{{image result}}}</td>
                             {{else}}
-                                <td >{{result}}</td>
+                                <td><a href="#" class="showResult">{{result}}</a></td>
                             {{/if}}
-                            <td><a href="#" class="remove-submission" data-stepId="{{stepId}}">Return</a></td>
+                            <td>
+                                <a class="remove-submission" style="color: #565656" href="#" ><i class="fa fa-step-backward fa-2x" data-progressid="{{_id}}" aria-hidden="true"></i></a>
+                                {{#if checked}}
+                                    <a class="" href="#"><i class="fa fa-play fa-2x" aria-hidden="true" disabled></i></a>
+                                {{else}}
+                                    <a class="" href="#"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
+                                {{/if}}
+                                <a class="showResult" style="color: #565656" href="#"><i class="fa fa-external-link fa-2x" aria-hidden="true"></i></a>
+                            </td>
                         </tr>
                     {{/each}}
                 </tbody>
@@ -34,5 +42,27 @@
     <div class="modal">
         <img src="{{imageFile.link}}" alt="{{imageFile.name}}" />
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</template>
+
+<template name="ResultModal">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Result</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>A modal example.</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
     </div>
 </template>

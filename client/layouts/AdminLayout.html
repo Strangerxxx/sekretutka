@@ -1,24 +1,21 @@
 <template name="AdminLayout">
     {{#if isInRole 'admin'}}
         <div class="navbar navbar-default" role="navigation">
+
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">Sekretutka</a>
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+
+
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <!--<li class="active"><a href="#">Tasks</a></li>-->
-                </ul>
+
                 <ul class="nav navbar-nav navbar-right">
+                    {{> Notifications}}
                     {{> loginButtons}}
                 </ul>
-            </div>
+
+
         </div>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2">
@@ -33,4 +30,34 @@
         <span>Please login as admin</span>
         {{> loginButtons}}
     {{/if}}
+</template>
+
+<template name="Notifications">
+    <li class="dropdown">
+
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+            <i class="fa fa-bell" aria-hidden="true"></i>
+            <span class="label label-danger">{{notifCount}}</span>
+        </a>
+
+        <ul class="dropdown-menu">
+            <h6 class="dropdown-header"><b>Notifications</b></h6>
+            <li class="divider"></li>
+            {{#each notification}}
+                <li role="menuitem">
+                    <a class="notification-item" data-id="{{_id}}">
+                        <a class="remove-notification pull-right" href="#" data-id="{{_id}}">&times;</a>
+                        <span class="small text-muted">
+                            {{formatDateRelative createdAt}}
+                            {{#unless seen}}
+                                <span class="label label-success">new</span>
+                            {{/unless}}
+                        </span>
+                        <p>{{text}}</p>
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+    </li>
+
 </template>

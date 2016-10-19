@@ -1,4 +1,4 @@
-Meteor.subscribe('tasks');
+Meteor.subscribe('tasks', Meteor.userId());
 Meteor.subscribe('usertask');
 
 var completionType = new ReactiveVar();
@@ -13,6 +13,7 @@ Template.Tasks.helpers({
             var dict = usertask.find({"userId": Meteor.userId()}).map(function (doc) {
                 return doc.taskId;
             });
+            console.log(tasks.findOne());
             return tasks.find({_id: {$in: dict}});
         }
     },

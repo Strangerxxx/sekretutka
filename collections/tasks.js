@@ -21,7 +21,7 @@ StepsSchema = new SimpleSchema({
         type: String,
         label: '_id',
         autoValue: function () {
-            if(!this.isSet)
+            if(this.isInsert)
                 return Random.id();
         },
         autoform: {
@@ -48,6 +48,10 @@ StepsSchema = new SimpleSchema({
             type: "textarea",
             rows: 8,
         }
+    },
+    notify: {
+        type: Boolean,
+        label: "Notify me",
     }
 });
 
@@ -66,7 +70,7 @@ TaskSchema = new SimpleSchema({
     createdAt: {
         type: Date,
         autoValue: function () {
-            if(!this.isSet)
+            if(this.isInsert)
                 return new Date();
         },
         autoform: {

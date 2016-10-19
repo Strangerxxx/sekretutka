@@ -1,5 +1,14 @@
-Meteor.publish('tasks', function () {
-    return tasks.find({});
+Meteor.publish('tasks', function (userId) {
+    if(Roles.userIsInRole(userId, 'admin'))
+        return tasks.find({});
+
+    var tasksIds  = usertask.find({userId: userId}).fetch().map(function (element) {
+        return element.taskId;
+    });
+
+    return tasks.find({
+        "_id": { "$in": tasksIds }
+    });
 });
 Meteor.publish("users", function (userId) {
     if(Roles.userIsInRole(userId, 'admin'))
@@ -21,4 +30,7 @@ Meteor.publish('invites', function (token, userId) {
         return invites.find(token);
     else if(Roles.userIsInRole(userId, 'admin'))
         return invites.find();
+});
+Meteor.publish('notifications', function () {
+   return notifications.find();
 });

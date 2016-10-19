@@ -154,3 +154,7 @@ img{
 tr.crossed-true{
     text-decoration: line-through;
 }
+
+.dropdown-menu{
+    width: 400px !important;
+}
