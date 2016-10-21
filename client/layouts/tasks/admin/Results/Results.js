@@ -8,7 +8,6 @@ Template.Results.onCreated(function () {
     Tracker.autorun(function() {
         FlowRouter.watchPathChange();
         var currentContext = FlowRouter.current();
-
         if(currentContext.queryParams.p)
             Modal.show('ResultModal');
     });
@@ -80,18 +79,3 @@ Template.imageModal.helpers({
     },
 });
 
-Template.ResultModal.helpers({
-    subscriptionsReady: () => Meteor.users.find().count() && tasks.find().count() && usertask.find().count(),
-    progress: () => {
-        if(usertask.find().count()){
-            var results = usertask.findOne({'taskId': FlowRouter.getParam('taskId'), 'userId': FlowRouter.getParam('userId')}).progress;
-            var progress;
-            var resultId = FlowRouter.getQueryParam('p');
-            results.forEach(function (element) {
-                if(element._id == resultId)
-                    progress = element;
-            });
-            return progress;
-        }
-    },
-});

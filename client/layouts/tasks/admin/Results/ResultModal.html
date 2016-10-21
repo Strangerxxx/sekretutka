@@ -1,0 +1,29 @@
+<template name="ResultModal">
+    <div class="modal fade">
+        {{#with progress}}
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">{{step stepId}} : {{name}} </h4>
+                    </div>
+
+                    <div class="modal-body">
+                        {{#if image completionType result}}
+                            <img src="{{imageFile.link result}}" alt="{{imageFile.name result}}" class="img-responsive center-block" />
+                        {{else}}
+                            <p>{{result}}</p>
+                        {{/if}}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger remove-submission" data-dismiss="modal" data-progressid="{{_id}}">Return</button>
+                        <button type="button" class="btn btn-success set-checked" data-dismiss="modal" data-progressid="{{_id}}">Continue</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        {{/with}}
+    </div>
+</template>
