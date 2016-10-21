@@ -44,8 +44,13 @@ Meteor.methods({
             'completionType': step.completionType,
             'checked': !step.notify,
         };
+
+
         if(step.notify)
-            notifications.insert({text: user.profile.firstName + " " + user.profile.lastName + " has completed step " + step.name + " in task " + task.name});
+            notifications.insert({
+                text: user.profile.firstName + " " + user.profile.lastName + " has completed step " + step.name + " in task " + task.name,
+                href: Meteor.absoluteUrl() + "admin/tasks/" + task._id + '/results/' + Meteor.userId() + "?p=" + progress._id,
+            });
 
         var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
         usertask.update(UserTask._id, {$push:  { 'progress': progress } });

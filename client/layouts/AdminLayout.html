@@ -45,7 +45,7 @@
             <li class="divider"></li>
             {{#each notification}}
                 <li role="menuitem">
-                    <a class="notification-item" data-id="{{_id}}">
+                    <a class="notification-item" href="{{href}}" data-id="{{_id}}">
                         <a class="remove-notification pull-right" href="#" data-id="{{_id}}">&times;</a>
                         <span class="small text-muted">
                             {{formatDateRelative createdAt}}

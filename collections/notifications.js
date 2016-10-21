@@ -31,6 +31,10 @@ NotificationsSchema = new SimpleSchema({
             if(this.isInsert)
                 return new Date();
         }
+    },
+    href: {
+        type: String,
+        optional: true,
     }
 });
 

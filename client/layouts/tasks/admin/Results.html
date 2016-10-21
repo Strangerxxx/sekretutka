@@ -22,13 +22,13 @@
                                 <td><a href="#" class="showResult">{{result}}</a></td>
                             {{/if}}
                             <td>
-                                <a class="remove-submission" style="color: #565656" href="#" ><i class="fa fa-step-backward fa-2x" data-progressid="{{_id}}" aria-hidden="true"></i></a>
+                                <a class="remove-submission" style="color: #565656" href="" ><i class="fa fa-step-backward fa-2x" data-progressid="{{_id}}" aria-hidden="true"></i></a>
                                 {{#if checked}}
-                                    <a class="" href="#"><i class="fa fa-play fa-2x" aria-hidden="true" disabled></i></a>
+                                    <a class="" style="cursor: not-allowed; color: #565656;"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
                                 {{else}}
-                                    <a class="set-checked" href="#"><i class="fa fa-play fa-2x" data-progressid="{{_id}}" aria-hidden="true"></i></a>
+                                    <a class="set-checked" style="color: #565656" href=""><i class="fa fa-play fa-2x" data-progressid="{{_id}}" aria-hidden="true"></i></a>
                                 {{/if}}
-                                <a class="showResult" style="color: #565656" href="#"><i class="fa fa-external-link fa-2x" aria-hidden="true"></i></a>
+                                <a class="showResult" style="color: #565656" href={{url _id}}><i class="fa fa-external-link fa-2x" data-progressid="{{_id}}" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                     {{/each}}
@@ -46,23 +46,25 @@
 </template>
 
 <template name="ResultModal">
-    <div class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        {{#with progress}}
+            <div class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
 
-                <div class="modal-header">
-                    <h4 class="modal-title">Result</h4>
+                        <div class="modal-header">
+                            <h4 class="modal-title">Result</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>{{result}}</p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
                 </div>
-
-                <div class="modal-body">
-                    <p>A modal example.</p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-
             </div>
-        </div>
-    </div>
+        {{/with}}
 </template>
