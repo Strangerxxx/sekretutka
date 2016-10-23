@@ -70,6 +70,32 @@ Template.AdminTask.events({
     'submit .attach-users': function (event, tmpl) {
         event.preventDefault();
         var userId = tmpl.find('.user-selected :selected').value;
+        var task = tasks.findOne(FlowRouter.getParam('taskId'));
+        var steps = task.steps.map(function (element) {
+            return element.description;
+        });
+        const regEx = /&lt;var&gt;(.+?)&lt;\/var&gt;/g;
+        var variables = [];
+        if(task.description.match(regEx)) {
+            task.description.match(regEx).forEach(function (element) {
+                element = element.replace('&lt;var&gt;', '');
+                element = element.replace('&lt;/var&gt;', '');
+                variables.push({
+                    name: element
+                });
+            });
+        }
+        steps.forEach(function (element) {
+            element.match(regEx).forEach(function (element) {
+                element = element.replace('&lt;var&gt;', '');
+                element = element.replace('&lt;/var&gt;', '');
+                variables.push({
+                    name: element
+                });
+            });
+        });
+        console.log(variables);
+        Modal.show('VariablesModal', {variables: variables, userId: userId});
 
         Meteor.call('usertask.add', this._id, userId);
     },
@@ -88,8 +114,16 @@ Template.AdminTask.events({
 
 });
 
+Template.VariablesModal.onCreated(function () {
 
+});
 
-Template.imageModal.events({
-
+Template.VariablesModal.helpers({
+    'variables': () => {
+        return Template.instance().data.variables;
+    },
+    'user': () => {
+        user = Meteor.users.findOne(Template.instance().data.userId);
+        return user;
+    }
 });

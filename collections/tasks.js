@@ -15,13 +15,31 @@ tasks.allow({
     }
 });
 
+var HelloButton = function (context) {
+    var ui = $.summernote.ui;
+    // create button
+    var button = ui.button({
+        contents: '<i class="fa fa-asterisk btn-var"/>',
+        tooltip: 'Variable',
+        click: function () {
+            $('.summernote').summernote('insertText', '<var></var>');
+        }
+    });
 
-StepsSchema = new SimpleSchema({
+    return button.render();   // return button as jquery object
+};
+
+
+
+
+    StepsSchema = new SimpleSchema({
     _id: {
         type: String,
         label: '_id',
         autoValue: function () {
             if(this.isInsert)
+                return Random.id();
+            if(!this.isSet)
                 return Random.id();
         },
         autoform: {
@@ -47,9 +65,15 @@ StepsSchema = new SimpleSchema({
         autoform: {
             afFieldInput: {
                 type: 'summernote',
-                class: 'editor', // optional
+                class: 'summernote', // optional
                 settings:{ // summernote options goes here
                     height: 250,
+                    toolbar: [
+                        ['mybutton', ['variable']]
+                    ],
+                    buttons: {
+                        variable: HelloButton,
+                    },
                 }
             }
         }
