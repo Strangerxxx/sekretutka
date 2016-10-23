@@ -44,9 +44,14 @@ StepsSchema = new SimpleSchema({
     description: {
         type: String,
         label: "Description",
-        autoform:{
-            type: "textarea",
-            rows: 8,
+        autoform: {
+            afFieldInput: {
+                type: 'summernote',
+                class: 'editor', // optional
+                settings:{ // summernote options goes here
+                    height: 250,
+                }
+            }
         }
     },
     notify: {
@@ -62,7 +67,16 @@ TaskSchema = new SimpleSchema({
     },
     description: {
         type: String,
-        label: "Description"
+        label: "Description",
+        autoform: {
+            afFieldInput: {
+                type: 'summernote',
+                class: 'editor', // optional
+                settings:{
+                    height: 250,
+                }
+            }
+        }
     },
     steps: {
         type: [StepsSchema],
