@@ -8,6 +8,11 @@ Meteor.users.allow({
 });
 
 Schema.UserProfile = new SimpleSchema({
+    nickname: {
+        type: String,
+        label: 'Nickname',
+        optional: true
+    },
     firstName: {
         type: String,
         label: "First Name",

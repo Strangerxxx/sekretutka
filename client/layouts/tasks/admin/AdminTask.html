@@ -35,7 +35,7 @@
                 <ul>
                     {{#each user}}
                         <li style="list-style: none">
-                            {{#with profile}}<a href="/admin/tasks/{{../../_id}}/results/{{../_id}}">{{firstName}} {{lastName}}</a>{{/with}}
+                            {{#with profile}}<a href="/admin/tasks/{{../../_id}}/results/{{../_id}}">"{{nickname}}" {{firstName}} {{lastName}}</a>{{/with}}
                             <input type="button" data-user="{{_id}}" class="unassign-user" value="x" data-task="{{../_id}}">
                         </li>
                     {{/each}}
@@ -48,7 +48,7 @@
                         <option disabled selected>(Select user to attach)</option>
                         {{#each users}}
                             {{#with profile}}
-                                <option value="{{../_id}}">{{firstName}} {{lastName}}</option>
+                                <option value="{{../_id}}">"{{nickname}}" {{firstName}} {{lastName}}</option>
                             {{/with}}
                         {{/each}}
                     </select>

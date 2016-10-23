@@ -1,21 +1,17 @@
-Meteor.subscribe('tasks', Meteor.userId());
-Meteor.subscribe('usertask');
-
 var completionType = new ReactiveVar();
+
+Template.Tasks.onCreated(function () {
+    Tracker.autorun(function () {
+        if(Meteor.userId()) {
+            Meteor.subscribe('tasks', Meteor.userId());
+            Meteor.subscribe('usertask', Meteor.userId());
+        }
+    });
+});
 
 Template.Tasks.helpers({
     tasks: ()=> {
-        if(Roles.userIsInRole(Meteor.userId(), 'admin'))
-        {
-            return tasks.find();
-        }
-        else {
-            var dict = usertask.find({"userId": Meteor.userId()}).map(function (doc) {
-                return doc.taskId;
-            });
-            console.log(tasks.findOne());
-            return tasks.find({_id: {$in: dict}});
-        }
+        return tasks.find();
     },
 });
 

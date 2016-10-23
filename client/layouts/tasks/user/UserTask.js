@@ -1,9 +1,10 @@
-Meteor.subscribe('tasks', Meteor.userId());
-Meteor.subscribe('usertask', Meteor.userId());
-Meteor.subscribe('files');
+
 
 Template.uploadTemplate.onCreated(function () {
     this.currentUpload = new ReactiveVar(false);
+    Meteor.subscribe('tasks', Meteor.userId());
+    Meteor.subscribe('usertask', Meteor.userId());
+    Meteor.subscribe('files');
 });
 
 Template.UserTask.helpers({
@@ -53,7 +54,6 @@ Template.UserTask.helpers({
         }
     },
     task: () => {
-        console.log(FlowRouter.getParam('taskId'));
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
     }
 });
