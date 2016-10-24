@@ -3,14 +3,14 @@
         {{#with task}}
             <h2>{{name}}</h2>
             <div class="description">
-                {{{description}}}
+                {{{desc description}}}
             </div>
 
             <h3>Active step</h3>
             {{#with step _id}}
                 <h4>{{name}}</h4>
 
-                {{{description}}}
+                {{{desc description}}}
 
                 <hr>
                 {{#if notify}}

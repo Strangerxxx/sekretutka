@@ -55,6 +55,26 @@ Template.UserTask.helpers({
     },
     task: () => {
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
+    },
+    desc: (text, vars) => {
+        var userTask = usertask.findOne({taskId: FlowRouter.getParam('taskId')});
+        var variables = userTask.variables;
+
+        const regEx = /&lt;var&gt;(.+?)&lt;\/var&gt;/g;
+        if(text.match(regEx)) {
+            text.match(regEx).forEach(function (element) {
+                var full = element;
+                element = element.replace('&lt;var&gt;', '');
+                element = element.replace('&lt;/var&gt;', '');
+                variables.forEach(function (variable) {
+                    if(variable.name == element){
+                        text = text.replace(full, variable.value);
+                    }
+                });
+
+            });
+        }
+        return text;
     }
 });
 

@@ -95,9 +95,10 @@ Template.AdminTask.events({
             });
         });
         console.log(variables);
-        Modal.show('VariablesModal', {variables: variables, userId: userId});
-
-        Meteor.call('usertask.add', this._id, userId);
+        if(variables)
+            Modal.show('VariablesModal', {variables: variables, userId: userId});
+        else
+            Meteor.call('usertask.add', this._id, userId);
     },
     'click .unassign-user': function (event) {
         Meteor.call('usertask.remove', $(event.target).data('task'), $(event.target).data('user'));
@@ -126,4 +127,18 @@ Template.VariablesModal.helpers({
         user = Meteor.users.findOne(Template.instance().data.userId);
         return user;
     }
+});
+
+Template.VariablesModal.events({
+   'submit .variables-form': (event, tmpl) => {
+        event.preventDefault();
+        var variables = [];
+        Template.instance().data.variables.forEach(function (element) {
+            variables.push({
+                name: element.name,
+                value: $('#'+element.name).val()
+            });
+        });
+        Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+   }
 });

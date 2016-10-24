@@ -1,4 +1,4 @@
-<template name="AdminTask">
+<template name="AdminTask" xmlns="http://www.w3.org/1999/html">
 
         {{#with task}}
             {{#unless editEnabled}}
@@ -91,19 +91,21 @@
                                 <h4 class="modal-title">Enter Variables for "{{profile.nickname}}" {{profile.firstName}} {{profile.lastName}}</h4>
                             {{/with}}
                         </div>
+                        <form id="variablesForm" class="variables-form">
+                            <div class="modal-body">
+                                    {{#each variables}}
+                                        <div class="form-group">
+                                            <label class="control-label">{{name}}</label>
+                                            <input class="form-control" type="text" id="{{name}}" required>
+                                        </div>
+                                    {{/each}}
+                            </div>
 
-                        <div class="modal-body">
-                            {{#each variables}}
-                                <div class="form-group">
-                                    <label class="control-label">{{name}}</label>
-                                    <input class="form-control" type="text">
-                                </div>
-                            {{/each}}
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success">Attach</button>
+                            </div>
+                        </form>
 
                     </div>
                 </div>

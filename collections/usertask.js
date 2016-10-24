@@ -1,15 +1,15 @@
 usertask = new Mongo.Collection('usertask');
 
 Meteor.methods({
-    'usertask.add'(taskId, userId){
+    'usertask.add'(taskId, userId, variables){
         const check = usertask.find({'taskId': taskId, 'userId': userId}).count();
-        const task = tasks.findOne({ "_id" : taskId});
-        //const activeStepId = task.steps[0]._id;
+
+
         if(check == 0){
             usertask.insert({
                 taskId,
                 userId,
-                //activeStepId
+                variables,
             });
         }
     },
@@ -121,12 +121,25 @@ ProgressSchema = new SimpleSchema({
     }
 });
 
+VariablesSchema = new SimpleSchema({
+    name: {
+        type: String,
+    },
+    value: {
+        type: String,
+    }
+});
+
 UserTaskSchema = new SimpleSchema({
     taskId: {
        type: tasks,
     },
     userId: {
         type: Meteor.users,
+    },
+    variables: {
+        type: [VariablesSchema],
+        optional: true,
     },
     progress: {
         type: [ProgressSchema],
