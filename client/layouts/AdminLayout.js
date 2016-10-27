@@ -1,9 +1,19 @@
 Template.AdminLayout.onCreated(function () {
-   Meteor.subscribe('notifications');
+   let init = false;
+   let handle = Meteor.subscribe('notifications', function () {
+      notifications.find({}).observe({
+         added: function (doc) {
+            if(init)
+               Toast.success(doc.text);
+            init = true;
+         }
+      });
+   });
 });
 
 Template.Notifications.helpers({
    notification: () => {
+
       return notifications.find({}, { sort: {createdAt: -1}});
    },
    notifCount: () => {

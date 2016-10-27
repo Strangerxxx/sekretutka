@@ -1,4 +1,4 @@
-Meteor.subscribe('tasks');
+Meteor.subscribe('tasks', Meteor.userId());
 Meteor.subscribe('users', Meteor.userId());
 Meteor.subscribe('usertask', Meteor.userId());
 Meteor.subscribe('files');
@@ -70,17 +70,23 @@ Template.AdminTask.events({
     'submit .attach-users': function (event, tmpl) {
         event.preventDefault();
         var userId = tmpl.find('.user-selected :selected').value;
-        var task = tasks.findOne(FlowRouter.getParam('taskId'));
-        var steps = task.steps.map(function (element) {
-            return element.description;
-        });
+        if(usertask.findOne({userId: userId, taskId: FlowRouter.getParam('taskId')})){
+            let user = Meteor.users.findOne({_id: userId})
+            Toast.error(`${user.profile.firstName} ${user.profile.lastName} is already attached to this task`);
+        }
+        else{
+            var task = tasks.findOne(FlowRouter.getParam('taskId'));
+            var steps = task.steps.map(function (element) {
+                return element.description;
+            });
 
-        var variables = Blaze._globalHelpers.getVariablesFromTask(task);
+            var variables = Blaze._globalHelpers.getVariablesFromTask(task);
 
-        if(variables)
-            Modal.show('VariablesModal', {variables: variables, userId: userId});
-        else
-            Meteor.call('usertask.add', this._id, userId);
+            if(variables)
+                Modal.show('VariablesModal', {variables: variables, userId: userId});
+            else
+                Meteor.call('usertask.add', this._id, userId);
+        }
     },
     'click .unassign-user': function (event) {
         Meteor.call('usertask.remove', $(event.target).data('task'), $(event.target).data('user'));

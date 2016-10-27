@@ -101,8 +101,21 @@ TaskSchema = new SimpleSchema({
             afFieldInput: {
                 type: 'summernote',
                 class: 'editor', // optional
-                settings:{
+                settings:{ // summernote options goes here
                     height: 250,
+                    toolbar:[
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['picture', 'link', 'video']],
+                        ['variable',['variable']],
+                        ['misc', ['fullscreen', 'help']]
+                    ],
+                    buttons:{
+                        variable: VariableButton
+                    },
                 }
             }
         }

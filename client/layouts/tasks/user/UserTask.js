@@ -8,6 +8,7 @@ Template.uploadTemplate.onCreated(function () {
 });
 
 Template.UserTask.helpers({
+    completed: (name) =>{return name == 'Completed'},
     step: (par)=> {
         var Step = null;
         var userTask = usertask.findOne({'userId': Meteor.userId(), 'taskId': par});
@@ -62,17 +63,13 @@ Template.UserTask.helpers({
 
         const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
 
-        let matches;
+        let repl = text.replace(regEx, function(s, key) {
+            for (e of variables) {
+                if (e.name == key) return e.value;
+            }
+        });
 
-        while(matches = regEx.exec(text)){
-            console.log(matches);
-            let variable = $.grep(variables, function(e){ return e.name == matches[1]});
-            console.log(variable);
-            text = text.replace(matches[0], variable[0].value);
-            console.log(text);
-        }
-
-        return text;
+        return repl;
     }
 });
 

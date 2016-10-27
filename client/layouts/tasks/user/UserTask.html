@@ -19,7 +19,9 @@
                 {{#if completionType}}
                     {{> Template.dynamic template=(userInput completionType)}}
                 {{else}}
-                    <p class="text-info">Admin was notified, please wait for approval</p>
+                    {{#unless completed name}}
+                        <p class="text-info">Admin was notified, please wait for approval</p>
+                    {{/unless}}
                 {{/if}}
             {{/with}}
         {{/with}}
