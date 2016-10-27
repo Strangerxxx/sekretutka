@@ -20,3 +20,19 @@ Toast.options = {
     timeOut: 1200,
 };
 AutoForm.debug();
+
+Template.registerHelper('getVariablesFromTask', (task) => {
+    const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
+    let matches, output = [];
+
+    while (matches = regEx.exec(task.description)) {
+        output.push({'name': matches[1]});
+    }
+
+    for(const element of task.steps){
+        while (matches = regEx.exec(element.description)) {
+            output.push({'name': matches[1]});
+        }
+    }
+    return output;
+});

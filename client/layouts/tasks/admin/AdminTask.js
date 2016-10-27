@@ -74,27 +74,9 @@ Template.AdminTask.events({
         var steps = task.steps.map(function (element) {
             return element.description;
         });
-        const regEx = /&lt;var&gt;(.+?)&lt;\/var&gt;/g;
-        var variables = [];
-        if(task.description.match(regEx)) {
-            task.description.match(regEx).forEach(function (element) {
-                element = element.replace('&lt;var&gt;', '');
-                element = element.replace('&lt;/var&gt;', '');
-                variables.push({
-                    name: element
-                });
-            });
-        }
-        steps.forEach(function (element) {
-            element.match(regEx).forEach(function (element) {
-                element = element.replace('&lt;var&gt;', '');
-                element = element.replace('&lt;/var&gt;', '');
-                variables.push({
-                    name: element
-                });
-            });
-        });
-        console.log(variables);
+
+        var variables = Blaze._globalHelpers.getVariablesFromTask(task);
+
         if(variables)
             Modal.show('VariablesModal', {variables: variables, userId: userId});
         else

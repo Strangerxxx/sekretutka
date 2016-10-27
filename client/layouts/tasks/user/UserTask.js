@@ -56,24 +56,22 @@ Template.UserTask.helpers({
     task: () => {
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
     },
-    desc: (text, vars) => {
+    desc: (text) => {
         var userTask = usertask.findOne({taskId: FlowRouter.getParam('taskId')});
         var variables = userTask.variables;
 
-        const regEx = /&lt;var&gt;(.+?)&lt;\/var&gt;/g;
-        if(text.match(regEx)) {
-            text.match(regEx).forEach(function (element) {
-                var full = element;
-                element = element.replace('&lt;var&gt;', '');
-                element = element.replace('&lt;/var&gt;', '');
-                variables.forEach(function (variable) {
-                    if(variable.name == element){
-                        text = text.replace(full, variable.value);
-                    }
-                });
+        const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
 
-            });
+        let matches;
+
+        while(matches = regEx.exec(text)){
+            console.log(matches);
+            let variable = $.grep(variables, function(e){ return e.name == matches[1]});
+            console.log(variable);
+            text = text.replace(matches[0], variable[0].value);
+            console.log(text);
         }
+
         return text;
     }
 });

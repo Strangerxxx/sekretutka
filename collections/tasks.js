@@ -15,24 +15,22 @@ tasks.allow({
     }
 });
 
-var HelloButton = function (context) {
+var VariableButton = function (context) {
     var ui = $.summernote.ui;
+
     // create button
     var button = ui.button({
-        contents: '<i class="fa fa-asterisk btn-var"/>',
+        className: 'btn-var',
+        contents: '<i class="fa fa-asterisk">',
         tooltip: 'Variable',
-        click: function () {
-            $('.summernote').summernote('insertText', '<var></var>');
+        click: function (e) {
+            $('.summernote').summernote('insertText', '<v></v>');
         }
     });
-
     return button.render();   // return button as jquery object
 };
 
-
-
-
-    StepsSchema = new SimpleSchema({
+StepsSchema = new SimpleSchema({
     _id: {
         type: String,
         label: '_id',
@@ -68,11 +66,18 @@ var HelloButton = function (context) {
                 class: 'summernote', // optional
                 settings:{ // summernote options goes here
                     height: 250,
-                    toolbar: [
-                        ['mybutton', ['variable']]
+                    toolbar:[
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['picture', 'link', 'video']],
+                        ['variable',['variable']],
+                        ['misc', ['fullscreen', 'help']]
                     ],
-                    buttons: {
-                        variable: HelloButton,
+                    buttons:{
+                        variable: VariableButton
                     },
                 }
             }
