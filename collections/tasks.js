@@ -29,6 +29,20 @@ var VariableButton = function (context) {
     });
     return button.render();   // return button as jquery object
 };
+var VariableButtonTask = function (context) {
+    var ui = $.summernote.ui;
+
+    // create button
+    var button = ui.button({
+        className: 'btn-var',
+        contents: '<i class="fa fa-asterisk">',
+        tooltip: 'Variable',
+        click: function (e) {
+            $('.editor').summernote('insertText', '<v></v>');
+        }
+    });
+    return button.render();   // return button as jquery object
+};
 
 StepsSchema = new SimpleSchema({
     _id: {
@@ -114,8 +128,25 @@ TaskSchema = new SimpleSchema({
                         ['misc', ['fullscreen', 'help']]
                     ],
                     buttons:{
-                        variable: VariableButton
+                        variable: VariableButtonTask
                     },
+                    callbacks: {
+                        onImageUpload: function (files) {
+                            console.log(files);
+                            var uploadInstance = Images.insert({
+                                file: files[0],
+                                streams: 'dynamic',
+                                chunkSize: 'dynamic',
+                            }, false);
+
+                            uploadInstance.on('end', function (err, fileObj) {
+                                let image = Images.findOne(fileObj._id);
+                                $('.editor').summernote('insertImage', image.link());
+                            });
+                            uploadInstance.start();
+
+                        }
+                    }
                 }
             }
         }
