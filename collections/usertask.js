@@ -127,6 +127,9 @@ VariablesSchema = new SimpleSchema({
     },
     value: {
         type: String,
+    },
+    stepId: {
+        type: String,
     }
 });
 

@@ -41,15 +41,21 @@ Template.registerHelper('getVariablesFromTask', (task) => {
     let matches, output = [];
 
     while (matches = regEx.exec(task.description)) {
-        let obj = {'name': matches[1]};
+        let obj = {'name': matches[1], 'stepId': 'task'};
         output.pushUnique(obj);
     }
 
     for(const element of task.steps){
         while (matches = regEx.exec(element.description)) {
-            let obj = {'name': matches[1]};
+            let obj = {'name': matches[1], 'stepId': element._id};
             output.pushUnique(obj);
         }
     }
     return output;
+});
+
+SimpleSchema.messages({
+    regEx: [
+        {msg: "Please enter a valid [label]"},
+    ]
 });

@@ -1,16 +1,28 @@
 var completionType = new ReactiveVar();
 
 Template.Tasks.onCreated(function () {
-    Tracker.autorun(function () {
-        if(Meteor.userId()) {
-            Meteor.subscribe('tasks', Meteor.userId());
-            Meteor.subscribe('usertask', Meteor.userId());
-        }
-    });
+    Meteor.subscribe('usertask', Meteor.userId());
+    if(Roles.userIsInRole(Meteor.userId(), 'admin'))
+        Meteor.subscribe('tasks', Meteor.userId());
+    else{
+        Tracker.autorun(function () {
+            usertask.find().observeChanges({
+                added: () => {
+                    Meteor.subscribe('tasks', Meteor.userId());
+                },
+                removed: () => {
+                    Meteor.disconnect();
+                    Meteor.reconnect();
+                    Meteor.subscribe('tasks', Meteor.userId());
+                }
+            })
+        })
+    }
 });
 
 Template.Tasks.helpers({
     tasks: ()=> {
+
         return tasks.find();
     },
 });

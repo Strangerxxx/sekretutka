@@ -9,10 +9,28 @@
                     </div>
 
                     <div class="modal-body">
+                        <h4 class="text-center">Variables in this step</h4>
+                        <table class="table table-striped">
+                            <thead>
+                                <th>Name</th>
+                                <th>Value</th>
+                            </thead>
+                            <tbody>
+                            {{#each variables stepId}}
+                                <tr>
+                                    <td>{{this.name}}</td>
+                                    <td>{{value}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+
+                        <hr>
+                        <h4 class="text-center">Result</h4>
                         {{#if image completionType result}}
                             <img src="{{imageFile.link result}}" alt="{{imageFile.name result}}" class="img-responsive center-block" />
                         {{else}}
-                            <p>{{result}}</p>
+                            <p class="description">{{result}}</p>
                         {{/if}}
                     </div>
 

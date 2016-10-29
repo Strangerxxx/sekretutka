@@ -18,6 +18,7 @@ Template.AcceptInvite.helpers({
     token: () => Template.instance().token,
     newUserSchema: () => Schema.newUser
 });
+
 AutoForm.hooks({
     register: {
         onSuccess: (formType, result) => {

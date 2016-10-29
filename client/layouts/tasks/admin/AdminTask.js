@@ -82,7 +82,7 @@ Template.AdminTask.events({
 
             var variables = Blaze._globalHelpers.getVariablesFromTask(task);
 
-            if(variables)
+            if(variables.length != 0)
                 Modal.show('VariablesModal', {variables: variables, userId: userId});
             else
                 Meteor.call('usertask.add', this._id, userId);
@@ -120,11 +120,13 @@ Template.VariablesModal.helpers({
 Template.VariablesModal.events({
    'submit .variables-form': (event, tmpl) => {
         event.preventDefault();
+        Modal.hide('VariablesModal');
         var variables = [];
         Template.instance().data.variables.forEach(function (element) {
             variables.push({
                 name: element.name,
-                value: $('#'+element.name).val()
+                value: $('#'+element.name).val(),
+                stepId: element.stepId
             });
         });
         Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);

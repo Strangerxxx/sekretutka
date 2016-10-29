@@ -2,8 +2,8 @@
 
 Template.uploadTemplate.onCreated(function () {
     this.currentUpload = new ReactiveVar(false);
-    Meteor.subscribe('tasks', Meteor.userId());
     Meteor.subscribe('usertask', Meteor.userId());
+    Meteor.subscribe('tasks', Meteor.userId());
     Meteor.subscribe('files');
 });
 

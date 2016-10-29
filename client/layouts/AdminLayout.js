@@ -5,9 +5,9 @@ Template.AdminLayout.onCreated(function () {
          added: function (doc) {
             if(init)
                Toast.success(doc.text);
-            init = true;
          }
       });
+      init = true;
    });
 });
 
@@ -24,9 +24,6 @@ Template.Notifications.helpers({
 });
 
 Template.AdminLayout.events({
-   'click .navbar-brand': () => {
-      Meteor.call('notifications.create');
-   },
    'mouseenter .notification-item': (event) => {
       Meteor.call('notifications.mark-seen', $(event.target).data('id'));
    },

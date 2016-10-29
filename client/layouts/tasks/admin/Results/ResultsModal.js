@@ -2,7 +2,6 @@ Template.ResultModal.onCreated(function () {
     this.subscribe('usertask');
     this.subscribe('tasks');
     this.subscribe('users', Meteor.userId());
-
 });
 
 var thisImage = new ReactiveVar();
@@ -46,9 +45,16 @@ Template.ResultModal.helpers({
     imageFile: function (src) {
         var image = Images.findOne({_id: thisImage.get()});
         return image;
+    },
+    variables: (stepId) => {
+        let result = usertask.findOne({taskId: FlowRouter.getParam('taskId'), userId: FlowRouter.getParam('userId')})
+        let variables = [result.variables[0]];
+        for(e of result.variables){
+            if(e.stepId == stepId)
+                variables.push(e);
+        }
+        return variables;
     }
-
-
 });
 
 Template.ResultModal.events({
