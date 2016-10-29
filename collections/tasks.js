@@ -93,6 +93,23 @@ StepsSchema = new SimpleSchema({
                     buttons:{
                         variable: VariableButton
                     },
+                    callbacks: {
+                        onImageUpload: function (files) {
+                            console.log(files);
+                            var uploadInstance = Images.insert({
+                                file: files[0],
+                                streams: 'dynamic',
+                                chunkSize: 'dynamic',
+                            }, false);
+
+                            uploadInstance.on('end', function (err, fileObj) {
+                                let image = Images.findOne(fileObj._id);
+                                $('.summernote').summernote('insertImage', image.link());
+                            });
+                            uploadInstance.start();
+
+                        }
+                    }
                 }
             }
         }
