@@ -21,37 +21,33 @@ Toast.options = {
 };
 AutoForm.debug();
 
-function arrayObjectIndexOf(myArray, searchTerm, property) {
-    for(var i = 0, len = myArray.length; i < len; i++) {
-        if (JSON.stringify(myArray[i]) === JSON.stringify(searchTerm)) return i;
-    }
-    return -1;
-}
+Template.registerHelper('getVariablesFromText', (text) => {
+    const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
+    let matches, variables = {};
 
-Array.prototype.pushUnique = function (item){
-    if(arrayObjectIndexOf(this, item) == -1) {
-        this.push(item);
-        return true;
+    while (matches = regEx.exec(text)) {
+        let obj = {'name': matches[1], 'stepId': 'task'};
+        variables[matches[1]] = null;
     }
-    return false;
-};
+    return variables;
+});
 
 Template.registerHelper('getVariablesFromTask', (task) => {
     const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
-    let matches, output = [];
+    let matches, variables = {};
 
     while (matches = regEx.exec(task.description)) {
         let obj = {'name': matches[1], 'stepId': 'task'};
-        output.pushUnique(obj);
+        variables[matches[1]] = null;
     }
 
     for(const element of task.steps){
         while (matches = regEx.exec(element.description)) {
             let obj = {'name': matches[1], 'stepId': element._id};
-            output.pushUnique(obj);
+            variables[matches[1]] = null;
         }
     }
-    return output;
+    return variables;
 });
 
 SimpleSchema.messages({

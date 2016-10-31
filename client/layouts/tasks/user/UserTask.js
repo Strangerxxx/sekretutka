@@ -63,13 +63,10 @@ Template.UserTask.helpers({
 
         const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
 
-        let repl = text.replace(regEx, function(s, key) {
-            for (e of variables) {
-                if (e.name == key) return e.value;
-            }
+        return text.replace(regEx, function(s, key) {
+            if(variables.hasOwnProperty(key))
+                return variables[key];
         });
-
-        return repl;
     }
 });
 

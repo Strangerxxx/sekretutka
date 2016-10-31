@@ -70,7 +70,6 @@ Meteor.methods({
         );
     },
     'usertask.set-checked'(progressId){
-        console.log(progressId);
         usertask.update({
                 progress: {$elemMatch: {_id: progressId}}
             },
@@ -79,6 +78,9 @@ Meteor.methods({
                 }
             },
         );
+    },
+    'usertask.update-variables'(taskId, userId, variables){
+        usertask.update({taskId: taskId, userId: userId}, {$set: {variables: variables}});
     }
 });
 
@@ -121,17 +123,7 @@ ProgressSchema = new SimpleSchema({
     }
 });
 
-VariablesSchema = new SimpleSchema({
-    name: {
-        type: String,
-    },
-    value: {
-        type: String,
-    },
-    stepId: {
-        type: String,
-    }
-});
+
 
 UserTaskSchema = new SimpleSchema({
     taskId: {
@@ -141,8 +133,9 @@ UserTaskSchema = new SimpleSchema({
         type: Meteor.users,
     },
     variables: {
-        type: [VariablesSchema],
+        type: Object,
         optional: true,
+        blackbox: true,
     },
     progress: {
         type: [ProgressSchema],

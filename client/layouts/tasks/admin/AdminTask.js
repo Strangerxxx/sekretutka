@@ -1,10 +1,14 @@
-Meteor.subscribe('tasks', Meteor.userId());
-Meteor.subscribe('users', Meteor.userId());
-Meteor.subscribe('usertask', Meteor.userId());
-Meteor.subscribe('files');
-
 var editMode = new ReactiveVar();
-editMode.set(false);
+
+Template.AdminTask.onCreated(function () {
+    Meteor.subscribe('tasks', Meteor.userId());
+    Meteor.subscribe('users', Meteor.userId());
+    Meteor.subscribe('usertask', Meteor.userId());
+    Meteor.subscribe('files');
+    editMode.set(false);
+
+});
+
 
 var imageToShow = new ReactiveVar(); //не нужен тут реактиввар
 
@@ -59,7 +63,8 @@ Template.AdminTask.helpers({
     },
     task: ()=> {
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
-    }
+    },
+    variables: (userId) => usertask.findOne({taskId: FlowRouter.getParam('taskId'), userId: userId}).variables,
 });
 
 Template.AdminTask.events({
@@ -80,10 +85,15 @@ Template.AdminTask.events({
                 return element.description;
             });
 
+            let t0 = performance.now();
+
             var variables = Blaze._globalHelpers.getVariablesFromTask(task);
 
+            let t1 = performance.now();
+            console.log(`It took ${t1 - t0}`);
+
             if(variables.length != 0)
-                Modal.show('VariablesModal', {variables: variables, userId: userId});
+                Modal.show('VariablesModal', {variables: variables, userId: userId, type: 'Attach'});
             else
                 Meteor.call('usertask.add', this._id, userId);
         }
@@ -100,6 +110,12 @@ Template.AdminTask.events({
     'click #cancel': ()=> {
         editMode.set(false);
     },
+    'click .edit-variables': (event) => {
+
+        let variables = Blaze._globalHelpers.getVariablesFromTask(tasks.findOne({_id: $(event.target).data('task')}));
+
+        Modal.show('VariablesModal', {variables: variables, userId: $(event.target).data('user'), type: 'Edit'});
+    }
 
 });
 
@@ -109,26 +125,46 @@ Template.VariablesModal.onCreated(function () {
 
 Template.VariablesModal.helpers({
     'variables': () => {
-        return Template.instance().data.variables;
+        let vars = [];
+
+        let _variables = usertask.findOne({taskId: $(event.target).data('task'), userId: $(event.target).data('user')}).variables;
+
+        for(var key in Template.instance().data.variables){
+            if(Template.instance().data.variables.hasOwnProperty(key)){
+                vars.push({
+                    name: key,
+                    value: _variables[key],
+                })
+            }
+        }
+        console.log(vars)
+        return vars;
     },
     'user': () => {
         user = Meteor.users.findOne(Template.instance().data.userId);
         return user;
-    }
+    },
+    'actionType': () => Template.instance().data.type,
 });
 
 Template.VariablesModal.events({
    'submit .variables-form': (event, tmpl) => {
         event.preventDefault();
         Modal.hide('VariablesModal');
-        var variables = [];
-        Template.instance().data.variables.forEach(function (element) {
-            variables.push({
-                name: element.name,
-                value: $('#'+element.name).val(),
-                stepId: element.stepId
-            });
-        });
-        Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+        var variables = Template.instance().data.variables;
+
+        for(let variable in variables){
+            if(variables.hasOwnProperty(variable)){
+                variables[variable] = $(`[name="${variable}"]`).val();
+            }
+        }
+
+        if(Template.instance().data.type == 'Attach')
+            Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+        else if(Template.instance().data.type == 'Edit')
+            Meteor.call('usertask.update-variables', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+
+
+
    }
 });

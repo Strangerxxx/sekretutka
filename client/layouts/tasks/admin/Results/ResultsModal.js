@@ -46,14 +46,34 @@ Template.ResultModal.helpers({
         var image = Images.findOne({_id: thisImage.get()});
         return image;
     },
+
     variables: (stepId) => {
-        let result = usertask.findOne({taskId: FlowRouter.getParam('taskId'), userId: FlowRouter.getParam('userId')})
-        let variables = [result.variables[0]];
-        for(e of result.variables){
-            if(e.stepId == stepId)
-                variables.push(e);
+        let userTask = usertask.findOne({taskId: FlowRouter.getParam('taskId'), userId: FlowRouter.getParam('userId')});
+        let task = tasks.findOne({_id: FlowRouter.getParam('taskId')});
+        let step = task.steps.find(function (element) {
+            return element._id = stepId;
+        });
+
+        var vars = Blaze._globalHelpers.getVariablesFromText(task.description);
+        let output = [];
+        for(let variable in vars){
+            if(vars.hasOwnProperty(variable))
+            output.push({
+                name: variable,
+                value: userTask.variables[variable],
+            })
         }
-        return variables;
+        vars = Blaze._globalHelpers.getVariablesFromText(step.description);
+        for(let element in vars){
+            if(vars.hasOwnProperty(element)) {
+                if (userTask.variables.hasOwnProperty(element))
+                    output.push({
+                        name: element,
+                        value: userTask.variables[element],
+                    });
+            }
+        }
+        return output;
     }
 });
 

@@ -36,7 +36,14 @@
                     {{#each user}}
                         <li style="list-style: none">
                             {{#with profile}}<a href="/admin/tasks/{{../../_id}}/results/{{../_id}}">"{{nickname}}" {{firstName}} {{lastName}}</a>{{/with}}
-                            <input type="button" data-user="{{_id}}" class="unassign-user" value="x" data-task="{{../_id}}">
+                            <a class="unassign-user text-danger" >
+                                <i class="fa fa-2x fa-times" data-user="{{_id}}" data-task="{{../_id}}"></i>
+                            </a>
+                            {{#if variables _id}}
+                                <a class="edit-variables text-info" >
+                                    <i class="fa fa-2x fa-edit" data-user="{{_id}}" data-task="{{../_id}}"></i>
+                                </a>
+                            {{/if}}
                         </li>
                     {{/each}}
                 </ul>
@@ -72,8 +79,6 @@
                             <button id="cancel" class="btn btn-danger">Cancel</button>
                         </div>
                     </div>
-
-
                 {{/autoForm}}
             {{/unless}}
         {{/with}}
@@ -94,14 +99,14 @@
                                     {{#each variables}}
                                         <div class="form-group">
                                             <label class="control-label">{{name}}</label>
-                                            <input class="form-control" type="text" id="{{name}}" required>
+                                            <input class="form-control" type="text" name="{{name}}" value="{{value}}" required>
                                         </div>
                                     {{/each}}
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-success">Attach</button>
+                                <button type="submit" class="btn btn-success">{{actionType}}</button>
                             </div>
                         </form>
                     </div>
