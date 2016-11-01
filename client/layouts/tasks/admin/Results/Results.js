@@ -1,10 +1,14 @@
 Template.Results.onCreated(function () {
-    this.subscribe('usertask');
-    Meteor.subscribe('tasks');
+    Meteor.subscribe('usertask', Meteor.userId());
+
+    Meteor.subscribe('tasks', Meteor.userId());
+
     Meteor.subscribe('users', Meteor.userId());
+
     Template.instance().taskId = FlowRouter.getParam('taskId');
     Template.instance().userId = FlowRouter.getParam('userId');
     Meteor.subscribe('files');
+
     Tracker.autorun(function() {
         FlowRouter.watchPathChange();
         var currentContext = FlowRouter.current();

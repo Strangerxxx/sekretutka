@@ -1,6 +1,6 @@
 Template.ResultModal.onCreated(function () {
-    this.subscribe('usertask');
-    this.subscribe('tasks');
+    this.subscribe('usertask', Meteor.userId());
+    this.subscribe('tasks', Meteor.userId());
     this.subscribe('users', Meteor.userId());
     Meteor.subscribe('files');
 });
