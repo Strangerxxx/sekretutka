@@ -23,22 +23,8 @@ var VariableButton = function (context) {
         className: 'btn-var',
         contents: '<i class="fa fa-asterisk"></i>',
         tooltip: 'Variable',
-        click: function (e) {
-            $('.summernote').summernote('insertText', '<v></v>');
-        }
-    });
-    return button.render();   // return button as jquery object
-};
-var VariableButtonTask = function (context) {
-    var ui = $.summernote.ui;
-
-    // create button
-    var button = ui.button({
-        className: 'btn-var',
-        contents: '<i class="fa fa-asterisk"></i>',
-        tooltip: 'Variable',
-        click: function (e) {
-            $('.editor').summernote('insertText', '<v></v>');
+        click: function(e){
+            $($(e.target).parents('.note-editor')[0]).siblings('.summernote').summernote('insertText', '<v></v>');
         }
     });
     return button.render();   // return button as jquery object
@@ -95,17 +81,15 @@ StepsSchema = new SimpleSchema({
                     },
                     callbacks: {
                         onImageUpload: function (files) {
-                            console.log(files);
                             var uploadInstance = Images.insert({
                                 file: files[0],
                                 streams: 'dynamic',
                                 chunkSize: 'dynamic',
                             }, false);
 
-                            uploadInstance.on('end', function (err, fileObj) {
+                            uploadInstance.on('end',(err, fileObj)=>{
                                 let image = Images.findOne(fileObj._id);
-                                console.log(this)
-                                $('.summernote').summernote('insertImage', image.link());
+                                $(this).summernote('insertImage', image.link());
                             });
                             uploadInstance.start();
 
@@ -132,7 +116,7 @@ TaskSchema = new SimpleSchema({
         autoform: {
             afFieldInput: {
                 type: 'summernote',
-                class: 'editor', // optional
+                class: 'summernote', // optional
                 settings:{ // summernote options goes here
                     height: 250,
                     toolbar:[
@@ -146,7 +130,7 @@ TaskSchema = new SimpleSchema({
                         ['misc', ['fullscreen', 'help']]
                     ],
                     buttons:{
-                        variable: VariableButtonTask
+                        variable: VariableButton
                     },
                     callbacks: {
                         onImageUpload: function (files) {
