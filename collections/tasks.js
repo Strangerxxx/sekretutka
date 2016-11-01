@@ -30,6 +30,49 @@ var VariableButton = function (context) {
     return button.render();   // return button as jquery object
 };
 
+const description = {
+    type: String,
+    label: "Description",
+    autoform: {
+        afFieldInput: {
+            type: 'summernote',
+            class: 'summernote', // optional
+            settings:{ // summernote options goes here
+                height: 250,
+                toolbar:[
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['picture', 'link', 'video']],
+                    ['variable',['variable']],
+                    ['misc', ['fullscreen', 'help']]
+                ],
+                buttons:{
+                    variable: VariableButton
+                },
+                callbacks: {
+                    onImageUpload: function (files) {
+                        var uploadInstance = Images.insert({
+                            file: files[0],
+                            streams: 'dynamic',
+                            chunkSize: 'dynamic',
+                        }, false);
+
+                        uploadInstance.on('end',(err, fileObj)=>{
+                            let image = Images.findOne(fileObj._id);
+                            $(this).summernote('insertImage', image.link());
+                        });
+                        uploadInstance.start();
+
+                    }
+                }
+            }
+        }
+    }
+}
+
 StepsSchema = new SimpleSchema({
     _id: {
         type: String,
@@ -57,48 +100,7 @@ StepsSchema = new SimpleSchema({
             }
         }
     },
-    description: {
-        type: String,
-        label: "Description",
-        autoform: {
-            afFieldInput: {
-                type: 'summernote',
-                class: 'summernote', // optional
-                settings:{ // summernote options goes here
-                    height: 250,
-                    toolbar:[
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['picture', 'link', 'video']],
-                        ['variable',['variable']],
-                        ['misc', ['fullscreen', 'help']]
-                    ],
-                    buttons:{
-                        variable: VariableButton
-                    },
-                    callbacks: {
-                        onImageUpload: function (files) {
-                            var uploadInstance = Images.insert({
-                                file: files[0],
-                                streams: 'dynamic',
-                                chunkSize: 'dynamic',
-                            }, false);
-
-                            uploadInstance.on('end',(err, fileObj)=>{
-                                let image = Images.findOne(fileObj._id);
-                                $(this).summernote('insertImage', image.link());
-                            });
-                            uploadInstance.start();
-
-                        }
-                    }
-                }
-            }
-        }
-    },
+    description: description,
     notify: {
         type: Boolean,
         label: "Notify me",
@@ -110,49 +112,7 @@ TaskSchema = new SimpleSchema({
         type: String,
         label: "Name"
     },
-    description: {
-        type: String,
-        label: "Description",
-        autoform: {
-            afFieldInput: {
-                type: 'summernote',
-                class: 'summernote', // optional
-                settings:{ // summernote options goes here
-                    height: 250,
-                    toolbar:[
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['picture', 'link', 'video']],
-                        ['variable',['variable']],
-                        ['misc', ['fullscreen', 'help']]
-                    ],
-                    buttons:{
-                        variable: VariableButton
-                    },
-                    callbacks: {
-                        onImageUpload: function (files) {
-                            console.log(files);
-                            var uploadInstance = Images.insert({
-                                file: files[0],
-                                streams: 'dynamic',
-                                chunkSize: 'dynamic',
-                            }, false);
-
-                            uploadInstance.on('end', function (err, fileObj) {
-                                let image = Images.findOne(fileObj._id);
-                                $('.editor').summernote('insertImage', image.link());
-                            });
-                            uploadInstance.start();
-
-                        }
-                    }
-                }
-            }
-        }
-    },
+    description: description,
     steps: {
         type: [StepsSchema],
     },
