@@ -21,7 +21,7 @@ var VariableButton = function (context) {
     // create button
     var button = ui.button({
         className: 'btn-var',
-        contents: '<i class="fa fa-asterisk">',
+        contents: '<i class="fa fa-asterisk"></i>',
         tooltip: 'Variable',
         click: function (e) {
             $('.summernote').summernote('insertText', '<v></v>');
@@ -35,7 +35,7 @@ var VariableButtonTask = function (context) {
     // create button
     var button = ui.button({
         className: 'btn-var',
-        contents: '<i class="fa fa-asterisk">',
+        contents: '<i class="fa fa-asterisk"></i>',
         tooltip: 'Variable',
         click: function (e) {
             $('.editor').summernote('insertText', '<v></v>');
@@ -104,6 +104,7 @@ StepsSchema = new SimpleSchema({
 
                             uploadInstance.on('end', function (err, fileObj) {
                                 let image = Images.findOne(fileObj._id);
+                                console.log(this)
                                 $('.summernote').summernote('insertImage', image.link());
                             });
                             uploadInstance.start();

@@ -2,6 +2,7 @@ Template.ResultModal.onCreated(function () {
     this.subscribe('usertask');
     this.subscribe('tasks');
     this.subscribe('users', Meteor.userId());
+    Meteor.subscribe('files');
 });
 
 var thisImage = new ReactiveVar();
