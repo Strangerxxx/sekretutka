@@ -126,17 +126,30 @@ Template.VariablesModal.onCreated(function () {
 Template.VariablesModal.helpers({
     'variables': () => {
         let vars = [];
+        if(Template.instance().data.type == 'Edit'){
+            let _variables = usertask.findOne({taskId: $(event.target).data('task'), userId: $(event.target).data('user')}).variables;
 
-        let _variables = usertask.findOne({taskId: $(event.target).data('task'), userId: $(event.target).data('user')}).variables;
-
-        for(var key in Template.instance().data.variables){
-            if(Template.instance().data.variables.hasOwnProperty(key)){
-                vars.push({
-                    name: key,
-                    value: _variables[key],
-                })
+            for(var key in Template.instance().data.variables){
+                if(Template.instance().data.variables.hasOwnProperty(key)){
+                    vars.push({
+                        name: key,
+                        value: _variables[key],
+                    })
+                }
             }
         }
+        else if(Template.instance().data.type == 'Attach'){
+            for(var key in Template.instance().data.variables){
+                if(Template.instance().data.variables.hasOwnProperty(key)){
+                    vars.push({
+                        name: key,
+                        value: Template.instance().data.variables[key],
+                    })
+                }
+            }
+        }
+
+
         console.log(vars)
         return vars;
     },
