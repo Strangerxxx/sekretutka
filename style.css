@@ -152,3 +152,12 @@ tr.crossed-true{
 .dropdown-menu{
     width: 400px !important;
 }
+
+.fr-variable-insert-layer{
+    width: 200px;
+    margin: 10px;
+}
+
+v{
+    color: rebeccapurple;
+}

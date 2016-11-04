@@ -30,48 +30,71 @@ var VariableButton = function (context) {
     return button.render();   // return button as jquery object
 };
 
+// const description = {
+//     type: String,
+//     label: "Description",
+//     autoform: {
+//         afFieldInput: {
+//             type: 'summernote',
+//             class: 'summernote', // optional
+//             settings:{ // summernote options goes here
+//                 height: 250,
+//                 toolbar:[
+//                     ['style', ['bold', 'italic', 'underline', 'clear']],
+//                     ['fontsize', ['fontsize']],
+//                     ['color', ['color']],
+//                     ['para', ['ul', 'ol', 'paragraph']],
+//                     ['table', ['table']],
+//                     ['insert', ['picture', 'link', 'video']],
+//                     ['variable',['variable']],
+//                     ['misc', ['fullscreen', 'help']]
+//                 ],
+//                 buttons:{
+//                     variable: VariableButton
+//                 },
+//                 callbacks: {
+//                     onImageUpload: function (files) {
+//                         var uploadInstance = Images.insert({
+//                             file: files[0],
+//                             streams: 'dynamic',
+//                             chunkSize: 'dynamic',
+//                         }, false);
+//
+//                         uploadInstance.on('end',(err, fileObj)=>{
+//                             let image = Images.findOne(fileObj._id);
+//                             $(this).summernote('insertImage', image.link());
+//                         });
+//                         uploadInstance.start();
+//
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// };
+
 const description = {
     type: String,
     label: "Description",
     autoform: {
         afFieldInput: {
-            type: 'summernote',
-            class: 'summernote', // optional
-            settings:{ // summernote options goes here
-                height: 250,
-                toolbar:[
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['picture', 'link', 'video']],
-                    ['variable',['variable']],
-                    ['misc', ['fullscreen', 'help']]
-                ],
-                buttons:{
-                    variable: VariableButton
-                },
-                callbacks: {
-                    onImageUpload: function (files) {
-                        var uploadInstance = Images.insert({
-                            file: files[0],
-                            streams: 'dynamic',
-                            chunkSize: 'dynamic',
-                        }, false);
+            type: 'froala',
+            height: 300,
+            toolbarButtons: [
+                'fontFamily', '|','fontSize', '|', 'bold', 'italic', 'underline', 'strikeThrough','|',
+                'color', '|', 'align','formatOL', 'formatUL', 'quote', 'insertHR',
+                'insertLink', 'insertImage', 'insertVideo', 'myButton', '|', 'undo', 'redo', 'fullscreen'
+            ],
+            fontFamilySelection: true,
+            fontSizeSelection: true,
 
-                        uploadInstance.on('end',(err, fileObj)=>{
-                            let image = Images.findOne(fileObj._id);
-                            $(this).summernote('insertImage', image.link());
-                        });
-                        uploadInstance.start();
-
-                    }
-                }
-            }
         }
     }
 }
+
+
+
+
 
 StepsSchema = new SimpleSchema({
     _id: {

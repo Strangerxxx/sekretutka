@@ -40,6 +40,7 @@ es5-shim@4.6.14_1
 fastclick@1.0.12
 fortawesome:fontawesome@4.5.0
 fourquet:jquery-toast@2.1.2_1
+froala:editor@2.3.5
 geojson-utils@1.0.9
 gwendall:auth-client-callbacks@0.1.0
 hot-code-push@1.0.4
