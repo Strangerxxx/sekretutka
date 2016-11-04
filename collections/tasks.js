@@ -81,11 +81,10 @@ const description = {
             type: 'froala',
             height: 300,
             toolbarButtons: [
-                'fontFamily', '|','fontSize', '|', 'bold', 'italic', 'underline', 'strikeThrough','|',
-                'color', '|', 'align','formatOL', 'formatUL', 'quote', 'insertHR',
-                'insertLink', 'insertImage', 'insertVideo', 'myButton', '|', 'undo', 'redo', 'fullscreen'
+                'fontSize', '|', 'bold', 'italic', 'underline', 'strikeThrough','|',
+                'color', '|', 'formatOL', 'formatUL', 'insertHR',
+                'insertLink', 'insertImage', 'myButton'
             ],
-            fontFamilySelection: true,
             fontSizeSelection: true,
 
         }

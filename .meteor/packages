@@ -49,5 +49,6 @@ stylus@2.513.5_1
 ian:accounts-ui-bootstrap-3
 rajit:bootstrap3-datepicker
 check
-mpowaga:autoform-summernote
+# mpowaga:autoform-summernote
 froala:editor
+luckyrlz:autoform-froala
