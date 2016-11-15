@@ -4,13 +4,13 @@ Meteor.methods({
     'usertask.add'(taskId, userId, variables){
         const check = usertask.find({'taskId': taskId, 'userId': userId}).count();
 
-
         if(check == 0){
             usertask.insert({
                 taskId,
                 userId,
-                variables,
+                //variables,
             });
+            Meteor.call('variables.add', variables);
         }
     },
     'usertask.remove'(taskId, userId){

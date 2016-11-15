@@ -43,3 +43,6 @@ Meteor.publish('invites', function (token, userId) {
 Meteor.publish('notifications', function () {
    return notifications.find();
 });
+Meteor.publish('variables', function () {
+   return variables.find();
+});

@@ -126,31 +126,38 @@ Template.VariablesModal.onCreated(function () {
 Template.VariablesModal.helpers({
     'variables': () => {
         let vars = [];
+        let regEx = /profile\s(.*)/;
+        let match;
+        let user = Meteor.users.findOne({_id: Template.instance().data.userId});
+
         if(Template.instance().data.type == 'Edit'){
             let _variables = usertask.findOne({taskId: $(event.target).data('task'), userId: $(event.target).data('user')}).variables;
 
             for(var key in Template.instance().data.variables){
                 if(Template.instance().data.variables.hasOwnProperty(key)){
-                    vars.push({
-                        name: key,
-                        value: _variables[key],
-                    })
+                    if(match = regEx.exec(key))
+                        Template.instance().data.variables[key] =  user.profile[match[1]];
+                    else
+                        vars.push({
+                            name: key,
+                            value: _variables[key],
+                        })
                 }
             }
         }
         else if(Template.instance().data.type == 'Attach'){
             for(var key in Template.instance().data.variables){
                 if(Template.instance().data.variables.hasOwnProperty(key)){
-                    vars.push({
-                        name: key,
-                        value: Template.instance().data.variables[key],
-                    })
+                    if(match = regEx.exec(key))
+                        Template.instance().data.variables[key] =  user.profile[match[1]];
+                    else
+                        vars.push({
+                            name: key,
+                            value: Template.instance().data.variables[key],
+                        })
                 }
             }
         }
-
-
-        console.log(vars)
         return vars;
     },
     'user': () => {
@@ -164,16 +171,27 @@ Template.VariablesModal.events({
    'submit .variables-form': (event, tmpl) => {
         event.preventDefault();
         Modal.hide('VariablesModal');
+        let regEx = /profile\s(.*)/;
+
         var variables = Template.instance().data.variables;
+        let output = [];
 
         for(let variable in variables){
             if(variables.hasOwnProperty(variable)){
-                variables[variable] = $(`[name="${variable}"]`).val();
+                if(!regEx.exec(variable))
+                    output.push({
+                        name: variable,
+                        value: $(`[name="${variable}"]`).val(),
+                        subtype: 'adminDef',
+                        task: FlowRouter.getParam('taskId'),
+                        user: Template.instance().data.userId,
+                    });
+
             }
         }
-
+        console.log(output)
         if(Template.instance().data.type == 'Attach')
-            Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+            Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
         else if(Template.instance().data.type == 'Edit')
             Meteor.call('usertask.update-variables', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
 

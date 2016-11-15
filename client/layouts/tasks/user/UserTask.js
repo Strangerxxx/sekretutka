@@ -1,10 +1,9 @@
 
 
-Template.uploadTemplate.onCreated(function () {
-    this.currentUpload = new ReactiveVar(false);
-    Meteor.subscribe('usertask', Meteor.userId());
-    Meteor.subscribe('tasks', Meteor.userId());
-    Meteor.subscribe('files');
+Template.UserTask.onCreated(function () {
+    this.subscribe('usertask');
+    this.subscribe('tasks');
+    this.subscribe('variables');
 });
 
 Template.UserTask.helpers({
@@ -59,17 +58,26 @@ Template.UserTask.helpers({
     },
     desc: (text) => {
         var userTask = usertask.findOne({taskId: FlowRouter.getParam('taskId')});
-        var variables = userTask.variables;
+        var vars = variables.find({task: FlowRouter.getParam('taskId'), user: Meteor.userId()}).fetch();
 
         const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
 
         return text.replace(regEx, function(s, key) {
-            if(variables.hasOwnProperty(key))
-                return variables[key];
+            for(Var of vars){
+                if(Var.name == key)
+                    return Var.value;
+            }
         });
     }
 });
 
+
+Template.uploadTemplate.onCreated(function () {
+    this.currentUpload = new ReactiveVar(false);
+    Meteor.subscribe('usertask', Meteor.userId());
+    Meteor.subscribe('tasks', Meteor.userId());
+    Meteor.subscribe('files');
+});
 Template.UserTask.events({
     'submit .completion-text': function (event, tmpl) {
         event.preventDefault();

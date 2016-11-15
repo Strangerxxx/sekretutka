@@ -34,6 +34,13 @@ Schema.UserProfile = new SimpleSchema({
     invite: {
         type: String,
         unique: true
+    },
+    variables: {
+        type: [Object],
+        optional: true,
+    },
+    'variables.$.': {
+        type: String,
     }
 });
 
