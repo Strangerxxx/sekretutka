@@ -46,3 +46,6 @@ Meteor.publish('notifications', function () {
 Meteor.publish('variables', function () {
    return variables.find();
 });
+Meteor.publish('fields', function () {
+    return fields.find();
+});

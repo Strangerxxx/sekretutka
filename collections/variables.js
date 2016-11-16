@@ -4,10 +4,18 @@ Meteor.methods({
    'variables.add': (_variables) => {
        for(variable of _variables)
             variables.insert(variable);
+    },
+    'variables.removeTask': (taskId) => {
+        variables.remove({task: taskId});
+    },
+    'variables.update': (taskId, userId, _variables) => {
+        for(let _var in _variables){
+            console.log(_variables[_var])
+            if(_variables.hasOwnProperty(_var))
+                variables.update({task: taskId, user: userId, name: _var}, {$set: { value: _variables[_var] }});
+        }
     }
 });
-
-Schema = {};
 
 Schema.Variables = new SimpleSchema({
     name: {
@@ -24,14 +32,6 @@ Schema.Variables = new SimpleSchema({
     user:{
         type: Meteor.users,
         optional: true,
-    },
-    subtype:{
-        type: String,
-        allowedValues: [
-            'userReg',
-            'adminDef',
-            'userDef',
-        ]
     },
 });
 

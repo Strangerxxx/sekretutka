@@ -37,13 +37,11 @@ Template.registerHelper('getVariablesFromTask', (task) => {
     let matches, variables = {};
 
     while (matches = regEx.exec(task.description)) {
-        let obj = {'name': matches[1], 'stepId': 'task'};
         variables[matches[1]] = null;
     }
 
     for(const element of task.steps){
         while (matches = regEx.exec(element.description)) {
-            let obj = {'name': matches[1], 'stepId': element._id};
             variables[matches[1]] = null;
         }
     }

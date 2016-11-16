@@ -1,4 +1,6 @@
 Template.AdminLayout.onCreated(function () {
+   this.subscribe('variables');
+   this.subscribe('fields');
    let init = false;
    let handle = Meteor.subscribe('notifications', function () {
       notifications.find({}).observe({

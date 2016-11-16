@@ -17,6 +17,7 @@ Meteor.methods({
         const userTask = usertask.find({'taskId' : taskId, 'userId' : userId});
         userTask.forEach(function (element) {
             usertask.remove({'_id' : element._id});
+            variables.remove({task: taskId, user: userId});
         });
     },
     'usertask.removeTask'(taskId){

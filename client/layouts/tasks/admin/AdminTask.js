@@ -9,7 +9,6 @@ Template.AdminTask.onCreated(function () {
 
 });
 
-
 var imageToShow = new ReactiveVar(); //не нужен тут реактиввар
 
 Template.AdminTask.helpers({
@@ -64,13 +63,12 @@ Template.AdminTask.helpers({
     task: ()=> {
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
     },
-    variables: (userId) => usertask.findOne({taskId: FlowRouter.getParam('taskId'), userId: userId}).variables,
+    variables: (userId) => variables.find({taskId: FlowRouter.getParam('taskId'), userId: userId}),
 });
 
 Template.AdminTask.events({
     'click #delete-task': function () {
-        tasks.remove(this._id);
-        Meteor.call('usertask.removeTask', this._id); //delete all connections with users from usertask
+        Meteor.call('tasks.remove', this._id);
     },
     'submit .attach-users': function (event, tmpl) {
         event.preventDefault();
@@ -111,10 +109,12 @@ Template.AdminTask.events({
         editMode.set(false);
     },
     'click .edit-variables': (event) => {
-
-        let variables = Blaze._globalHelpers.getVariablesFromTask(tasks.findOne({_id: $(event.target).data('task')}));
-
-        Modal.show('VariablesModal', {variables: variables, userId: $(event.target).data('user'), type: 'Edit'});
+        let varobject = {};
+        let vars = variables.find({user: $(event.target).data('user'), task: FlowRouter.getParam('taskId')}).fetch();
+        for(let variable of vars){
+            varobject[variable.name] = variable.value;
+        }
+        Modal.show('VariablesModal', {variables: varobject, userId: $(event.target).data('user'), type: 'Edit'});
     }
 
 });
@@ -131,17 +131,21 @@ Template.VariablesModal.helpers({
         let user = Meteor.users.findOne({_id: Template.instance().data.userId});
 
         if(Template.instance().data.type == 'Edit'){
-            let _variables = usertask.findOne({taskId: $(event.target).data('task'), userId: $(event.target).data('user')}).variables;
+            let _variables = variables.find({task: $(event.target).data('task'), user: $(event.target).data('user')}).fetch();
 
             for(var key in Template.instance().data.variables){
                 if(Template.instance().data.variables.hasOwnProperty(key)){
                     if(match = regEx.exec(key))
                         Template.instance().data.variables[key] =  user.profile[match[1]];
-                    else
-                        vars.push({
-                            name: key,
-                            value: _variables[key],
-                        })
+                    else{
+                        for(let _var of _variables){
+                            if(_var.name == key)
+                                vars.push({
+                                    name: key,
+                                    value: _var.value,
+                                })
+                        }
+                    }
                 }
             }
         }
@@ -178,22 +182,22 @@ Template.VariablesModal.events({
 
         for(let variable in variables){
             if(variables.hasOwnProperty(variable)){
-                if(!regEx.exec(variable))
+                if(!regEx.exec(variable)){
+                    let value = $(`[name="${variable}"]`).val()
                     output.push({
                         name: variable,
-                        value: $(`[name="${variable}"]`).val(),
-                        subtype: 'adminDef',
+                        value: value,
                         task: FlowRouter.getParam('taskId'),
                         user: Template.instance().data.userId,
                     });
-
+                    variables[variable] = value;
+                }
             }
         }
-        console.log(output)
         if(Template.instance().data.type == 'Attach')
             Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
         else if(Template.instance().data.type == 'Edit')
-            Meteor.call('usertask.update-variables', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+            Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
 
 
 
