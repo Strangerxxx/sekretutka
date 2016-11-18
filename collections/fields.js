@@ -4,6 +4,10 @@ Meteor.methods({
     'fields.insert': (field) => {
         fields.insert(field);
     },
+    'fields.insert.many': (_fields) => {
+        for(let field of _fields)
+            fields.insert(field);
+    }
 });
 
 FieldsSchema = new SimpleSchema({

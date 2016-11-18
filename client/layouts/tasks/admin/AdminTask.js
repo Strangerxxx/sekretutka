@@ -69,6 +69,7 @@ Template.AdminTask.helpers({
 Template.AdminTask.events({
     'click #delete-task': function () {
         Meteor.call('tasks.remove', this._id);
+        FlowRouter.go('/admin/tasks');
     },
     'submit .attach-users': function (event, tmpl) {
         event.preventDefault();
