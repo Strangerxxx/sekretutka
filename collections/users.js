@@ -35,13 +35,6 @@ Schema.UserProfile = new SimpleSchema({
         type: String,
         unique: true
     },
-    variables: {
-        type: [Object],
-        optional: true,
-    },
-    'variables.$.': {
-        type: String,
-    }
 });
 
 Schema.User = new SimpleSchema({
@@ -152,19 +145,30 @@ Schema.newUser = new SimpleSchema({
     },
     profile: {
         type: Schema.UserProfile
-    }
+    },
 });
 
 Meteor.users.attachSchema(Schema.User);
 
 Meteor.methods({
     'users.create': (doc) => {
-        check(doc, Schema.newUser);
         var userId = Accounts.createUser({
-            email: doc.email,
-            password: doc.password,
-            profile: doc.profile
+             email: doc.email,
+             password: doc.password,
+             profile: doc.profile
         });
+        let _variables = [];
+
+        for(let _var in doc.variables){
+            if(doc.variables.hasOwnProperty(_var))
+                _variables.push({
+                    name: _var,
+                    value: doc.variables[_var],
+                    user: userId,
+                });
+        }
+
+        Meteor.call('variables.add', _variables);
         // if(userId === undefined) throw new Meteor.Error(403, 'Access denied!');
         var stampedLoginToken = Accounts._generateStampedLoginToken();
         Accounts._insertLoginToken(userId, stampedLoginToken);

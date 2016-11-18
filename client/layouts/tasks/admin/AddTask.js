@@ -12,7 +12,7 @@ let hooksObject = {
             for(let variable in variables){
                 if(variables.hasOwnProperty(variable)){
                     if(match = regEx.exec(variable)){
-                        Meteor.call('fields.insert', {name: match[0]});
+                        Meteor.call('fields.insert', {name: match[1]});
                     }
                 }
             }

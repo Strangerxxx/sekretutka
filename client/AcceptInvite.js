@@ -4,6 +4,7 @@ Template.AcceptInvite.onCreated(function () {
     var self = this;
     self.subscribe('users', Meteor.userId());
     self.subscribe('invites', Template.instance().token, Meteor.userId());
+    this.subscribe('fields');
 });
 
 
@@ -16,7 +17,27 @@ Template.AcceptInvite.helpers({
         } else return true;
     },
     token: () => Template.instance().token,
-    newUserSchema: () => Schema.newUser
+    newUserSchema: () => {
+        FieldsSchema = {
+
+        };
+        let _fields = fields.find().fetch();
+
+        for(let field of _fields){
+            FieldsSchema[field.name] = {
+                type: String,
+                label: field.displayName,
+            }
+        }
+
+        Fields = new SimpleSchema({
+            variables:{
+                type: new SimpleSchema(FieldsSchema),
+            }
+        });
+        return new SimpleSchema([Schema.newUser, Fields]);
+    },
+    variables: () => fields.find(),
 });
 
 AutoForm.hooks({

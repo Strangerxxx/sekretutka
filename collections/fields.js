@@ -8,7 +8,11 @@ Meteor.methods({
 
 FieldsSchema = new SimpleSchema({
      name: {
-         type: String
+         type: String,
+
+     },
+     displayName: {
+         type: String,
      }
 });
 

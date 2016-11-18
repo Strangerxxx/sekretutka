@@ -10,7 +10,6 @@ Meteor.methods({
     },
     'variables.update': (taskId, userId, _variables) => {
         for(let _var in _variables){
-            console.log(_variables[_var])
             if(_variables.hasOwnProperty(_var))
                 variables.update({task: taskId, user: userId, name: _var}, {$set: { value: _variables[_var] }});
         }
