@@ -1,5 +1,7 @@
 <template name="ResultModal">
+
     <div class="modal fade">
+        {{#if Template.subscriptionsReady}}
         {{#with progress}}
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -43,5 +45,6 @@
                 </div>
             </div>
         {{/with}}
+        {{/if}}
     </div>
 </template>

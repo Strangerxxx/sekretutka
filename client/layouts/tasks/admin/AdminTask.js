@@ -138,7 +138,7 @@ Template.VariablesModal.helpers({
                     })
                 }
                 else if(match = regExGlobal.exec(key)){
-                    let global = variables.findOne({user: Template.instance().data.userId, task: null, name: match[1]});
+                    let global = variables.findOne({user: Template.instance().data.userId, task: null, name: match[0]});
                     if(global)
                         vars.push({
                             name: key,
@@ -184,11 +184,11 @@ Template.VariablesModal.events({
          let regExGlobal = /global\s(.*)/;
         let match;
 
-         var variables = Template.instance().data.variables;
+         var _variables = Template.instance().data.variables;
          let output = [];
 
-         for(let variable in variables){
-             if(variables.hasOwnProperty(variable)){
+         for(let variable in _variables){
+             if(_variables.hasOwnProperty(variable)){
                  if(!regExProfile.exec(variable) && !regExGlobal.exec(variable)){
                      let value = $(`[name="${variable}"]`).val();
                      output.push({
@@ -197,19 +197,51 @@ Template.VariablesModal.events({
                          task: FlowRouter.getParam('taskId'),
                          user: Template.instance().data.userId,
                      });
-                     variables[variable] = value;
+                     _variables[variable] = value;
                  }
-                 else if(match = regExGlobal.exec(variable))
-                     Meteor.call('variables.add.one', {name: match[1], user: Template.instance().data.userId, value: $(`[name="${variable}"]`).val()})
+                 else if(match = regExGlobal.exec(variable)){
+                     if(!variables.findOne({name: variable, user: Template.instance().data.userId}))
+                        Meteor.call('variables.insert.one', match[0],Template.instance().data.userId,$(`[name="${variable}"]`).val());
+                 }
              }
          }
          if(Template.instance().data.type == 'Attach')
              Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
          else if(Template.instance().data.type == 'Edit')
-             Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+             Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, _variables);
     },
     'click .user-filled': (event) => {
         let input = $(`input.form-control[name = "${event.target.name}"]`);
         input.prop('disabled', !input.is(':disabled'));
     }
+});
+
+let hooksObject = {
+    after: {
+        update: (error, id) => {
+            let regEx = /global\s(.*)/;
+            let match, matches = [];
+            let variables = Blaze._globalHelpers.getVariablesFromTask(tasks.findOne({_id: FlowRouter.getParam('taskId')}));
+            for(let variable in variables){
+                if(variables.hasOwnProperty(variable)){
+                    if(match = regEx.exec(variable)){
+                        if(!fields.findOne({name: variable}))
+                            matches.push({
+                                name: variable,
+                            });
+                    }
+                }
+            }
+            if(matches.length != 0){
+                Modal.show('globalVariablesModal', {matches: matches, action: 'updated'}, {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            }
+        }
+    }
+};
+
+AutoForm.hooks({
+    updateTask: hooksObject
 });

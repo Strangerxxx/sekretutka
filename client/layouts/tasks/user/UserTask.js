@@ -96,7 +96,7 @@ Template.UserTask.helpers({
                 return Meteor.user().profile[match[1]];
             else if(match = regExGlobal.exec(key)){
                 for(_var of globalVars)
-                    if(_var.name == match[1])
+                    if(_var.name == match[0])
                         return _var.value;
             }
             else{

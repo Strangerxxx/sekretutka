@@ -1,4 +1,5 @@
 <template name="AdminLayout">
+{{#if Template.subscriptionsReady}}
     {{#if isInRole 'admin'}}
         <div class="navbar navbar-default" role="navigation">
 
@@ -30,6 +31,7 @@
         <span>Please login as admin</span>
         {{> loginButtons}}
     {{/if}}
+{{/if}}
 </template>
 
 <template name="Notifications">

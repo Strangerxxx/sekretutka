@@ -2,7 +2,7 @@ Template.ResultModal.onCreated(function () {
     this.subscribe('usertask', Meteor.userId());
     this.subscribe('tasks', Meteor.userId());
     this.subscribe('users', Meteor.userId());
-    Meteor.subscribe('files');
+    this.subscribe('files');
 });
 
 var thisImage = new ReactiveVar();
@@ -54,26 +54,60 @@ Template.ResultModal.helpers({
         let step = task.steps.find(function (element) {
             return element._id = stepId;
         });
+        let localVars = variables.find({user: FlowRouter.getParam('userId'), task: FlowRouter.getParam('taskId')}).fetch();
+        let globalVars = variables.find({user: FlowRouter.getParam('userId'), task: null}).fetch();
 
         var vars = Blaze._globalHelpers.getVariablesFromText(task.description);
         let output = [];
         for(let variable in vars){
-            if(vars.hasOwnProperty(variable))
-            output.push({
-                name: variable,
-                value: userTask.variables[variable],
-            })
+            if(vars.hasOwnProperty(variable)){
+                for(let localVar of localVars)
+                {
+                    if(localVar.name == variable){
+                        output.push({
+                            name: variable,
+                            value: localVar.value,
+                        });
+                        break;
+                    }
+                }
+                for(let globalVar of globalVars){
+                    if(globalVar.name == variable){
+                        output.push({
+                            name: variable,
+                            value: globalVar.value,
+                        });
+                        break;
+                    }
+                }
+            }
+
         }
         vars = Blaze._globalHelpers.getVariablesFromText(step.description);
-        for(let element in vars){
-            if(vars.hasOwnProperty(element)) {
-                if (userTask.variables.hasOwnProperty(element))
-                    output.push({
-                        name: element,
-                        value: userTask.variables[element],
-                    });
+        for(let variable in vars){
+            if(vars.hasOwnProperty(variable)) {
+                for(let localVar of localVars)
+                {
+                    if(localVar.name == variable){
+                        output.push({
+                            name: variable,
+                            value: localVar.value,
+                        });
+                        break;
+                    }
+                }
+                for(let globalVar of globalVars){
+                    if(globalVar.name == variable){
+                        output.push({
+                            name: variable,
+                            value: globalVar.value,
+                        });
+                        break;
+                    }
+                }
             }
         }
+
         return output;
     }
 });

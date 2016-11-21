@@ -5,8 +5,9 @@ Meteor.methods({
        for(variable of _variables)
             variables.insert(variable);
     },
-    'variables.add.one': (variable) => {
-        variables.insert(variable);
+    'variables.insert.one': (name, user, value) => {
+        console.log(name);
+        variables.insert({name: name, user: user, value: value});
     },
     'variables.removeTask': (taskId) => {
         variables.remove({task: taskId});

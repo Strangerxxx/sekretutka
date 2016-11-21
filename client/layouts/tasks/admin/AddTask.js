@@ -20,7 +20,7 @@ let hooksObject = {
                 }
             }
             if(matches.length != 0){
-                Modal.show('globalVariablesModal', {matches: matches}, {
+                Modal.show('globalVariablesModal', {matches: matches, action: 'inserted'}, {
                     backdrop: 'static',
                     keyboard: false
                 });
@@ -50,6 +50,6 @@ Template.globalVariablesModal.events({
         }
 
         Meteor.call('fields.insert.many', output);
-        Toast.success('Task created successfully');
+        Toast.success('Task '+ Template.instance().data.action + ' successfully');
     }
 });
