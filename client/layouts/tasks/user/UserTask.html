@@ -1,4 +1,5 @@
 <template name="UserTask">
+{{#if Template.subscriptionsReady}}
     <div class="task">
         {{#with task}}
             <h2>{{name}}</h2>
@@ -26,6 +27,7 @@
             {{/with}}
         {{/with}}
     </div>
+{{/if}}
 </template>
 
 
@@ -56,4 +58,33 @@
 <template name="buttonTemplate">
 
     <input type="button" class="completion-button btn btn-success" id="{{_id}}" value="Next">
+</template>
+
+<template name="UserVariablesModal">
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Please complete these fields before completing the task</h4>
+                </div>
+                <form class="userVarForm">
+                    <div class="modal-body">
+                        {{#each toFill}}
+                            <div class="form-group">
+                                {{#if task}}
+                                    <label class="control-label">{{name}}</label>
+                                {{else}}
+                                    <label class="control-label">{{displayName name}}</label>
+                                {{/if}}
+                                    <input class="form-control" type="text" name="{{name}}" required>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" >Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>

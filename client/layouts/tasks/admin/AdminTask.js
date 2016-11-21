@@ -92,7 +92,7 @@ Template.AdminTask.events({
             console.log(`It took ${t1 - t0}`);
 
             if(variables.length != 0)
-                Modal.show('VariablesModal', {variables: variables, userId: userId, type: 'Attach'});
+                Modal.show('VariablesModal', { variables: variables, userId: userId, type: 'Attach' });
             else
                 Meteor.call('usertask.add', this._id, userId);
         }
@@ -110,12 +110,8 @@ Template.AdminTask.events({
         editMode.set(false);
     },
     'click .edit-variables': (event) => {
-        let varobject = {};
-        let vars = variables.find({user: $(event.target).data('user'), task: FlowRouter.getParam('taskId')}).fetch();
-        for(let variable of vars){
-            varobject[variable.name] = variable.value;
-        }
-        Modal.show('VariablesModal', {variables: varobject, userId: $(event.target).data('user'), type: 'Edit'});
+        var variables = Blaze._globalHelpers.getVariablesFromTask(tasks.findOne(FlowRouter.getParam('taskId')));
+        Modal.show('VariablesModal', {variables: variables, userId: $(event.target).data('user'), type: 'Edit'});
     }
 
 });
@@ -127,42 +123,50 @@ Template.VariablesModal.onCreated(function () {
 Template.VariablesModal.helpers({
     'variables': () => {
         let vars = [];
-        let regEx = /profile\s(.*)/;
+        let regExProfile = /profile\s(.*)/;
+        let regExGlobal = /global\s(.*)/;
         let match;
         let user = Meteor.users.findOne({_id: Template.instance().data.userId});
 
-        if(Template.instance().data.type == 'Edit'){
-            let _variables = variables.find({task: $(event.target).data('task'), user: $(event.target).data('user')}).fetch();
-
-            for(var key in Template.instance().data.variables){
-                if(Template.instance().data.variables.hasOwnProperty(key)){
-                    if(match = regEx.exec(key))
-                        Template.instance().data.variables[key] =  user.profile[match[1]];
-                    else{
-                        for(let _var of _variables){
-                            if(_var.name == key)
-                                vars.push({
-                                    name: key,
-                                    value: _var.value,
-                                })
-                        }
-                    }
+        for(var key in Template.instance().data.variables){
+            if(Template.instance().data.variables.hasOwnProperty(key)){
+                if(match = regExProfile.exec(key)){
+                    vars.push({
+                        name: key,
+                        value: user.profile[match[1]],
+                        disabled: 'disabled',
+                    })
                 }
-            }
-        }
-        else if(Template.instance().data.type == 'Attach'){
-            for(var key in Template.instance().data.variables){
-                if(Template.instance().data.variables.hasOwnProperty(key)){
-                    if(match = regEx.exec(key))
-                        Template.instance().data.variables[key] =  user.profile[match[1]];
+                else if(match = regExGlobal.exec(key)){
+                    let global = variables.findOne({user: Template.instance().data.userId, task: null, name: match[1]});
+                    if(global)
+                        vars.push({
+                            name: key,
+                            value: global.value,
+                            disabled: 'disabled',
+                        });
                     else
                         vars.push({
                             name: key,
-                            value: Template.instance().data.variables[key],
+                            value: null,
+                        });
+                }
+                else{
+                    let val;
+                    if(val = variables.findOne({user: Template.instance().data.userId, task: FlowRouter.getParam('taskId'), name: key}))
+                        vars.push({
+                            name: key,
+                            value: val.value,
+                        });
+                    else
+                        vars.push({
+                            name: key,
                         })
                 }
+
             }
         }
+
         return vars;
     },
     'user': () => {
@@ -173,34 +177,39 @@ Template.VariablesModal.helpers({
 });
 
 Template.VariablesModal.events({
-   'submit .variables-form': (event, tmpl) => {
-        event.preventDefault();
-        Modal.hide('VariablesModal');
-        let regEx = /profile\s(.*)/;
+    'submit .variables-form': (event, tmpl) => {
+         event.preventDefault();
+         Modal.hide('VariablesModal');
+         let regExProfile = /profile\s(.*)/;
+         let regExGlobal = /global\s(.*)/;
+        let match;
 
-        var variables = Template.instance().data.variables;
-        let output = [];
+         var variables = Template.instance().data.variables;
+         let output = [];
 
-        for(let variable in variables){
-            if(variables.hasOwnProperty(variable)){
-                if(!regEx.exec(variable)){
-                    let value = $(`[name="${variable}"]`).val()
-                    output.push({
-                        name: variable,
-                        value: value,
-                        task: FlowRouter.getParam('taskId'),
-                        user: Template.instance().data.userId,
-                    });
-                    variables[variable] = value;
-                }
-            }
-        }
-        if(Template.instance().data.type == 'Attach')
-            Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
-        else if(Template.instance().data.type == 'Edit')
-            Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
-
-
-
-   }
+         for(let variable in variables){
+             if(variables.hasOwnProperty(variable)){
+                 if(!regExProfile.exec(variable) && !regExGlobal.exec(variable)){
+                     let value = $(`[name="${variable}"]`).val();
+                     output.push({
+                         name: variable,
+                         value: value,
+                         task: FlowRouter.getParam('taskId'),
+                         user: Template.instance().data.userId,
+                     });
+                     variables[variable] = value;
+                 }
+                 else if(match = regExGlobal.exec(variable))
+                     Meteor.call('variables.add.one', {name: match[1], user: Template.instance().data.userId, value: $(`[name="${variable}"]`).val()})
+             }
+         }
+         if(Template.instance().data.type == 'Attach')
+             Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
+         else if(Template.instance().data.type == 'Edit')
+             Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, variables);
+    },
+    'click .user-filled': (event) => {
+        let input = $(`input.form-control[name = "${event.target.name}"]`);
+        input.prop('disabled', !input.is(':disabled'));
+    }
 });

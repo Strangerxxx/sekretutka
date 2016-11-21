@@ -99,8 +99,12 @@
                                     {{#each variables}}
                                         <div class="form-group">
                                             <label class="control-label">{{name}}</label>
-                                            <input class="form-control" type="text" name="{{name}}" value="{{value}}" required>
+                                            <input class="form-control" type="text" name="{{name}}" value="{{value}}" required {{disabled}}>
+                                            <div class="checkbox">
+                                                <label class="user-filled"><input type="checkbox" name="{{name}}" {{disabled}}>User filled</label>
+                                            </div>
                                         </div>
+                                        <hr>
                                     {{/each}}
                             </div>
 

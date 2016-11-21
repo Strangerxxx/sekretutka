@@ -12,9 +12,10 @@ let hooksObject = {
             for(let variable in variables){
                 if(variables.hasOwnProperty(variable)){
                     if(match = regEx.exec(variable)){
-                        matches.push({
-                            name: variable,
-                        });
+                        if(!fields.findOne({name: variable}))
+                            matches.push({
+                                name: variable,
+                            });
                     }
                 }
             }

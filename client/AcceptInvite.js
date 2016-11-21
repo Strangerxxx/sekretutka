@@ -18,9 +18,7 @@ Template.AcceptInvite.helpers({
     },
     token: () => Template.instance().token,
     newUserSchema: () => {
-        FieldsSchema = {
-
-        };
+        FieldsSchema = {};
         let _fields = fields.find().fetch();
 
         for(let field of _fields){
