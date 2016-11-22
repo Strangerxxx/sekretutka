@@ -6,6 +6,8 @@ Template.AddTask.onCreated(function () {
 let hooksObject = {
     after: {
         insert: (error, id) => {
+            if(error)
+                return;
             let regEx = /global\s(.*)/;
             let match, matches = [];
             let variables = Blaze._globalHelpers.getVariablesFromTask(tasks.findOne({_id: id}));
@@ -25,6 +27,8 @@ let hooksObject = {
                     keyboard: false
                 });
             }
+            else
+                FlowRouter.go('/admin/tasks');
         }
     }
 };
@@ -51,5 +55,6 @@ Template.globalVariablesModal.events({
 
         Meteor.call('fields.insert.many', output);
         Toast.success('Task '+ Template.instance().data.action + ' successfully');
+        FlowRouter.go('/admin/tasks');
     }
 });

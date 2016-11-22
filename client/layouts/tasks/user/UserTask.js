@@ -168,7 +168,7 @@ Template.uploadTemplate.events({
 
 Template.UserVariablesModal.helpers({
     displayName: (name) => {
-        return fields.findOne({name: 'global ' + name}).displayName;
+        return fields.findOne({name: name}).displayName;
     }
 });
 

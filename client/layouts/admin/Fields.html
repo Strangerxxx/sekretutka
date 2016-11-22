@@ -1,0 +1,27 @@
+<template name="Fields">
+    {{#if Template.subscriptionsReady}}
+        <legend>Fields</legend>
+        <table class="table table-striped">
+            <thead>
+                <th style="width: 200px">Name</th>
+                <th>Display Name</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+            {{#each fields}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{displayName}}</td>
+                    <td>
+                        <a href="#" class="edit-field"><i class="fa fa-edit fa-2x" data-id="{{_id}}"></i></a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td> No fields found</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+</template>

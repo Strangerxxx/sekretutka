@@ -7,6 +7,9 @@ Meteor.methods({
     'fields.insert.many': (_fields) => {
         for(let field of _fields)
             fields.insert(field);
+    },
+    'fields.edit': (_id, value) => {
+        fields.update({_id: _id}, {$set: {displayName: value}});
     }
 });
 
