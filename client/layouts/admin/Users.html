@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{datetime}}</td>
                     <td><a href="#" class="get-link" data-clipboard-text="{{url}}{{_id}}">Click to copy</a></td>
-                    <td>{{status}}</td>
+                    <td>{{status}} {{claimed _id status}}</td>
                     <td><a class="invite-delete" data-id="{{_id}}" href="#">Delete</a></td>
                 </tr>
             {{/each}}

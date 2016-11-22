@@ -1,6 +1,35 @@
 <template name="EditUser">
-    {{#with user.profile}}
-        <legend>Edit User: {{firstName}} {{lastName}}</legend>
+{{#if Template.subscriptionsReady}}
+    {{#with user}}
+        <legend>Edit User: {{profile.firstName}} {{profile.lastName}}</legend>
+
+
+    {{#autoForm collection='Meteor.users' doc=(user) type="update" id="updateUserForm" omitFields="emails, createdAt, services, profile.invite"}}
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Profile</div>
+                    <div class="panel-body">
+                        {{>afQuickFields name="profile" omitFields="profile.invite"}}
+                    </div>
+                </div>
+                {{#unless admin ../_id}}
+                <div class="panel panel-default">
+                    <div class="panel-heading">Fields</div>
+                    <div class="panel-body">
+                        <form>
+                            {{#each globals ../_id}}
+                                <div class="form-group">
+                                    <label class="control-label">{{displayName name}} ({{name}})</label>
+                                    <input type="text" class="form-control" name="{{_id}}" value="{{value}}">
+                                </div>
+                            {{/each}}
+                        </form>
+                    </div>
+                </div>
+                {{/unless}}
+            </div>
+        {{>afFieldInput type="submit" class="btn btn-primary submit-edit"}}
+    {{/autoForm}}
     {{/with}}
-    {{> quickForm collection='Meteor.users' doc=(user) type="update" id="updateUserForm" omitFields="emails, createdAt, services, profile.invite"}}
+{{/if}}
 </template>

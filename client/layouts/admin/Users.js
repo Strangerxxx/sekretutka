@@ -48,6 +48,12 @@ Template.Users.helpers({
     },
     url: () => {
         return Meteor.absoluteUrl() + 'acceptInvite/';
+    },
+    claimed: (_id, status) => {
+        if(status != 'claimed')
+            return;
+        let user = Meteor.users.findOne({'profile.invite': _id});
+        return 'by ' + user.profile.firstName + ' ' + user.profile.lastName;
     }
 });
 
