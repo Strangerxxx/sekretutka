@@ -10,6 +10,8 @@ Template.Fields.events({
                 title: "Edit " + field.name + " display name",
                 value: field.displayName,
                 callback: function (result) {
+                    if(!result)
+                        return;
                     Meteor.call('fields.edit', field._id, result, function (error, result) {
                         if(error)
                             Toast.error(error.message);
