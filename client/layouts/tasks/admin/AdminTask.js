@@ -86,15 +86,68 @@ Template.AdminTask.events({
 
             let t0 = performance.now();
 
-            var variables = Blaze._globalHelpers.getVariablesFromTask(task);
+            var _variables = Blaze._globalHelpers.getVariablesFromTask(task);
 
             let t1 = performance.now();
             console.log(`It took ${t1 - t0}`);
 
-            if(variables.length != 0)
-                Modal.show('VariablesModal', { variables: variables, userId: userId, type: 'Attach' });
+            let showModal = false;
+
+            let varsArrayWithValues = [];
+            let regExProfile = /profile\s(.*)/;
+            let regExGlobal = /global\s(.*)/;
+            let match;
+            let user = Meteor.users.findOne({_id: userId});
+
+            for(var key in _variables){
+                if(_variables.hasOwnProperty(key)){
+                    if(match = regExProfile.exec(key)){
+                        varsArrayWithValues.push({
+                            name: key,
+                            value: user.profile[match[1]],
+                            disabled: 'disabled',
+                        })
+                    }
+                    else if(match = regExGlobal.exec(key)){
+                        let global = variables.findOne({user: userId, task: null, name: match[0]});
+                        if(global)
+                            varsArrayWithValues.push({
+                                name: key,
+                                value: global.value,
+                                disabled: 'disabled',
+                            });
+                        else
+                            varsArrayWithValues.push({
+                                name: key,
+                                value: null,
+                            });
+                    }
+                    else{
+                        let val;
+                        if(val = variables.findOne({user: userId, task: FlowRouter.getParam('taskId'), name: key}))
+                            varsArrayWithValues.push({
+                                name: key,
+                                value: val.value,
+                            });
+                        else
+                            varsArrayWithValues.push({
+                                name: key,
+                            })
+                    }
+                }
+            }
+            let show = false;
+            for(_var of varsArrayWithValues) {
+                if (_var.value == null) {
+                    show = true;
+                    break;
+                }
+            }
+            if(_variables.length != 0 && show){
+                Modal.show('VariablesModal', { variables: _variables, userId: userId, type: 'Attach' , varsArray: varsArrayWithValues});
+            }
             else
-                Meteor.call('usertask.add', this._id, userId);
+                Meteor.call('usertask.add', this._id, userId, []);
         }
     },
     'click .unassign-user': function (event) {
@@ -118,57 +171,68 @@ Template.AdminTask.events({
 
 Template.VariablesModal.onCreated(function () {
 
+
 });
 
 Template.VariablesModal.helpers({
-    'variables': () => {
-        let vars = [];
-        let regExProfile = /profile\s(.*)/;
-        let regExGlobal = /global\s(.*)/;
-        let match;
-        let user = Meteor.users.findOne({_id: Template.instance().data.userId});
-
-        for(var key in Template.instance().data.variables){
-            if(Template.instance().data.variables.hasOwnProperty(key)){
-                if(match = regExProfile.exec(key)){
-                    vars.push({
-                        name: key,
-                        value: user.profile[match[1]],
-                        disabled: 'disabled',
-                    })
-                }
-                else if(match = regExGlobal.exec(key)){
-                    let global = variables.findOne({user: Template.instance().data.userId, task: null, name: match[0]});
-                    if(global)
-                        vars.push({
-                            name: key,
-                            value: global.value,
-                            disabled: 'disabled',
-                        });
-                    else
-                        vars.push({
-                            name: key,
-                            value: null,
-                        });
-                }
-                else{
-                    let val;
-                    if(val = variables.findOne({user: Template.instance().data.userId, task: FlowRouter.getParam('taskId'), name: key}))
-                        vars.push({
-                            name: key,
-                            value: val.value,
-                        });
-                    else
-                        vars.push({
-                            name: key,
-                        })
-                }
-
-            }
-        }
-
-        return vars;
-    },
+    'variables': () => Template.instance().data.varsArray,//{
+    //     let vars = [];
+    //     let regExProfile = /profile\s(.*)/;
+    //     let regExGlobal = /global\s(.*)/;
+    //     let match;
+    //     let user = Meteor.users.findOne({_id: Template.instance().data.userId});
+    //
+    //     for(var key in Template.instance().data.variables){
+    //         if(Template.instance().data.variables.hasOwnProperty(key)){
+    //             if(match = regExProfile.exec(key)){
+    //                 vars.push({
+    //                     name: key,
+    //                     value: user.profile[match[1]],
+    //                     disabled: 'disabled',
+    //                 })
+    //             }
+    //             else if(match = regExGlobal.exec(key)){
+    //                 let global = variables.findOne({user: Template.instance().data.userId, task: null, name: match[0]});
+    //                 if(global)
+    //                     vars.push({
+    //                         name: key,
+    //                         value: global.value,
+    //                         disabled: 'disabled',
+    //                     });
+    //                 else
+    //                     vars.push({
+    //                         name: key,
+    //                         value: null,
+    //                     });
+    //             }
+    //             else{
+    //                 let val;
+    //                 if(val = variables.findOne({user: Template.instance().data.userId, task: FlowRouter.getParam('taskId'), name: key}))
+    //                     vars.push({
+    //                         name: key,
+    //                         value: val.value,
+    //                     });
+    //                 else
+    //                     vars.push({
+    //                         name: key,
+    //                     })
+    //             }
+    //         }
+    //     }
+    //     let show = false;
+    //     for(_var of vars){
+    //         if(_var.value == null){
+    //             show = true;
+    //             break;
+    //         }
+    //     }
+    //     if(!show){
+    //         Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId);
+    //         Modal.hide('VariablesModal');
+    //         return;
+    //     }
+    //     return vars;
+    // },
     'user': () => {
         user = Meteor.users.findOne(Template.instance().data.userId);
         return user;
