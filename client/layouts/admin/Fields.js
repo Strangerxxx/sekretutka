@@ -52,25 +52,35 @@ Template.Fields.events({
 });
 
 Template.NewFieldModal.events({
-    'submit #fieldForm': (event) => {
+    'submit .field-form': (event) => {
         event.preventDefault();
-        let name = $('input.field-name').val();
-        let displayName = $('input.field-displayName').val();
+        let action = $(event.target).find("input[type=submit]:focus");
+        let name = $('input.field-name');
+        let displayName = $('input.field-displayName');
+        let nameVal = name.val();
+        let displayNameVal = displayName.val();
         let regExGlobal = /global\s(.*)/;
         let match;
 
-        if(!regExGlobal.exec(name)){
-            name = 'global ' + name;
+        if(!regExGlobal.exec(nameVal)){
+            nameVal = 'global ' + nameVal;
         }
-        if(fields.findOne({name: name}))
+        if(fields.findOne({name: nameVal}))
         {
-            Toast.error('Field with name "' + name + '" already exists');
+            Toast.error('Field with name "' + nameVal + '" already exists');
             return;
         }
         Meteor.call('fields.insert', {
-            name: name,
-            displayName: displayName
+            name: nameVal,
+            displayName: displayNameVal
         });
-        Modal.hide('NewFieldModal');
-    }
+        Toast.success('Field ' + nameVal + ' successfully added');
+        if(action[0].value == 'Add')
+            Modal.hide('NewFieldModal');
+        else if(action[0].value == 'Add new')
+        {
+            name.val('');
+            displayName.val('');
+        }
+    },
 });
