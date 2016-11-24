@@ -43,7 +43,6 @@ Template.globalVariablesModal.events({
         Modal.hide('globalVariablesModal');
         let variables = Template.instance().data.matches;
         let output = [];
-        console.log(Template.instance().data.matches, variables)
 
         for(let variable of variables){
             let value = $(`[name="${variable.name}"]`).val();

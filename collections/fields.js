@@ -10,6 +10,9 @@ Meteor.methods({
     },
     'fields.edit': (_id, value) => {
         fields.update({_id: _id}, {$set: {displayName: value}});
+    },
+    'fields.remove': (_id) => {
+        fields.remove({_id: _id});
     }
 });
 
