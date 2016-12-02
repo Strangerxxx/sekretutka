@@ -33,7 +33,6 @@ Template.uploadTemplate.events({
                     }
 
                 });
-
                 uploadInstance.start();
             }
         }

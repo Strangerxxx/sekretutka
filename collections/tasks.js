@@ -62,8 +62,8 @@ StepsSchema = new SimpleSchema({
     },
     completionType: {
         type: String,
-        allowedValues: ['Text', 'Image', 'Button'],
         autoform: {
+            options: () => Types,
             afFieldInput: {
                 firstOption: "(Select a completion type)"
             }
@@ -73,7 +73,7 @@ StepsSchema = new SimpleSchema({
     notify: {
         type: Boolean,
         label: "Notify me",
-    }
+    },
 });
 
 TaskSchema = new SimpleSchema({

@@ -36,9 +36,9 @@ Template.UserTask.helpers({
         return tasks.findOne({_id: FlowRouter.getParam('taskId')});
     },
     desc: (text) => {
-        var userTask = usertask.findOne({taskId: FlowRouter.getParam('taskId')});
-        var vars = variables.find({task: FlowRouter.getParam('taskId'), user: Meteor.userId()}).fetch();
-        var globalVars = variables.find({task: null, user: Meteor.userId()}).fetch();
+        let userTask = usertask.findOne({taskId: FlowRouter.getParam('taskId')});
+        let vars = variables.find({task: FlowRouter.getParam('taskId'), user: Meteor.userId()}).fetch();
+        let globalVars = variables.find({task: null, user: Meteor.userId()}).fetch();
 
         const regEx = /&lt;v&gt;(.+?)&lt;\/v&gt;/g;
         let regExProfile = /profile\s(.*)/;
