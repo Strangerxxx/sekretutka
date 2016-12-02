@@ -1,0 +1,19 @@
+<template name="MainStepTemplate">
+    {{#with step _id}}
+        <h4>{{name}}</h4>
+
+        {{{desc description}}}
+
+        <hr>
+        {{#if notify}}
+            <p class="text-danger">Admin will be notified upon completion of this step.</p>
+        {{/if}}
+        {{#if completionType}}
+            {{> Template.dynamic template=(userInput completionType)}}
+        {{else}}
+            {{#unless completed name}}
+                <p class="text-info">Admin was notified, please wait for approval</p>
+            {{/unless}}
+        {{/if}}
+    {{/with}}
+</template>

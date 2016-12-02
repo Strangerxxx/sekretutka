@@ -8,23 +8,7 @@
             </div>
 
             <h3>Active step</h3>
-            {{#with step _id}}
-                <h4>{{name}}</h4>
-
-                {{{desc description}}}
-
-                <hr>
-                {{#if notify}}
-                    <p class="text-danger">Admin will be notified upon completion of this step.</p>
-                {{/if}}
-                {{#if completionType}}
-                    {{> Template.dynamic template=(userInput completionType)}}
-                {{else}}
-                    {{#unless completed name}}
-                        <p class="text-info">Admin was notified, please wait for approval</p>
-                    {{/unless}}
-                {{/if}}
-            {{/with}}
+            {{> MainStepTemplate _id}}
         {{/with}}
     </div>
 {{/if}}
@@ -32,33 +16,11 @@
 
 
 
-<template name="uploadTemplate">
-
-    {{#with currentUpload}}
-        Uploading <b>{{file.name}}</b>
-        <span id="progress">{{progress.get}}%</span>
-    {{else}}
-        <input class="fileInput" id="{{_id}}" type="file" >
-        <p><small>Upload file in <code>jpeg</code> or <code>png</code> format</small></p>
-    {{/with}}
-</template>
-
-<template name="textTemplate">
 
 
-    <form class="completion-text" id="{{_id}}">
-        <textarea name="text" rows="6" class="completionString form-control input-md"></textarea>
-        <div class="col-md-12">
-            <input type="submit" value="Submit" class="btn btn-default">
-        </div>
 
-    </form>
-</template>
 
-<template name="buttonTemplate">
 
-    <input type="button" class="completion-button btn btn-success" id="{{_id}}" value="Next">
-</template>
 
 <template name="UserVariablesModal">
     <div class="modal fade">
