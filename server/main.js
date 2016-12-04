@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import '/types';
 
 
 Accounts.onCreateUser(function (options, user) {

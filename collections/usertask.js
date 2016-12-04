@@ -1,5 +1,5 @@
 usertask = new Mongo.Collection('usertask');
-
+if(Meteor.isServer){
 Meteor.methods({
     'usertask.add'(taskId, userId, variables){
         const check = usertask.find({'taskId': taskId, 'userId': userId}).count();
@@ -30,7 +30,7 @@ Meteor.methods({
         const task = tasks.findOne({'steps': {$elemMatch: {_id: stepId}}});
         const user = Meteor.users.findOne(Meteor.userId());
 
-        var step;
+        let step;
 
         task.steps.forEach(function (element) {
             if(element._id == stepId){
@@ -38,11 +38,18 @@ Meteor.methods({
             }
         });
 
-        var progress = {
+        let completionType;
+
+        for(type of Types){
+            if(type.value == step.completionType)
+                completionType = type.label;
+        }
+        console.log(typeof completionType);
+        let progress = {
             '_id': Random.id(),
             'stepId': stepId,
             'result': result,
-            'completionType': step.completionType,
+            'completionType': completionType,
             'checked': !step.notify,
         };
 
@@ -53,8 +60,11 @@ Meteor.methods({
                 href: Meteor.absoluteUrl() + "admin/tasks/" + task._id + '/results/' + Meteor.userId() + "?p=" + progress._id,
             });
 
-        var UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
-        usertask.update(UserTask._id, {$push:  { 'progress': progress } });
+        let UserTask = usertask.findOne({taskId: task._id, userId: Meteor.userId()});
+
+        usertask.update(UserTask._id, {$push:  { 'progress': progress }}, function (error, result) {
+            console.log(error, result, progress)
+        });
     },
     'usertask.remove-progress'(taskId, progressId, userId){
         const thisUserTask = usertask.findOne({'taskId': taskId, userId: userId}, { fields: {progress: 1}});
@@ -84,6 +94,7 @@ Meteor.methods({
         usertask.update({taskId: taskId, userId: userId}, {$set: {variables: variables}});
     }
 });
+}
 
 ProgressSchema = new SimpleSchema({
     _id: {
