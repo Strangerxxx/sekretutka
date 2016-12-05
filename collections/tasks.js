@@ -62,7 +62,7 @@ StepsSchema = new SimpleSchema({
     },
     completionType: {
         type: String,
-        allowedValues: ["textTemplate", "buttonTemplate", uploadTemplate],
+        allowedValues: ["textTemplate", "buttonTemplate", "uploadTemplate"],
         autoform: {
             options: () => Types,
             afFieldInput: {
