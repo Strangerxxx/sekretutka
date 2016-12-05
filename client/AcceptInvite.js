@@ -31,6 +31,7 @@ Template.AcceptInvite.helpers({
         Fields = new SimpleSchema({
             variables:{
                 type: new SimpleSchema(FieldsSchema),
+                optional: true,
             }
         });
         return new SimpleSchema([Schema.newUser, Fields]);
