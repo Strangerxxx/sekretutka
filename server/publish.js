@@ -20,7 +20,7 @@ Meteor.publish("users", function (userId) {
         query = {roles: {$nin: ['admin']}};
     else
         query = {_id: userId};
-    return Meteor.users.find(query, {fields: {emails: 1, profile: 1, createdAt: 1}});
+    return Meteor.users.find(query, {fields: {emails: 1, profile: 1, createdAt: 1, roles: 1}});
 });
 
 Meteor.publish('usertask', function (userId) {

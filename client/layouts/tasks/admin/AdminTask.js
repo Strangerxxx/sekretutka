@@ -13,7 +13,7 @@ var imageToShow = new ReactiveVar(); //не нужен тут реактивва
 
 Template.AdminTask.helpers({
     users: ()=> {
-        return Meteor.users.find({}, {skip: 1});
+        return Meteor.users.find({roles: {$nin: ['admin']}});
     },
     user: ()=> {
         var id = Template.currentData()._id;
