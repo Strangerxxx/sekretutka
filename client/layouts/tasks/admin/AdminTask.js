@@ -13,7 +13,9 @@ var imageToShow = new ReactiveVar(); //не нужен тут реактивва
 
 Template.AdminTask.helpers({
     users: ()=> {
-        return Meteor.users.find({roles: {$nin: ['admin']}});
+        let id = Template.currentData()._id;
+        let dict = usertask.find({"taskId": id}).map((doc)=>doc.userId);
+        return Meteor.users.find({roles: {$nin: ['admin']}, _id: {$nin: dict}});
     },
     user: ()=> {
         var id = Template.currentData()._id;
@@ -185,37 +187,37 @@ Template.VariablesModal.helpers({
 
 Template.VariablesModal.events({
     'submit .variables-form': (event, tmpl) => {
-         event.preventDefault();
-         Modal.hide('VariablesModal');
-         let regExProfile = /profile\s(.*)/;
-         let regExGlobal = /global\s(.*)/;
+        event.preventDefault();
+        Modal.hide('VariablesModal');
+        let regExProfile = /profile\s(.*)/;
+        let regExGlobal = /global\s(.*)/;
         let match;
 
-         var _variables = Template.instance().data.variables;
-         let output = [];
+        var _variables = Template.instance().data.variables;
+        let output = [];
 
-         for(let variable in _variables){
-             if(_variables.hasOwnProperty(variable)){
-                 if(!regExProfile.exec(variable) && !regExGlobal.exec(variable)){
-                     let value = $(`[name="${variable}"]`).val();
-                     output.push({
-                         name: variable,
-                         value: value,
-                         task: FlowRouter.getParam('taskId'),
-                         user: Template.instance().data.userId,
-                     });
-                     _variables[variable] = value;
-                 }
-                 else if(match = regExGlobal.exec(variable)){
-                     if(!variables.findOne({name: variable, user: Template.instance().data.userId}))
+        for(let variable in _variables){
+            if(_variables.hasOwnProperty(variable)){
+                if(!regExProfile.exec(variable) && !regExGlobal.exec(variable)){
+                    let value = $(`[name="${variable}"]`).val();
+                    output.push({
+                        name: variable,
+                        value: value,
+                        task: FlowRouter.getParam('taskId'),
+                        user: Template.instance().data.userId,
+                    });
+                    _variables[variable] = value;
+                }
+                else if(match = regExGlobal.exec(variable)){
+                    if(!variables.findOne({name: variable, user: Template.instance().data.userId}))
                         Meteor.call('variables.insert.one', match[0],Template.instance().data.userId,$(`[name="${variable}"]`).val());
-                 }
-             }
-         }
-         if(Template.instance().data.type == 'Attach')
-             Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
-         else if(Template.instance().data.type == 'Edit')
-             Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, _variables);
+                }
+            }
+        }
+        if(Template.instance().data.type == 'Attach')
+            Meteor.call('usertask.add', FlowRouter.getParam('taskId'), Template.instance().data.userId, output);
+        else if(Template.instance().data.type == 'Edit')
+            Meteor.call('variables.update', FlowRouter.getParam('taskId'), Template.instance().data.userId, _variables);
     },
     'click .user-filled': (event) => {
         let input = $(`input.form-control[name = "${event.target.name}"]`);
