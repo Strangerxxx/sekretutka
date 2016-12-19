@@ -1,37 +1,41 @@
 <template name="AdminLayout">
-{{#if Template.subscriptionsReady}}
-    {{#if isInRole 'admin'}}
-        <div class="navbar navbar-default" role="navigation">
+    {{#if Template.subscriptionsReady}}
+        {{#if isInRole 'admin'}}
+            <div class="navbar navbar-default" role="navigation">
 
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Sekretutka</a>
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Sekretutka</a>
 
 
-            </div>
-
+                </div>
                 <ul class="nav navbar-nav navbar-right">
                     {{> Notifications}}
                     {{> loginButtons}}
                 </ul>
 
 
-        </div>
+            </div>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-2">
-                    {{> Navigation }}
-                </div>
-                <div class="col-md-10">
-                    {{> Template.dynamic template=main}}
+            <div class="container-fluid">
+                {{#if isDemo}}
+                    <div class="alert alert-danger text-center h4">
+                        Insecure demo mode is enabled! Disable it before production use!
+                    </div>
+                {{/if}}
+                <div class="row">
+                    <div class="col-md-2">
+                        {{> Navigation }}
+                    </div>
+                    <div class="col-md-10">
+                        {{> Template.dynamic template=main}}
+                    </div>
                 </div>
             </div>
-        </div>
-    {{else}}
-        <span>Please login as admin</span>
-        {{> loginButtons}}
+        {{else}}
+            <span>Please login as admin</span>
+            {{> loginButtons}}
+        {{/if}}
     {{/if}}
-{{/if}}
 </template>
 
 <template name="Notifications">
