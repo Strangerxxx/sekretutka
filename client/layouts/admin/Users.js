@@ -46,8 +46,11 @@ Template.Users.helpers({
             .value()
             .join(", ");
     },
-    url: () => {
+    acceptInviteUrl: () => {
         return Meteor.absoluteUrl() + 'acceptInvite/';
+    },
+    demoUrl: () => {
+        return Meteor.absoluteUrl() + 'demo/';
     },
     claimed: (_id, status) => {
         if(status != 'claimed')

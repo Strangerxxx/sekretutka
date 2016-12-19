@@ -19,7 +19,7 @@
             {{#each invites}}
                 <tr>
                     <td>{{datetime}}</td>
-                    <td><a href="#" class="get-link" data-clipboard-text="{{url}}{{_id}}">Click to copy</a></td>
+                    <td><a href="#" class="get-link" data-clipboard-text="{{acceptInviteUrl}}{{_id}}">Click to copy</a></td>
                     <td>{{status}} {{claimed _id status}}</td>
                     <td><a class="invite-delete" data-id="{{_id}}" href="#">Delete</a></td>
                 </tr>
@@ -35,6 +35,7 @@
             <th>Nickname</th>
             <th>First Name</th>
             <th>Last Name</th>
+            {{#if isDemo}}<th>Demo Link</th>{{/if}}
             <th>Edit</th>
             <th>Delete</th>
         </tr>
@@ -46,6 +47,9 @@
                     <td>{{profile.nickname}}</td>
                     <td>{{profile.firstName}}</td>
                     <td>{{profile.lastName}}</td>
+                    {{#if isDemo}}
+                        <td><a href="#" class="get-link" data-clipboard-text="{{demoUrl}}{{_id}}">Click to copy</a></td>
+                    {{/if}}
                     <td><a class="user-edit" href="/admin/users/edit/{{_id}}" >Edit</a></td>
                     <td><a class="user-delete" data-id="{{_id}}" href="#">Delete</a></td>
                 </tr>

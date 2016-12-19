@@ -43,6 +43,9 @@ Template.registerHelper('getVariablesFromTask', (task) => {
     }
     return variables;
 });
+Template.registerHelper('isDemo', (task) => {
+    return Meteor.settings.public.demo || false;
+});
 
 SimpleSchema.messages({
     regEx: [
