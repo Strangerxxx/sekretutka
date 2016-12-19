@@ -13,10 +13,14 @@ Meteor.publish('tasks', function (userId) {
 });
 
 Meteor.publish("users", function (userId) {
-    if(Roles.userIsInRole(userId, 'admin'))
-        return Meteor.users.find({}, {fields: {emails: 1, profile: 1, createdAt: 1}});
+    let query;
+    if(Roles.userIsInRole(userId, 'root'))
+        query = {};
+    else if(Roles.userIsInRole(userId, 'admin'))
+        query = {roles: {$nin: ['admin']}};
     else
-        return Meteor.users.find({_id: userId}, {fields: {emails: 1, profile: 1, createdAt: 1}});
+        query = {_id: userId};
+    return Meteor.users.find(query, {fields: {emails: 1, profile: 1, createdAt: 1}});
 });
 
 Meteor.publish('usertask', function (userId) {

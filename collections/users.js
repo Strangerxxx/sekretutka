@@ -152,7 +152,7 @@ Meteor.users.attachSchema(Schema.User);
 
 Meteor.methods({
     'users.create': (doc) => {
-        var userId = Accounts.createUser({
+        let userId = Accounts.createUser({
              email: doc.email,
              password: doc.password,
              profile: doc.profile
@@ -170,7 +170,10 @@ Meteor.methods({
 
         Meteor.call('variables.add', _variables);
         // if(userId === undefined) throw new Meteor.Error(403, 'Access denied!');
-        var stampedLoginToken = Accounts._generateStampedLoginToken();
+        return Meteor.call('users.createToken', userId);
+    },
+    'users.createToken': (userId)=>{
+        let stampedLoginToken = Accounts._generateStampedLoginToken();
         Accounts._insertLoginToken(userId, stampedLoginToken);
         return stampedLoginToken.token;
     },
